@@ -45,3 +45,34 @@ html[data-theme=soft] .reading-text,html[data-theme=soft] .description,html[data
 .reading-text [data-part=original]{font-family:'Noto Sans Devanagari','Nirmala UI',sans-serif;font-weight:400;line-height:1.6}
 .search-input:has([data-act=clear-search][hidden]) input{padding-right:44px}
 .theme-option:focus-visible{outline-offset:2px}
+.reader-footer{flex:none;z-index:4;background:var(--panel);padding-bottom:env(safe-area-inset-bottom,0px)}
+.reader-footer .versebar{border-top:1px solid var(--line);border-bottom:0;min-height:52px}
+.return-strip{align-items:center;gap:8px;padding:8px 16px}
+.return-strip>svg{width:14px;height:12px;min-width:14px;align-self:center;flex:none}
+.return-target{line-height:1.35}.return-target small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.tree-book{width:44px;min-width:44px;display:grid;place-items:center;color:var(--text)}.tree-book svg{width:15px;height:18px}
+.related-button>svg{width:18px;height:21px}
+.book-progress{height:6px;border-radius:4px;background:#56514a;margin:20px 0 10px;overflow:hidden;position:relative}
+.book-progress>span{position:absolute;inset:0 auto 0 28%;width:35%;border-radius:4px;background:linear-gradient(90deg,#b78a5466,#c99c66,#e1bc87);animation:book-transfer 2.4s ease-in-out infinite}
+.book-progress.paused{background:transparent;border:1px dashed #85817b}
+.book-progress.paused>span{display:none;animation:none}
+.book-progress-caption{font:400 12px PT;color:var(--muted)}
+.ring.is-active:not(.large-ring):after{content:'';position:absolute;inset:-3px;border:1.5px solid transparent;border-top-color:var(--gold);border-radius:50%;animation:queue-activity 2s linear infinite}
+.ring.is-waiting{opacity:.8}
+@keyframes book-transfer{0%,100%{transform:translateX(-90%)}50%{transform:translateX(140%)}}
+@keyframes queue-activity{to{transform:rotate(360deg)}}
+.search-links{flex-wrap:nowrap}.search-links .scope-link{flex-basis:auto;flex:1}
+.scope-summary{padding:12px 20px;background:var(--panel);border-top:1px solid var(--line);font-size:14px;color:var(--muted)}.scope-summary strong{color:var(--gold)}
+.scope-group{padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.scope-category{font-weight:700}.scope-count{margin-left:auto;color:var(--muted);font-size:12px}
+.scope-books{padding-left:22px}.scope-books .check-row{align-items:flex-start;padding:10px 0;gap:8px}
+.scope-books input{flex:none;margin-top:2px}.scope-book-icon{flex:none;padding-top:3px}.scope-book-icon svg{width:13px;height:16px}
+.result-summary{margin:0 0 20px}
+/* Artifact composition only: runtime remains a 390px scrollable device viewport. */
+html.mockup-mode,html.mockup-mode body{height:auto;min-height:844px;overflow:visible;width:390px}
+html.mockup-mode body{display:block}
+html.mockup-mode #app{height:auto;min-height:844px;max-height:none;overflow:visible}
+html.mockup-mode .scroll{overflow:visible;flex:1 0 auto}
+html.mockup-mode .book-progress>span,html.mockup-mode .ring:after{animation:none}
+html.mockup-mode .fixed-stack{position:relative}
+@media(prefers-reduced-motion:reduce){.book-progress>span,.ring:after{animation:none!important}}
