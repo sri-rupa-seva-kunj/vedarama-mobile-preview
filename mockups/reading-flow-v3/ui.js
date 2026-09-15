@@ -65,13 +65,14 @@ function versebar() { return `<nav class="versebar" aria-label="Навигаци
 function reader() {
     S.started=true;
     const contextual=!!(S.relatedContext || S.searchSnapshot);
-    let bars=contextual || S.focus?'':versebar();
+    let bars='';
     if(S.relatedContext) bars+=`<button class="return-strip" data-act="source-return">${ic('return')}<span class="return-target">К исходному тексту · ${S.sourceSnapshot?.related?'Рамануджа, 1.1':'БГ 1.1'}</span></button>`;
     else if(S.searchSnapshot) bars+=`<button class="return-strip" data-act="search-return">${ic('return')}<span class="return-target">${S.searchSnapshot.page==='book-search'?'К результатам в книге':'К результатам по библиотеке'}<small>«${esc(S.searchSnapshot.query)}»</small></span></button>`;
     if(S.source || !S.bookHasLocal) bars+=`<div class="status-strip">${ic('cloud')}<span>Не скачано — офлайн-чтение недоступно</span></div>`;
     const body=S.variant==='offline'?empty('Эта книга ещё не скачана','Сейчас нет подключения к интернету. Подключитесь, чтобы открыть книгу, или выберите сохранённую книгу в библиотеке.','offline','retry-book','Повторить')+`<div style="padding:0 24px 24px">${btn('library','К библиотеке','secondary full')}</div>`:`<article class="reading-text" style="font-size:${16*S.scale/100}px">${contextual?`<p class="context-book-title">${S.related?'Bhagavad Gita · Рамануджа · English':bookTitle}</p>`:''}${textBody()}</article>`;
-    const mode=contextual?`<div class="context-actions">${btn(S.focus?'exit-focus':'enter-focus',S.focus?'Выйти из режима чтения':'Режим чтения','context-mode',S.focus?'exit':'nav-book')}${b('book-search','Поиск в книге','zoom')}${S.focus?'':b('related','Этот текст в других книгах','book-cover')}${b('menu','Опции книги','more')}</div>`:'';
-    layout(contextual?'':bookHead(),body,{bars,bodyClass:contextual?'context-reader':'',withDock:!S.focus,footer:S.focus?`<div class="reader-footer">${mode}${versebar()}</div>`:mode});
+    const mode=contextual?`<div class="context-actions">${btn(S.focus?'exit-focus':'enter-focus',S.focus?'Выйти из режима чтения':'Режим чтения','context-mode',S.focus?'exit':'nav-book')}${b('book-search','Поиск в книге','zoom')}${b('menu','Опции книги','more')}</div>`:'';
+    const floating=!S.focus&&S.variant!=='offline'?`<div class="reader-floating">${versebar()}${mode}</div>`:'';
+    layout(contextual?'':bookHead(),body,{bars,bodyClass:(contextual?'context-reader ':'')+(floating?'floating-reader':''),withDock:!S.focus,footer:S.focus?`<div class="reader-footer">${mode}${versebar()}</div>`:floating});
     restoreAnchor(S.readerAnchor);
 }
 function themes() { return `<div class="theme-options" aria-label="Цветовая тема">${[['light', 'Светлая', '#fefefe', '#51545a'], ['soft', 'Мягкая', '#d2d6dc', '#555d68'], ['dark', 'Тёмная', '#303236', '#d4d5d7']].map(([id, label, bg, fg]) => `<button class="theme-option ${S.theme === id ? 'selected' : ''}" data-theme="${id}" aria-pressed="${S.theme === id}"><span class="theme-sample" style="background:${bg};color:${fg}"><i></i><i></i><i></i></span>${label}</button>`).join('')}</div>`; }
@@ -218,6 +219,8 @@ function sheet(title, content) {
 }
 function overlay(kind) { if(!S.overlay) overlayOpener=document.activeElement; S.overlay = kind; const el = document.querySelector('#overlay'); if (kind === 'menu') {
     el.innerHTML = `<button class="backdrop" data-act="close" aria-label="Закрыть"></button><div class="menu" role="dialog" aria-modal="true" aria-label="Опции книги">${btn('bookmark', 'Закладка', '', 'bookmark-nav')}${btn('text-settings', 'Настройки текста', '', 'text-settings-icon')}${btn('cover', 'О книге', '', 'nav-book')}${S.page==='reader' && (S.relatedContext||S.searchSnapshot)?btn('toc','Оглавление','','list'):''}<button data-act="enter-focus">${ic('book')}<span>Режим чтения<small>Без навигации приложения</small></span></button></div>`;
+    const floating=document.querySelector('.reader-floating:has(.context-actions)');
+    if(floating){const menu=el.querySelector('.menu'),bottom=app.getBoundingClientRect().bottom-floating.getBoundingClientRect().top+12;menu.style.top='auto';menu.style.bottom=bottom+'px';menu.style.maxHeight=Math.max(44,app.clientHeight-bottom-8)+'px';menu.style.overflowY='auto';}
     isolateOverlay(true);
     el.querySelector('.menu button').focus({ preventScroll: true });
     return;
@@ -236,7 +239,7 @@ function overlay(kind) { if(!S.overlay) overlayOpener=document.activeElement; S.
     return;
 } sheet('Vedarama', `<p class="small muted">${kind === 'language' ? 'Язык содержимого книги выбирается независимо от языка интерфейса.' : 'Этот сценарий остаётся в ранее согласованном наборе. Здесь данные аккаунта не меняются.'}</p><div class="button-stack">${btn('close', 'Понятно', 'secondary full')}</div>`); }
 function close() { S.overlay = null; document.querySelector('#overlay').innerHTML = ''; isolateOverlay(false); overlayOpener?.focus({preventScroll:true}); overlayOpener=null; }
-function toast(text) { document.querySelector('.toast')?.remove(); const el = document.createElement('div'); el.className = 'toast'; el.role = 'status'; el.textContent = text; app.append(el); setTimeout(() => el.remove(), 3500); }
+function toast(text) { document.querySelector('.toast')?.remove(); const el = document.createElement('div'); el.className = 'toast'; el.role = 'status'; el.textContent = text; app.append(el); const floating=document.querySelector('.reader-floating');if(floating)el.style.bottom=(app.getBoundingClientRect().bottom-floating.getBoundingClientRect().top+12)+'px'; setTimeout(() => el.remove(), 3500); }
 function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiReview.act(a,target);return;} switch (a) {
     case 'back':
         back();
