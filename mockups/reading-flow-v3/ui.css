@@ -82,11 +82,8 @@ html.mockup-mode .fixed-stack{position:relative}
 .context-reader.with-dock{padding-bottom:156px}
 .context-mode{display:flex;align-items:center;justify-content:center;gap:8px;font:400 13px/1.4 PT;color:var(--gold);min-height:44px;padding:8px 14px;border:1px solid var(--gold);border-radius:4px;background:var(--panel)}
 .context-mode svg{width:16px;height:18px}
-.context-actions{display:flex;gap:2px;align-items:center;background:var(--panel);padding:3px 6px}
-.context-actions .context-mode{flex:1;min-width:0;border:0;padding:6px;font-size:13px}
-#app>.context-actions{position:absolute;left:12px;right:12px;bottom:80px;z-index:5;border:1px solid var(--line);border-radius:4px;box-shadow:0 2px 10px #0002}
-.reader-footer>.context-actions{border-bottom:1px solid var(--line)}
-#app:has(.context-reader) .menu{top:auto;bottom:140px}
+.focus-head{height:56px;min-height:56px;padding:0 6px 0 16px}
+.focus-location{display:block;font:400 12px/1.3 PT;color:var(--gold);margin-top:3px}
 .scope-tree,.scope-tree ul{list-style:none;padding:0;margin:0}
 .scope-tree-row .scope-check{width:44px;min-width:44px;min-height:44px;display:grid;place-items:center;cursor:pointer}
 .scope-check input{width:20px;height:20px;margin:0;accent-color:var(--gold);cursor:pointer}

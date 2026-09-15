@@ -33,7 +33,7 @@ function btn(act, label, cls = 'primary', icon = '') { return `<button type="but
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function brand() { return `<header class="brandbar"><span class="brand">VEDARAMA</span>${S.started && S.page === 'library' ? btn('resume', 'К книге', 'small-link', 'nav-book') : ''}</header>`; }
 function head(title, back = true) { return `<header class="page-head">${back ? b('back', 'Назад', 'return') : ''}<h1>${title}</h1></header>`; }
-function bookHead() { return S.focus ? `<header class="page-head book-head focus-head">${btn('exit-focus', 'Выйти из режима чтения', 'exit-focus', 'exit')}${b('bookmark', 'Добавить закладку', 'bookmark-nav')}${b('text-settings', 'Настройки текста', 'text-settings-icon')}</header>` : `<header class="page-head book-head">${b('library', 'К каталогу', 'return')}<div class="head-copy"><span class="eyebrow">Библиотека</span><span class="book-title">${S.related ? 'Bhagavad Gita' : bookTitle}</span></div>${b('toc', 'Оглавление', 'list')}${b('book-search', 'Поиск в книге', 'zoom')}${b('menu', 'Опции книги', 'more')}</header>`; }
+function bookHead() { return `<header class="page-head book-head">${b('library', 'К каталогу', 'return')}<div class="head-copy"><span class="eyebrow">Библиотека</span><span class="book-title">${S.related ? 'Bhagavad Gita' : bookTitle}</span></div>${b('toc', 'Оглавление', 'list')}${b('book-search', 'Поиск в книге', 'zoom')}${b('menu', 'Опции книги', 'more')}</header>`; }
 function dock() { const active = { 'search-history':'search', 'search-advanced':'search', 'search-scope':'search', reader: 'library', cover: 'library', 'book-search': 'library', toc: 'library', related: 'library', 'text-settings': 'library', profile: 'settings' }[S.page] || S.page; const items = [['library', 'Библиотека', 'nav-book'], ['search', 'Поиск', 'zoom'], ...(S.ai ? [['ai', 'AI-чат', 'chat']] : []), ['bookmarks', 'Закладки', 'bookmark-nav'], ['sync', 'Синхронизация', 'cloud'], ['settings', 'Настройки', 'settings']]; return `<nav class="dock" style="--items:${items.length}" aria-label="Разделы приложения">${items.map(([act, label, icon]) => `<button data-act="${act}" data-icon="${icon}" class="${active === act ? 'active' : ''}" aria-label="${label}${progressVisible() && act === 'sync' ? ', ' + progressPercent() + ' процентов, ' + S.sync : ''}" ${active === act ? 'aria-current="page"' : ''}>${progressVisible() && act === 'sync' ? progressRing() : ic(icon)}</button>`).join('')}</nav>`; }
 function layout(top, body, { bars = '', bodyClass = '', withDock = true, footer = '' } = {}) { app.innerHTML = `<div class="fixed-stack">${top}${bars}</div><section class="scroll ${bodyClass} ${withDock ? 'with-dock' : ''}" id="page-scroll">${body}</section>${footer}${withDock ? dock() : ''}<div id="overlay"></div>`; }
 function hint(text, type = '') { return `<div class="message ${type}" role="status">${text}</div>`; }
@@ -62,6 +62,7 @@ function cover() { layout(brand() + head('Библиотека'), `<article clas
 function textBody(preview = false) { if (S.related && !preview)
     return `<h1 data-block="heading">Verse 1</h1><p class="translit" data-block="translit">Dhṛitarāṣṭra uvāca<br>dharma-kṣetre kuru-kṣetre samavetā yuyutsavaḥ<br>māmakāḥ pāṇḍavāścaiva kim akurvata sañjaya || 1 ||</p><p class="caption">Перевод:</p><p class="translation" data-block="translation">Dhritarāshtra said:<br>1. What did my people and the Pandavas do, O Sanjaya, gathered together on the holy field of Kurukshetra, eager for battle?</p><h1 data-block="verse2">Verse 2</h1><p class="translit">Sañjaya uvāca<br>dṛṣṭvā tu pāṇḍavānīkaṁ vyūḍhaṁ duryodhanas tadā<br>ācāryam upasaṅgamya rājā vacanam abravīt || 2 ||</p><p class="caption">Перевод:</p><p class="translation">Sanjaya said:<br>2. O King! Duryodhana, being moved by the sight of the Pāṇḍava army in battle array, approached his teacher Drona and said these words:</p>`; return `${preview ? `<p class="book-preview-title">${bookTitle}</p><p class="section-preview-title">Глава 1 · Обзор армий на поле битвы Курукшетра</p>` : ''}<h1 data-block="heading">Текст 1</h1>${Object.entries(readerData).filter(([key]) => S.visibility[key]).map(([, text]) => text).join('')}`; }
 function versebar(compactMode = false) { return `<nav class="versebar" aria-label="Навигация по стихам"><button class="icon" disabled aria-label="Предыдущий стих">${ic('back')}</button><button class="current-verse" data-act="toc">Глава 1 · Текст 1${ic('arrow-down')}</button>${b('next-verse', 'Следующий стих', 'next')}<button class="related-button" data-act="related" aria-label="Этот текст в других книгах">${ic('book-cover')}<span class="count">${relatedGroups.reduce((n, [,items])=>n+items.length,0)}</span></button>${compactMode ? b('enter-focus', 'Режим чтения', 'book', 'icon compact-mode') : ''}</nav>`; }
+function focusHead() { const title=S.related?'Bhagavad Gita · Рамануджа · English':bookTitle;return `<header class="page-head book-head focus-head"><div class="head-copy"><span class="book-title" title="${esc(title)}">${esc(title)}</span><span class="focus-location">Глава 1 · Текст 1</span></div>${b('book-search','Поиск в книге','zoom')}${b('menu','Опции книги','more')}</header>`; }
 function reader() {
     S.started=true;
     const contextual=!!(S.relatedContext || S.searchSnapshot);
@@ -69,10 +70,9 @@ function reader() {
     if(S.relatedContext) bars+=`<button class="return-strip" data-act="source-return">${ic('return')}<span class="return-target">К исходному тексту · ${S.sourceSnapshot?.related?'Рамануджа, 1.1':'БГ 1.1'}</span></button>`;
     else if(S.searchSnapshot) bars+=`<button class="return-strip" data-act="search-return">${ic('return')}<span class="return-target">${S.searchSnapshot.page==='book-search'?'К результатам в книге':'К результатам по библиотеке'}<small>«${esc(S.searchSnapshot.query)}»</small></span></button>`;
     if(S.source || !S.bookHasLocal) bars+=`<div class="status-strip">${ic('cloud')}<span>Не скачано — офлайн-чтение недоступно</span></div>`;
-    const body=S.variant==='offline'?empty('Эта книга ещё не скачана','Сейчас нет подключения к интернету. Подключитесь, чтобы открыть книгу, или выберите сохранённую книгу в библиотеке.','offline','retry-book','Повторить')+`<div style="padding:0 24px 24px">${btn('library','К библиотеке','secondary full')}</div>`:`<article class="reading-text" style="font-size:${16*S.scale/100}px">${contextual?`<p class="context-book-title">${S.related?'Bhagavad Gita · Рамануджа · English':bookTitle}</p>`:''}${textBody()}</article>`;
-    const mode=contextual?`<div class="context-actions">${btn(S.focus?'exit-focus':'enter-focus',S.focus?'Выйти из режима чтения':'Режим чтения','context-mode',S.focus?'exit':'nav-book')}${b('book-search','Поиск в книге','zoom')}${b('menu','Опции книги','more')}</div>`:'';
-    const floating=!S.focus&&S.variant!=='offline'?`<div class="reader-floating">${versebar(contextual)}</div>`:'';
-    layout(contextual?'':bookHead(),body,{bars,bodyClass:(contextual?'context-reader ':'')+(floating?'floating-reader':''),withDock:!S.focus,footer:S.focus?`<div class="reader-footer">${mode}${versebar()}</div>`:floating});
+    const body=S.variant==='offline'?empty('Эта книга ещё не скачана','Сейчас нет подключения к интернету. Подключитесь, чтобы открыть книгу, или выберите сохранённую книгу в библиотеке.','offline','retry-book','Повторить')+`<div style="padding:0 24px 24px">${btn('library','К библиотеке','secondary full')}</div>`:`<article class="reading-text" style="font-size:${16*S.scale/100}px">${contextual&&!S.focus?`<p class="context-book-title">${S.related?'Bhagavad Gita · Рамануджа · English':bookTitle}</p>`:''}${textBody()}</article>`;
+    const floating=!S.focus&&S.variant!=='offline'?`<div class="reader-floating">${versebar(true)}</div>`:'';
+    layout(S.focus?focusHead():contextual?'':bookHead(),body,{bars,bodyClass:(contextual?'context-reader ':'')+(floating?'floating-reader':''),withDock:!S.focus,footer:S.focus?`<div class="reader-footer">${versebar()}</div>`:floating});
     restoreAnchor(S.readerAnchor);
 }
 function themes() { return `<div class="theme-options" aria-label="Цветовая тема">${[['light', 'Светлая', '#fefefe', '#51545a'], ['soft', 'Мягкая', '#d2d6dc', '#555d68'], ['dark', 'Тёмная', '#303236', '#d4d5d7']].map(([id, label, bg, fg]) => `<button class="theme-option ${S.theme === id ? 'selected' : ''}" data-theme="${id}" aria-pressed="${S.theme === id}"><span class="theme-sample" style="background:${bg};color:${fg}"><i></i><i></i><i></i></span>${label}</button>`).join('')}</div>`; }
@@ -218,9 +218,9 @@ function sheet(title, content) {
     el.querySelector('.sheet-header button').focus({ preventScroll: true });
 }
 function overlay(kind) { if(!S.overlay) overlayOpener=document.activeElement; S.overlay = kind; const el = document.querySelector('#overlay'); if (kind === 'menu') {
-    el.innerHTML = `<button class="backdrop" data-act="close" aria-label="Закрыть"></button><div class="menu" role="dialog" aria-modal="true" aria-label="Опции книги">${btn('bookmark', 'Закладка', '', 'bookmark-nav')}${btn('text-settings', 'Настройки текста', '', 'text-settings-icon')}${btn('cover', 'О книге', '', 'nav-book')}${S.page==='reader' && (S.relatedContext||S.searchSnapshot)?btn('toc','Оглавление','','list'):''}<button data-act="enter-focus">${ic('book')}<span>Режим чтения<small>Без навигации приложения</small></span></button></div>`;
-    const floating=document.querySelector('.reader-floating:has(.context-actions)');
-    if(floating){const menu=el.querySelector('.menu'),bottom=app.getBoundingClientRect().bottom-floating.getBoundingClientRect().top+12;menu.style.top='auto';menu.style.bottom=bottom+'px';menu.style.maxHeight=Math.max(44,app.clientHeight-bottom-8)+'px';menu.style.overflowY='auto';}
+    el.innerHTML = `<button class="backdrop" data-act="close" aria-label="Закрыть"></button><div class="menu" role="dialog" aria-modal="true" aria-label="Опции книги">${btn('bookmark', 'Закладка', '', 'bookmark-nav')}${btn('text-settings', 'Настройки текста', '', 'text-settings-icon')}${btn('cover', 'О книге', '', 'nav-book')}${S.page==='reader' && (S.focus||S.relatedContext||S.searchSnapshot)?btn('toc','Оглавление','','list'):''}<button data-act="${S.focus?'exit-focus':'enter-focus'}">${ic(S.focus?'exit':'book')}<span>${S.focus?'Выйти из режима чтения':'Режим чтения'}<small>${S.focus?'Вернуться к книге с таббаром':'Без навигации приложения'}</small></span></button></div>`;
+    const trigger=document.querySelector('.fixed-stack [data-act=menu]');
+    if(trigger){const menu=el.querySelector('.menu'),top=trigger.getBoundingClientRect().bottom-app.getBoundingClientRect().top+6;menu.style.top=top+'px';menu.style.bottom='auto';menu.style.maxHeight=Math.max(44,app.clientHeight-top-8)+'px';menu.style.overflowY='auto';}
     isolateOverlay(true);
     el.querySelector('.menu button').focus({ preventScroll: true });
     return;
@@ -311,6 +311,7 @@ function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiRe
         S.overlay = null;
         S.readerAnchor = anchor;
         render();
+        document.querySelector('.focus-head [data-act=menu]')?.focus({preventScroll:true});
         break;
     }
     case 'exit-focus': {
@@ -319,6 +320,7 @@ function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiRe
         S.overlay = null;
         S.readerAnchor = anchor;
         render();
+        document.querySelector('.reader-floating [data-act=enter-focus]')?.focus({preventScroll:true});
         break;
     }
     case 'menu':
