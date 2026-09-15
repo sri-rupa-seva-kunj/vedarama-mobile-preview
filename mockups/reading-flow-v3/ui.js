@@ -1,7 +1,7 @@
 /* Review-only local UI. No API calls, account writes or real downloads. */
 const q = new URLSearchParams(location.search), app = document.querySelector('#app');
 const bookTitle = 'Бхагавад-гита как она есть';
-const S = { page: q.get('page') || 'library', variant: q.get('state') || 'default', focus: q.has('focus'), related: q.has('related'), source: q.has('server'), query: q.get('query') || '', expanded: q.has('expanded'), basic: q.has('basic'), catalogueTab: 'Категории', scale: 100, theme: 'dark', visibility: { original: true, translit: true, words: true, translation: true, commentary: true }, bookStatus: q.get('book') || 'ready', sync: 'available', wifi: true, ai: !q.has('noai'), note: '', history: [], readerAnchor: null, sourceSnapshot: null, searchSnapshot: null, started: false, overlay: null, bookmarks: 4, interfaceLanguage: 'ru' };
+const S = { page: q.get('page') || 'library', variant: q.get('state') || 'default', focus: q.has('focus'), related: q.has('related'), relatedContext:q.has('related'), source: q.has('server'), query: q.get('query') || '', expanded: q.has('expanded'), basic: q.has('basic'), catalogueTab: 'Категории', scale: 100, theme: ['dark','light','soft'].includes(q.get('theme')) ? q.get('theme') : 'dark', visibility: { original: true, translit: true, words: true, translation: true, commentary: true }, bookStatus: q.get('book') || 'ready', sync: 'available', wifi: true, ai: !q.has('noai'), note: '', history: [], readerAnchor: null, sourceSnapshot: null, searchSnapshot: null, started: false, overlay: null, bookmarks: 4, interfaceLanguage: 'ru' };
 if (S.page === 'sync')
     S.sync = S.variant;
 if (S.page === 'cover')
@@ -15,7 +15,7 @@ let overlayOpener=null;
 S.syncScope=(S.page==='cover' && ['downloading','preparing','paused'].includes(S.bookStatus))||q.has('single')?'book':'library';
 if(S.syncScope==='book' && S.page==='cover')S.sync=S.bookStatus;
 const scopeBooks=[{id:'bg',title:bookTitle,category:'Основные книги'},{id:'noi',title:'Нектар наставлений',category:'Основные книги'},{id:'sb1',title:'Шримад-Бхагаватам. Песнь 1',category:'Шримад-Бхагаватам'},{id:'ccadi',title:'Шри Чайтанья-чаритамрита. Ади-лила',category:'Шри Чайтанья-чаритамрита'}];
-S.scopeIds=q.get('scope')==='partial'?['bg','noi']:scopeBooks.map(x=>x.id);S.scopeDraft=null; S.recentQueries=['Кришна','дхарма','Бхагавад-гита','преданное служение'];
+S.scopeIds=q.get('scope')==='partial'?['bg','noi']:scopeBooks.map(x=>x.id);S.scopeDraft=null; S.scopeOpen={author:!q.has('scope-collapsed'),...Object.fromEntries(scopeBooks.map(b=>[b.category,true]))}; S.recentQueries=['Кришна','дхарма','Бхагавад-гита','преданное служение'];
 function syncReady(){return S.syncScope==='book'?0:42;}
 function syncTotal(){return S.syncScope==='book'?1:100;}
 function progressPercent(){return Math.floor(100*syncReady()/syncTotal());}
@@ -60,13 +60,20 @@ function bookStatus() {
 }
 function cover() { layout(brand() + head('Библиотека'), `<article class="cover"><img class="cover-image" src="assets/book-cover.jpg" width="411" height="600" alt="Обложка Бхагавад-гиты как она есть"><h1>${bookTitle}</h1><p class="original-name">Bhagavad-Gita As It Is</p><div class="cover-actions">${btn('read', S.started ? 'Продолжить' : 'Читать')}${btn('book-search', 'Поиск в книге', 'secondary', 'zoom')}</div>${bookStatus()}<p class="description">«Бхагавад-гита как она есть» с комментариями Шрилы А. Ч. Бхактиведанты Свами Прабхупады — бесценный дар человечеству, раскрывающий суть и смысл различных духовных путей к Абсолюту. Являясь своеобразной «энциклопедией йоги», «Бхагавад-гита» приводит людей к сокровенной концепции бхакти — отношений со Всевышним, полных радости и любви.</p><details class="about" open><summary>О книге${ic('arrow-down')}</summary><dl><dt>Автор</dt><dd>Вьясадев</dd><dt>Комментарий</dt><dd>А. Ч. Бхактиведанта Свами Прабхупада</dd><dt>Язык издания</dt><dd>Русский</dd></dl></details></article>`); }
 function textBody(preview = false) { if (S.related && !preview)
-    return `<h1 data-block="heading">Verse 1</h1><p class="caption">Bhagavad Gita · Рамануджа · English</p><p class="translit" data-block="translit">Dhṛitarāṣṭra uvāca<br>dharma-kṣetre kuru-kṣetre samavetā yuyutsavaḥ<br>māmakāḥ pāṇḍavāścaiva kim akurvata sañjaya || 1 ||</p><p class="caption">Перевод:</p><p class="translation" data-block="translation">Dhritarāshtra said:<br>1. What did my people and the Pandavas do, O Sanjaya, gathered together on the holy field of Kurukshetra, eager for battle?</p><h1 data-block="verse2">Verse 2</h1><p class="translit">Sañjaya uvāca<br>dṛṣṭvā tu pāṇḍavānīkaṁ vyūḍhaṁ duryodhanas tadā<br>ācāryam upasaṅgamya rājā vacanam abravīt || 2 ||</p><p class="caption">Перевод:</p><p class="translation">Sanjaya said:<br>2. O King! Duryodhana, being moved by the sight of the Pāṇḍava army in battle array, approached his teacher Drona and said these words:</p>`; return `${preview ? `<p class="book-preview-title">${bookTitle}</p><p class="section-preview-title">Глава 1 · Обзор армий на поле битвы Курукшетра</p>` : ''}<h1 data-block="heading">Текст 1</h1>${Object.entries(readerData).filter(([key]) => S.visibility[key]).map(([, text]) => text).join('')}`; }
+    return `<h1 data-block="heading">Verse 1</h1><p class="translit" data-block="translit">Dhṛitarāṣṭra uvāca<br>dharma-kṣetre kuru-kṣetre samavetā yuyutsavaḥ<br>māmakāḥ pāṇḍavāścaiva kim akurvata sañjaya || 1 ||</p><p class="caption">Перевод:</p><p class="translation" data-block="translation">Dhritarāshtra said:<br>1. What did my people and the Pandavas do, O Sanjaya, gathered together on the holy field of Kurukshetra, eager for battle?</p><h1 data-block="verse2">Verse 2</h1><p class="translit">Sañjaya uvāca<br>dṛṣṭvā tu pāṇḍavānīkaṁ vyūḍhaṁ duryodhanas tadā<br>ācāryam upasaṅgamya rājā vacanam abravīt || 2 ||</p><p class="caption">Перевод:</p><p class="translation">Sanjaya said:<br>2. O King! Duryodhana, being moved by the sight of the Pāṇḍava army in battle array, approached his teacher Drona and said these words:</p>`; return `${preview ? `<p class="book-preview-title">${bookTitle}</p><p class="section-preview-title">Глава 1 · Обзор армий на поле битвы Курукшетра</p>` : ''}<h1 data-block="heading">Текст 1</h1>${Object.entries(readerData).filter(([key]) => S.visibility[key]).map(([, text]) => text).join('')}`; }
 function versebar() { return `<nav class="versebar" aria-label="Навигация по стихам"><button class="icon" disabled aria-label="Предыдущий стих">${ic('back')}</button><button class="current-verse" data-act="toc">Глава 1 · Текст 1${ic('arrow-down')}</button>${b('next-verse', 'Следующий стих', 'next')}<button class="related-button" data-act="related" aria-label="Этот текст в других книгах">${ic('book-cover')}<span class="count">${relatedGroups.reduce((n, [,items])=>n+items.length,0)}</span></button></nav>`; }
-function reader() { S.started = true; let bars = S.focus?'':versebar(); if (S.related)
-    bars += `<button class="return-strip" data-act="source-return">${ic('return')}<span class="return-target">К исходному тексту · БГ 1.1</span></button>`;
-else if (S.searchSnapshot)
-    bars += `<button class="return-strip" data-act="search-return">${ic('return')}<span class="return-target">${S.searchSnapshot.page==='book-search'?'К результатам в книге':'К результатам по библиотеке'}<small>«${esc(S.searchSnapshot.query)}»</small></span></button>`; if (S.source || !S.bookHasLocal)
-    bars += `<div class="status-strip">${ic('cloud')}<span>Не скачано — офлайн-чтение недоступно</span></div>`; const body = S.variant === 'offline' ? empty('Эта книга ещё не скачана', 'Сейчас нет подключения к интернету. Подключитесь, чтобы открыть книгу, или выберите сохранённую книгу в библиотеке.', 'offline', 'retry-book', 'Повторить') + `<div style="padding:0 24px 24px">${btn('library', 'К библиотеке', 'secondary full')}</div>` : `<article class="reading-text" style="font-size:${16 * S.scale / 100}px">${textBody()}</article>`; layout(bookHead(), body, { bars, withDock: !S.focus, footer:S.focus?`<div class="reader-footer">${versebar()}</div>`:'' }); restoreAnchor(S.readerAnchor); }
+function reader() {
+    S.started=true;
+    const contextual=!!(S.relatedContext || S.searchSnapshot);
+    let bars=contextual || S.focus?'':versebar();
+    if(S.relatedContext) bars+=`<button class="return-strip" data-act="source-return">${ic('return')}<span class="return-target">К исходному тексту · ${S.sourceSnapshot?.related?'Рамануджа, 1.1':'БГ 1.1'}</span></button>`;
+    else if(S.searchSnapshot) bars+=`<button class="return-strip" data-act="search-return">${ic('return')}<span class="return-target">${S.searchSnapshot.page==='book-search'?'К результатам в книге':'К результатам по библиотеке'}<small>«${esc(S.searchSnapshot.query)}»</small></span></button>`;
+    if(S.source || !S.bookHasLocal) bars+=`<div class="status-strip">${ic('cloud')}<span>Не скачано — офлайн-чтение недоступно</span></div>`;
+    const body=S.variant==='offline'?empty('Эта книга ещё не скачана','Сейчас нет подключения к интернету. Подключитесь, чтобы открыть книгу, или выберите сохранённую книгу в библиотеке.','offline','retry-book','Повторить')+`<div style="padding:0 24px 24px">${btn('library','К библиотеке','secondary full')}</div>`:`<article class="reading-text" style="font-size:${16*S.scale/100}px">${contextual?`<p class="context-book-title">${S.related?'Bhagavad Gita · Рамануджа · English':bookTitle}</p>`:''}${textBody()}</article>`;
+    const mode=contextual?`<div class="context-actions">${btn(S.focus?'exit-focus':'enter-focus',S.focus?'Выйти из режима чтения':'Режим чтения','context-mode',S.focus?'exit':'nav-book')}${b('book-search','Поиск в книге','zoom')}${S.focus?'':b('related','Этот текст в других книгах','book-cover')}${b('menu','Опции книги','more')}</div>`:'';
+    layout(contextual?'':bookHead(),body,{bars,bodyClass:contextual?'context-reader':'',withDock:!S.focus,footer:S.focus?`<div class="reader-footer">${mode}${versebar()}</div>`:mode});
+    restoreAnchor(S.readerAnchor);
+}
 function themes() { return `<div class="theme-options" aria-label="Цветовая тема">${[['light', 'Светлая', '#fefefe', '#51545a'], ['soft', 'Мягкая', '#d2d6dc', '#555d68'], ['dark', 'Тёмная', '#303236', '#d4d5d7']].map(([id, label, bg, fg]) => `<button class="theme-option ${S.theme === id ? 'selected' : ''}" data-theme="${id}" aria-pressed="${S.theme === id}"><span class="theme-sample" style="background:${bg};color:${fg}"><i></i><i></i><i></i></span>${label}</button>`).join('')}</div>`; }
 function scaleControl() { return `<div class="scale">${b('scale-down', 'Уменьшить масштаб', 'minus')}<output>${S.scale}%</output>${b('scale-up', 'Увеличить масштаб', 'plus')}</div>`; }
 function settings(textOnly = false) { let content = ''; if (!textOnly)
@@ -94,8 +101,12 @@ function searchExtra() {
         layout(head('История поиска'),`<div class="page-content"><p class="small muted">Недавние запросы</p>${S.recentQueries.length?S.recentQueries.map(x=>`<div class="history-row">${ic('history')}<button class="history-query" data-history="${esc(x)}">${esc(x)}</button><button class="icon" data-act="history-remove" data-query="${esc(x)}" aria-label="Удалить запрос ${esc(x)}">${ic('cross')}</button></div>`).join(''):'<p class="message">История поиска пуста.</p>'}</div>`);
     } else {
         if(!S.scopeDraft)S.scopeDraft=[...S.scopeIds];
-        const groups=[...new Set(scopeBooks.map(x=>x.category))];
-        layout(head('Область поиска')+`<div class="scope-summary" role="status">Выбрано книг: <strong>${S.scopeDraft.length}</strong></div>`,`<div class="catalogue"><label class="check-row"><input type="checkbox" data-scope="all" ${S.scopeDraft.length===scopeBooks.length?'checked':''}>Все книги <span class="scope-count">${scopeBooks.length}</span></label><div class="divider"></div><p class="group-label">Шрила Прабхупада</p>${groups.map(category=>{const books=scopeBooks.filter(x=>x.category===category);return `<section class="scope-group"><label class="check-row scope-category"><input type="checkbox" data-scope-category="${category}" ${books.every(x=>S.scopeDraft.includes(x.id))?'checked':''}>${category}<span class="scope-count">${books.length}</span></label><div class="scope-books">${books.map(book=>`<label class="check-row"><input type="checkbox" data-scope="${book.id}" ${S.scopeDraft.includes(book.id)?'checked':''}><span class="scope-book-icon">${ic('nav-book')}</span><span>${book.title}</span></label>`).join('')}</div></section>`;}).join('')}<div class="button-stack"><button class="primary full" data-act="apply-search" ${S.scopeDraft.length?'':'disabled'}>Применить · ${S.scopeDraft.length} ${S.scopeDraft.length===1?'книга':'книги'}</button><p class="small muted">Назад — вернуться без изменения области.</p></div></div>`);
+        const groups=['Шримад-Бхагаватам','Шри Чайтанья-чаритамрита','Основные книги'];
+        const disclosure=(key,title)=>`<button class="tree-toggle" data-act="scope-toggle" data-node="${esc(key)}" aria-expanded="${S.scopeOpen[key]}" aria-label="${S.scopeOpen[key]?'Свернуть':'Раскрыть'} ${esc(title)}">${ic(S.scopeOpen[key]?'minus':'plus')}</button>`;
+        const leaf=book=>`<li class="tree-row depth2 scope-tree-row"><label class="scope-check" aria-label="Выбрать ${esc(book.title)}"><input type="checkbox" data-scope="${book.id}" ${S.scopeDraft.includes(book.id)?'checked':''}></label><span class="tree-book">${ic('nav-book')}</span><label class="tree-name" for="scope-${book.id}">${book.title}</label></li>`;
+        const tree=`<li><div class="tree-row scope-tree-row"><label class="scope-check" aria-label="Выбрать все книги Шрилы Прабхупады"><input type="checkbox" data-scope="all" ${S.scopeDraft.length===scopeBooks.length?'checked':''}></label>${disclosure('author','Шрила Прабхупада')}<button class="tree-name" data-act="scope-toggle" data-node="author" aria-expanded="${S.scopeOpen.author}">Шрила Прабхупада</button></div><ul ${S.scopeOpen.author?'':'hidden'}>${groups.map(category=>{const books=scopeBooks.filter(x=>x.category===category);return `<li><div class="tree-row depth1 scope-tree-row"><label class="scope-check" aria-label="Выбрать раздел ${category}"><input type="checkbox" data-scope-category="${category}" ${books.every(b=>S.scopeDraft.includes(b.id))?'checked':''}></label>${disclosure(category,category)}<button class="tree-name" data-act="scope-toggle" data-node="${category}" aria-expanded="${S.scopeOpen[category]}">${category}</button></div><ul ${S.scopeOpen[category]?'':'hidden'}>${books.map(leaf).join('')}</ul></li>`;}).join('')}</ul></li>`;
+        layout(head('Область поиска')+`<div class="scope-summary" role="status">Выбрано книг: <strong>${S.scopeDraft.length}</strong> из ${scopeBooks.length}</div>`,`<div class="catalogue"><ul class="scope-tree">${tree}</ul><div class="button-stack"><button class="primary full" data-act="apply-search" ${S.scopeDraft.length?'':'disabled'}>Применить · ${S.scopeDraft.length} ${S.scopeDraft.length===1?'книга':'книги'}</button><p class="small muted">Назад — вернуться без изменения области.</p></div></div>`);
+        for(const input of document.querySelectorAll('[data-scope]:not([data-scope=all])'))input.id='scope-'+input.dataset.scope;
         for(const input of document.querySelectorAll('[data-scope-category]')){const ids=scopeBooks.filter(x=>x.category===input.dataset.scopeCategory).map(x=>x.id),n=ids.filter(id=>S.scopeDraft.includes(id)).length;input.indeterminate=n>0&&n<ids.length;}
         const all=document.querySelector('[data-scope=all]');all.indeterminate=S.scopeDraft.length>0&&S.scopeDraft.length<scopeBooks.length;
     }
@@ -139,8 +150,8 @@ function restoreAnchor(a) { if (S.page !== 'reader' || !a)
     const article = sc.querySelector('article');
     article.style.paddingBottom = parseFloat(getComputedStyle(article).paddingBottom) + deficit + 2 + 'px';
 } sc.scrollTop = target; }
-function snapshot() { return { page: S.page, variant: S.variant, focus: S.focus, related: S.related, query: S.query, scopeIds:[...S.scopeIds], searchSnapshot:S.searchSnapshot, scroll: document.querySelector('#page-scroll')?.scrollTop || 0, anchor: captureAnchor() }; }
-function restore(s) { Object.assign(S, { page: s.page, variant: s.variant, focus: s.focus, related: s.related, query: s.query, scopeIds:s.scopeIds?[...s.scopeIds]:S.scopeIds, searchSnapshot:s.searchSnapshot || null, readerAnchor: s.anchor }); render(); if (s.page !== 'reader')
+function snapshot() { return { page: S.page, variant: S.variant, focus: S.focus, related: S.related, relatedContext:S.relatedContext, query: S.query, scopeIds:[...S.scopeIds], searchSnapshot:S.searchSnapshot, sourceSnapshot:S.sourceSnapshot, scroll: document.querySelector('#page-scroll')?.scrollTop || 0, anchor: captureAnchor() }; }
+function restore(s) { Object.assign(S, { page: s.page, variant: s.variant, focus: s.focus, related: s.related, relatedContext:!!s.relatedContext, query: s.query, scopeIds:s.scopeIds?[...s.scopeIds]:S.scopeIds, searchSnapshot:s.searchSnapshot || null, sourceSnapshot:s.sourceSnapshot || null, readerAnchor: s.anchor }); render(); if (s.page !== 'reader')
     { document.querySelector('#page-scroll').scrollTop = s.scroll; if(s.resultIndex!==undefined)document.querySelectorAll('.result-title')[s.resultIndex]?.focus({preventScroll:true}); } }
 function go(page, variant = 'default') { S.history.push(snapshot()); if (S.page === 'reader')
     S.readerAnchor = captureAnchor(); S.page = page; S.variant = variant; S.overlay = null; render(); }
@@ -206,7 +217,7 @@ function sheet(title, content) {
     el.querySelector('.sheet-header button').focus({ preventScroll: true });
 }
 function overlay(kind) { if(!S.overlay) overlayOpener=document.activeElement; S.overlay = kind; const el = document.querySelector('#overlay'); if (kind === 'menu') {
-    el.innerHTML = `<button class="backdrop" data-act="close" aria-label="Закрыть"></button><div class="menu" role="dialog" aria-modal="true" aria-label="Опции книги">${btn('bookmark', 'Закладка', '', 'bookmark-nav')}${btn('text-settings', 'Настройки текста', '', 'text-settings-icon')}${btn('cover', 'О книге', '', 'nav-book')}<button data-act="enter-focus">${ic('book')}<span>Режим чтения<small>Без навигации приложения</small></span></button></div>`;
+    el.innerHTML = `<button class="backdrop" data-act="close" aria-label="Закрыть"></button><div class="menu" role="dialog" aria-modal="true" aria-label="Опции книги">${btn('bookmark', 'Закладка', '', 'bookmark-nav')}${btn('text-settings', 'Настройки текста', '', 'text-settings-icon')}${btn('cover', 'О книге', '', 'nav-book')}${S.page==='reader' && (S.relatedContext||S.searchSnapshot)?btn('toc','Оглавление','','list'):''}<button data-act="enter-focus">${ic('book')}<span>Режим чтения<small>Без навигации приложения</small></span></button></div>`;
     isolateOverlay(true);
     el.querySelector('.menu button').focus({ preventScroll: true });
     return;
@@ -257,11 +268,14 @@ function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiRe
         missingSample(target?.textContent || target?.getAttribute('aria-label') || 'Каталог');
         break;
     case 'cover':
+        if(S.page==='library'){S.related=false;S.relatedContext=false;S.sourceSnapshot=null;S.searchSnapshot=null;S.pendingSourceSnapshot=null;S.readerAnchor=null;}
         if(S.page==='library' && target?.textContent.trim()!==bookTitle){missingSample(target?.textContent);break;}
         if(S.related){missingSample('Обложка Bhagavad Gita · Рамануджа');break;}
         go('cover', S.bookStatus);
         break;
     case 'read':
+        S.relatedContext=false;S.sourceSnapshot=null;S.searchSnapshot=null;S.pendingSourceSnapshot=null;S.readerAnchor=null;
+        S.focus=false;go('reader');break;
     case 'resume':
         S.focus = false;
         go('reader');
@@ -341,6 +355,9 @@ function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiRe
         if(a==='search-scope')S.scopeDraft=[...S.scopeIds];
         go(a);
         break;
+    case 'scope-toggle': {
+        const key=target?.dataset.node;if(Object.hasOwn(S.scopeOpen,key)){S.scopeOpen[key]=!S.scopeOpen[key];rerenderStable();document.querySelector(`[data-act="scope-toggle"][data-node="${CSS.escape(key)}"]`)?.focus({preventScroll:true});}break;
+    }
     case 'apply-search': {
         if(!S.scopeDraft?.length){toast('Выберите хотя бы одну книгу.');break;}
         const ids=[...S.scopeDraft];S.scopeIds=ids;S.scopeDraft=null;
@@ -355,7 +372,7 @@ function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiRe
         const result=target?.closest('.search-result'), path=result?.querySelector('.breadcrumbs')?.textContent||'';
         if(!result || !path.includes('Глава 1 • Текст 1')) { missingSample(result?.querySelector('h2')?.textContent + ' · ' + path); break; }
         const from={...snapshot(),resultIndex:[...document.querySelectorAll('.result-title')].indexOf(target),historyDepth:S.history.length};
-        S.history.push(from); S.searchSnapshot=from; S.related=false; S.readerAnchor=null; S.page='reader'; S.variant='default'; render(); break;
+        S.history.push(from); S.searchSnapshot=from; S.sourceSnapshot=null;S.pendingSourceSnapshot=null;S.relatedContext=false; S.related=false; S.readerAnchor=null; S.page='reader'; S.variant='default'; render(); break;
     }
     case 'search-return':
         if (S.searchSnapshot) {
@@ -367,23 +384,23 @@ function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiRe
             back();
         break;
     case 'related':
-        S.sourceSnapshot = {...snapshot(),historyDepth:S.history.length};
+        S.pendingSourceSnapshot = {...snapshot(),historyDepth:S.history.length};
         go('related');
         break;
     case 'related-open':
         if(target && target !== document.querySelector('.related-item')) { missingSample(target.textContent); break; }
         S.related = true;
+        S.relatedContext=true;S.sourceSnapshot=S.pendingSourceSnapshot||null;S.pendingSourceSnapshot=null;
         S.readerAnchor = null;
         go('reader');
         break;
     case 'source-return':
         if (S.sourceSnapshot) {
-            const focus = S.focus;
             S.history.length=S.sourceSnapshot.historyDepth ?? S.history.length;
-            restore({ ...S.sourceSnapshot, focus, related: false });
+            restore(S.sourceSnapshot);
         }
         else {
-            S.related = false;
+            S.related = false;S.relatedContext=false;
             S.readerAnchor = null;
             render();
         }
@@ -449,6 +466,7 @@ function act(a, target) { if(a.startsWith('ai-') && window.aiReview){window.aiRe
         break;
     case 'open-bookmark':
         if(!bookmarkData[S.selectedBookmark]?.[3] && bookmarkData[S.selectedBookmark]?.[0]!==bookTitle) { missingSample(bookmarkData[S.selectedBookmark]?.slice(0,2).join(' · ')); break; }
+        S.relatedContext=false;S.sourceSnapshot=null;S.searchSnapshot=null;S.pendingSourceSnapshot=null;
         S.related = !!bookmarkData[S.selectedBookmark]?.[3];
         S.readerAnchor = null;
         go('reader');
@@ -477,7 +495,7 @@ document.addEventListener('click', e => { const tab = e.target.closest('[data-ta
     S.catalogueTab = tab.dataset.tab;
     render();
     return;
-} const theme = e.target.closest('[data-theme]'); if (theme) {
+} const theme = e.target.closest('button[data-theme]'); if (theme) {
     S.theme = theme.dataset.theme;
     document.documentElement.dataset.theme = S.theme;
     setTheme();
@@ -531,7 +549,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') {
         first.focus();
     }
 } });
-function setTheme() { const r = document.documentElement; const themes = { dark: { bg: '#3a3c40', paper: '#303236', panel: '#27282b', head: '#1f2023', text: '#dddde0', strong: '#efeff0', muted: '#b4b6bb', line: '#515358', gold: '#c99c66' }, light: { bg: '#f1f1f2', paper: '#fefefe', panel: '#ececee', head: '#27282b', text: '#3a3c40', strong: '#202124', muted: '#6d7077', line: '#c8cacf', gold: '#8a612f' }, soft: { bg: '#c5cbd2', paper: '#dce0e4', panel: '#ced4da', head: '#27282b', text: '#303841', strong: '#222b34', muted: '#56616d', line: '#a0aab5', gold: '#815c30' } }; Object.entries(themes[S.theme]).forEach(([k, v]) => r.style.setProperty('--' + k, v)); }
+function setTheme() { const r = document.documentElement; const themes = { dark: { bg: '#3a3c40', paper: '#303236', panel: '#27282b', head: '#1f2023', text: '#dddde0', strong: '#efeff0', muted: '#b4b6bb', line: '#515358', gold: '#c99c66' }, light: { bg: '#f1f1f2', paper: '#fefefe', panel: '#ececee', head: '#fefefe', text: '#3a3c40', strong: '#202124', muted: '#60636a', line: '#c8cacf', gold: '#8a612f' }, soft: { bg: '#c5cbd2', paper: '#dce0e4', panel: '#ced4da', head: '#bcc6d0', text: '#303841', strong: '#222b34', muted: '#495461', line: '#a0aab5', gold: '#815c30' } }; Object.entries(themes[S.theme]).forEach(([k, v]) => r.style.setProperty('--' + k, v)); }
 window.v3 = { state: S, act, go, render, snapshot, captureAnchor, overlay };
 if (S.page === 'search' || S.page === 'book-search')
     S.query = S.query || (['results', 'empty', 'error', 'loading', 'offline-results'].includes(S.variant) ? S.page === 'book-search' ? 'дхарма' : 'Кришна' : '');
@@ -541,6 +559,8 @@ if (q.has('scale'))
     S.scale = Number(q.get('scale'));
 if(q.has('from-search')){S.query='Дхритараштра';S.searchSnapshot={page:q.get('from-search')==='book'?'book-search':'search',variant:'results',query:S.query,scopeIds:[...S.scopeIds],scroll:0,focus:S.focus,related:false,anchor:null,resultIndex:0,historyDepth:0};}
 if(S.page==='search-advanced')S.page='search-scope';
+document.documentElement.dataset.theme=S.theme;
+setTheme();
 window.aiReview?.init?.();
 render();
 if (q.has('overlay'))
