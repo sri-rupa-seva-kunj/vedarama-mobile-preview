@@ -109,6 +109,7 @@ html:not([data-theme=dark]) .versebar,html:not([data-theme=dark]) .status-strip,
 /* Iteration6: ordinary readers only; accepted focus footer is untouched. */
 .reader-floating{position:absolute;left:12px;right:12px;bottom:80px;z-index:5;border:1px solid var(--line);border-radius:4px;background:var(--panel);box-shadow:0 2px 10px #0002;overflow:hidden}
 .reader-floating .versebar{min-height:50px;padding:0 8px;border:0;background:transparent}
-.reader-floating .context-actions{border-top:1px solid var(--line);padding:2px 6px 3px;min-height:50px}
+.reader-floating .compact-mode{color:var(--gold);margin-left:4px;border-left:1px solid var(--line)}
+.reader-floating .compact-mode svg{width:20px;height:20px}
+.reader-floating:has(.compact-mode) .current-verse{font-size:13px;white-space:nowrap;gap:4px}
 .floating-reader.with-dock{padding-bottom:156px}
-.floating-reader.context-reader.with-dock{padding-bottom:206px}
