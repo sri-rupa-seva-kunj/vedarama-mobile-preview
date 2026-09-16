@@ -1,3 +1,68 @@
+# Первые пять: основной раздел
+
+Встроенный image_gen. Редактирование исходных макетов01–05, сохранение стиля, унификация основного экрана чтения.
+
+## 01-quiet-main.png
+
+Edit the attached VEDARAMA design concept to show its MAIN BOOK READING SCREEN in the same neutral state as other design concepts. Preserve this image's own palette, typography personality, control geometry, corner radii, navigation architecture and overall visual identity. Do NOT invent a different design system or recolor it. This is a state/content correction for fair comparison. Full straight-on1536x1024 screenshot. Main task is reading one book, never library-home/search/settings/chat. All FOUR sections must fit clearly in the dominant reading region at readable20–22px. AI panel CLOSED, appearance settings CLOSED. One separate visible note titled "Моя заметка" with text "Сравнить с БГ 2.48." and add-note button. Keep one VEDARAMA wordmark, book tabs "Бхагавад-гита" and "Упанишады", plus tab, search, back/forward, bookmark, "Вид текста", "Aa", "AI" button; visible chapter/verse locator and access to "Оглавление", selected47. Footer "Позиция сохранена",62%. No book covers, promotional slogans, mockup title outside app, giant hero typography, extra related-source previews, fake AI answers. Flat opaque backgrounds, no blurry dark clouds, no vignette.
+EXACT MAIN CONTENT: "Бхагавад-гита", "Глава 2 · Текст 47". Four sections top-to-bottom:
+"Оригинал" — "karmaṇy evādhikāras te"
+"Пословный перевод" — "Пример пословного разбора выбранного стиха. Здесь показаны значения слов и связь между ними."
+"Перевод" — "Пример текста перевода. Одинаковый фрагмент используется во всех пяти вариантах для сравнения оформления."
+"Комментарий" — "Пример комментария к стиху. В этом блоке расположен основной текст пояснения. Размер, ширина строки и межстрочный интервал зависят от выбранного оформления."
+Preserve these neutral placeholders exactly, no invented religious doctrine. The phrase 'пяти вариантах' is intentionally retained to match existing mockup text. Keep note visually separate from book. Modest title about32px so all four sections fit. Main book must dominate the screenshot.
+
+Keep warm soft cream and deep forestgreen accents, fine warm-gray edges, delicate serif reading text, slim left library tree and restrained right inspector. Replace the right AI chat with the single note. Remove related-text panel and unnecessary translation/verse card height to fit four stacked sections. Do not turn this into the rounded sage style: this one's warm ivory panels and fine6px corners remain.
+
+## 02-research-main.png
+
+Edit the attached VEDARAMA design concept to show its MAIN BOOK READING SCREEN in the same neutral state as other design concepts. Preserve this image's own palette, typography personality, control geometry, corner radii, navigation architecture and overall visual identity. Do NOT invent a different design system or recolor it. This is a state/content correction for fair comparison. Full straight-on1536x1024 screenshot. Main task is reading one book, never library-home/search/settings/chat. All FOUR sections must fit clearly in the dominant reading region at readable20–22px. AI panel CLOSED, appearance settings CLOSED. One separate visible note titled "Моя заметка" with text "Сравнить с БГ 2.48." and add-note button. Keep one VEDARAMA wordmark, book tabs "Бхагавад-гита" and "Упанишады", plus tab, search, back/forward, bookmark, "Вид текста", "Aa", "AI" button; visible chapter/verse locator and access to "Оглавление", selected47. Footer "Позиция сохранена",62%. No book covers, promotional slogans, mockup title outside app, giant hero typography, extra related-source previews, fake AI answers. Flat opaque backgrounds, no blurry dark clouds, no vignette.
+EXACT MAIN CONTENT: "Бхагавад-гита", "Глава 2 · Текст 47". Four sections top-to-bottom:
+"Оригинал" — "karmaṇy evādhikāras te"
+"Пословный перевод" — "Пример пословного разбора выбранного стиха. Здесь показаны значения слов и связь между ними."
+"Перевод" — "Пример текста перевода. Одинаковый фрагмент используется во всех пяти вариантах для сравнения оформления."
+"Комментарий" — "Пример комментария к стиху. В этом блоке расположен основной текст пояснения. Размер, ширина строки и межстрочный интервал зависят от выбранного оформления."
+Preserve these neutral placeholders exactly, no invented religious doctrine. The phrase 'пяти вариантах' is intentionally retained to match existing mockup text. Keep note visually separate from book. Modest title about32px so all four sections fit. Main book must dominate the screenshot.
+
+Keep original dark charcoal research-workspace style, muted gold highlights, original left library tree and tight workspace tabs, serif book text and compact sans-serif UI. Replace all right AI chat and source cards with a quiet notes inspector showing exactly one note. Remove the second related verse2.48 from center, use that space for all four blocks of BG2.47. Keep rich but restrained dark panes and thin golden active-tab accents. No cyan or new palette.
+
+## 03-library-main.png
+
+Edit the attached VEDARAMA design concept to show its MAIN BOOK READING SCREEN in the same neutral state as other design concepts. Preserve this image's own palette, typography personality, control geometry, corner radii, navigation architecture and overall visual identity. Do NOT invent a different design system or recolor it. This is a state/content correction for fair comparison. Full straight-on1536x1024 screenshot. Main task is reading one book, never library-home/search/settings/chat. All FOUR sections must fit clearly in the dominant reading region at readable20–22px. AI panel CLOSED, appearance settings CLOSED. One separate visible note titled "Моя заметка" with text "Сравнить с БГ 2.48." and add-note button. Keep one VEDARAMA wordmark, book tabs "Бхагавад-гита" and "Упанишады", plus tab, search, back/forward, bookmark, "Вид текста", "Aa", "AI" button; visible chapter/verse locator and access to "Оглавление", selected47. Footer "Позиция сохранена",62%. No book covers, promotional slogans, mockup title outside app, giant hero typography, extra related-source previews, fake AI answers. Flat opaque backgrounds, no blurry dark clouds, no vignette.
+EXACT MAIN CONTENT: "Бхагавад-гита", "Глава 2 · Текст 47". Four sections top-to-bottom:
+"Оригинал" — "karmaṇy evādhikāras te"
+"Пословный перевод" — "Пример пословного разбора выбранного стиха. Здесь показаны значения слов и связь между ними."
+"Перевод" — "Пример текста перевода. Одинаковый фрагмент используется во всех пяти вариантах для сравнения оформления."
+"Комментарий" — "Пример комментария к стиху. В этом блоке расположен основной текст пояснения. Размер, ширина строки и межстрочный интервал зависят от выбранного оформления."
+Preserve these neutral placeholders exactly, no invented religious doctrine. The phrase 'пяти вариантах' is intentionally retained to match existing mockup text. Keep note visually separate from book. Modest title about32px so all four sections fit. Main book must dominate the screenshot.
+
+This source incorrectly shows a library home. Transform CONTENT ONLY into an open-book main reading view. Preserve its soft pale mineral/sage background, muted eucalyptus green selections, restrained clay accent, rounded8–12px cards, existing left navigation style and serif book typography. Select book tab 'Бхагавад-гита', not 'Моя библиотека'. Replace ALL center book shelves/covers/continue-reading banner with one large calm reading page containing the four exact sections. Left panel keeps main nav and compact chapter2 outline verses44–49 selected47. Right 'О книге' inspector becomes 'Моя заметка' with the one note and optional inactive AI button. Remove duplicate logos and decorative slogans; keep VEDARAMA wordmark once. Main reading page dominates, no library-home cards anywhere.
+
+## 04-editorial-main.png
+
+Edit the attached VEDARAMA design concept to show its MAIN BOOK READING SCREEN in the same neutral state as other design concepts. Preserve this image's own palette, typography personality, control geometry, corner radii, navigation architecture and overall visual identity. Do NOT invent a different design system or recolor it. This is a state/content correction for fair comparison. Full straight-on1536x1024 screenshot. Main task is reading one book, never library-home/search/settings/chat. All FOUR sections must fit clearly in the dominant reading region at readable20–22px. AI panel CLOSED, appearance settings CLOSED. One separate visible note titled "Моя заметка" with text "Сравнить с БГ 2.48." and add-note button. Keep one VEDARAMA wordmark, book tabs "Бхагавад-гита" and "Упанишады", plus tab, search, back/forward, bookmark, "Вид текста", "Aa", "AI" button; visible chapter/verse locator and access to "Оглавление", selected47. Footer "Позиция сохранена",62%. No book covers, promotional slogans, mockup title outside app, giant hero typography, extra related-source previews, fake AI answers. Flat opaque backgrounds, no blurry dark clouds, no vignette.
+EXACT MAIN CONTENT: "Бхагавад-гита", "Глава 2 · Текст 47". Four sections top-to-bottom:
+"Оригинал" — "karmaṇy evādhikāras te"
+"Пословный перевод" — "Пример пословного разбора выбранного стиха. Здесь показаны значения слов и связь между ними."
+"Перевод" — "Пример текста перевода. Одинаковый фрагмент используется во всех пяти вариантах для сравнения оформления."
+"Комментарий" — "Пример комментария к стиху. В этом блоке расположен основной текст пояснения. Размер, ширина строки и межстрочный интервал зависят от выбранного оформления."
+Preserve these neutral placeholders exactly, no invented religious doctrine. The phrase 'пяти вариантах' is intentionally retained to match existing mockup text. Keep note visually separate from book. Modest title about32px so all four sections fit. Main book must dominate the screenshot.
+
+Keep original editorial warm ivory/burgundy palette, elegant contrasting serif title and reading text, fine burgundy rules, broad page with narrow right notes margin, top tabs/navigation, same corner style. Reduce giant heading and verse47 treatment sufficiently to fit all FOUR sections including missing word gloss. Right Notes tab remains active, contains one concise specified note; remove AI question list, chat composer and related-text area. Keep AI only as a button/tab. Same distinctive literary appearance, no left sidebar forced into this composition.
+
+## 05-minimal-main.png
+
+Edit the attached VEDARAMA design concept to show its MAIN BOOK READING SCREEN in the same neutral state as other design concepts. Preserve this image's own palette, typography personality, control geometry, corner radii, navigation architecture and overall visual identity. Do NOT invent a different design system or recolor it. This is a state/content correction for fair comparison. Full straight-on1536x1024 screenshot. Main task is reading one book, never library-home/search/settings/chat. All FOUR sections must fit clearly in the dominant reading region at readable20–22px. AI panel CLOSED, appearance settings CLOSED. One separate visible note titled "Моя заметка" with text "Сравнить с БГ 2.48." and add-note button. Keep one VEDARAMA wordmark, book tabs "Бхагавад-гита" and "Упанишады", plus tab, search, back/forward, bookmark, "Вид текста", "Aa", "AI" button; visible chapter/verse locator and access to "Оглавление", selected47. Footer "Позиция сохранена",62%. No book covers, promotional slogans, mockup title outside app, giant hero typography, extra related-source previews, fake AI answers. Flat opaque backgrounds, no blurry dark clouds, no vignette.
+EXACT MAIN CONTENT: "Бхагавад-гита", "Глава 2 · Текст 47". Four sections top-to-bottom:
+"Оригинал" — "karmaṇy evādhikāras te"
+"Пословный перевод" — "Пример пословного разбора выбранного стиха. Здесь показаны значения слов и связь между ними."
+"Перевод" — "Пример текста перевода. Одинаковый фрагмент используется во всех пяти вариантах для сравнения оформления."
+"Комментарий" — "Пример комментария к стиху. В этом блоке расположен основной текст пояснения. Размер, ширина строки и межстрочный интервал зависят от выбранного оформления."
+Preserve these neutral placeholders exactly, no invented religious doctrine. The phrase 'пяти вариантах' is intentionally retained to match existing mockup text. Keep note visually separate from book. Modest title about32px so all four sections fit. Main book must dominate the screenshot.
+
+Preserve original flexible minimalist white/cool-gray/slate and muted indigo palette, compact icon navigation rail LEFT, clean rounded8px buttons, serif reading text and neat sans-serif controls. CLOSE the entire appearance editor: remove colors, sliders, theme preview and save-theme buttons. Right region becomes a quiet single-note inspector styled consistently, or a narrow note margin, not settings. Main reader now displays the FOUR sections vertically at once rather than hiding them behind section tabs. Keep existing book tabs/search/rail, add clear small Оглавление button and chapter/verse locator. Avoid giant centered empty headings: adapt space to readable book. Do not switch palette to cobalt or change visual identity.
+
+
 # Спокойные палитры 07 и 09
 
 Встроенный image_gen; редактирование только цвета по просьбе пользователя. Композиция сохраняется.
