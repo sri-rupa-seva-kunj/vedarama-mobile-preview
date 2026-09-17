@@ -72,3 +72,30 @@
 }
 
 #search-section-button svg{width:22px;height:22px;stroke-width:1.7}
+
+/* Quiet navigation states: no persistent tiles or nested input outlines. */
+.rail .rail-item{color:var(--secondary);transition:color .16s ease,background-color .16s ease;box-shadow:none}
+.rail .rail-item.active{background:transparent;color:var(--gold-dark);box-shadow:none}
+.rail .rail-item.active::before{content:'';position:absolute;left:-6px;top:13px;width:2px;height:18px;border-radius:2px;background:var(--gold-dark)}
+.rail .rail-item .language-glyph{width:28px;height:28px;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.rail .rail-item .language-sanskrit{width:26px;height:26px;fill:currentColor;stroke:none}
+.catalog-tabs{gap:8px}
+.catalog-tabs button{position:relative;border:0;background:transparent;color:var(--secondary);padding:10px 2px 12px;transition:color .16s ease}
+.catalog-tabs button.selected{border:0;background:transparent;color:var(--ink)}
+.catalog-tabs button::before{content:'';position:absolute;left:2px;right:2px;bottom:-1px;height:2px;background:var(--gold-dark);border-radius:2px;opacity:0;transition:opacity .16s ease}
+.catalog-tabs button.selected::before{opacity:1}
+.catalog-search{transition:border-color .16s ease,background-color .16s ease;box-shadow:none}
+.catalog-search input:focus,.catalog-search input:focus-visible{outline:none;box-shadow:none}
+.catalog-search:focus-within{border-color:var(--gold-dark)}
+.catalog-search:focus-within>i{color:var(--gold-dark)}
+.catalog-tabs button:focus-visible,.rail .rail-item:focus-visible{outline:1px solid var(--gold-dark);outline-offset:2px;border-radius:8px}
+@media(hover:hover){
+ .rail .rail-item:hover{background:var(--surface);color:var(--ink)}
+ .rail .rail-item.active:hover{color:var(--gold-dark)}
+ .catalog-tabs button:hover{background:transparent;color:var(--ink)}
+ .catalog-tabs button:not(.selected):hover::before{opacity:.4}
+ .catalog-search:hover{border-color:var(--secondary);background:var(--panel-soft)}
+ .catalog-search:focus-within:hover{border-color:var(--gold-dark)}
+ .catalog .tree button:not(.selected):hover,.catalog .personal>button:hover{background:var(--surface);color:var(--ink)}
+}
+@media(prefers-reduced-motion:reduce){.rail .rail-item,.catalog-tabs button,.catalog-tabs button::before,.catalog-search{transition:none}}
