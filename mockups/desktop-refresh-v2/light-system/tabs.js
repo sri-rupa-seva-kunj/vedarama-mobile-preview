@@ -31,7 +31,7 @@
     const position=(selector,key)=>$(selector).clientHeight?$(selector).scrollTop:state.scroll[key];
     if($('#model-form'))readModelDraft();
     return {
-      section,view,toolMode,hasBook:state.hasBook,backToSearch:!!$('.back-to-search'),
+      section,view,toolMode,hasBook:state.hasBook,backToSearch:!!$('.back-to-search'),reading:window.readerGetState?.()||null,
       classes:['tree-hidden','focus-mode','mobile-tree','reference-detail-open','reading-bookmarks-open'].filter(c=>document.body.classList.contains(c)),
       chat:{model:saved.chatModel,question:question.value,turns:[...document.querySelectorAll('#ai-messages .ai-turn')].map(t=>({text:t.querySelector('.question-bubble').textContent,model:t.dataset.modelName||featuredModels[0].name})),library:$('#library-scope').checked,pinned:$('#context-pin').getAttribute('aria-pressed')==='true'},
       search:{prefs:clone(searchPrefs),mode:searchMode,query:$('#library-query')?.value??searchQuery,literal:$('#literal-query')?.value??searchLiteral,separate:searchSeparate,run:clone(searchRun),dirty:searchDirty,resultTab:searchResultTab},
@@ -52,8 +52,8 @@
     try{localStorage.setItem(STORE,JSON.stringify(data));}catch{if(!storageWarning){toast('Не удалось сохранить вкладки. Они доступны до закрытия окна.');storageWarning=true;}}
   }
   function scheduleSave(){if(restoring)return;clearTimeout(saveTimer);saveTimer=setTimeout(persistTabs,350);}
-  function titleOf(tab){const s=tab.state;return s.section==='saved'?(s.savedView.tab==='bookmarks'?'Закладки':'Мои полки'):pageNames[s.section]||'Ведарама';}
-  function detailOf(tab){const s=tab.state;if(s.section==='read')return s.view==='read'?'Глава 2 · Текст 47':s.view==='ai'?'Книга и AI':'Книга и заметки';if(s.section==='references')return refEntries.find(r=>r.id===s.reference.active)?.title||'';if(s.section==='search')return s.search.query;if(s.section==='ai')return availableModels().find(m=>m.id===s.chat.model)?.name||'';return '';}
+  function titleOf(tab){const s=tab.state;if(s.section==='read'&&s.reading?.edition&&s.reading.edition!=='base')return (s.reading.edition==='commentary'?'БГ · с комментариями':'БГ · параллельный перевод')+(s.reading.language==='ru'?'':' · '+s.reading.language.toUpperCase());return s.section==='saved'?(s.savedView.tab==='bookmarks'?'Закладки':'Мои полки'):pageNames[s.section]||'Ведарама';}
+  function detailOf(tab){const s=tab.state;if(s.section==='read')return s.view==='read'?('Глава 2 · Текст '+(s.reading?.verse||47)):s.view==='ai'?'Книга и AI':'Книга и заметки';if(s.section==='references')return refEntries.find(r=>r.id===s.reference.active)?.title||'';if(s.section==='search')return s.search.query;if(s.section==='ai')return availableModels().find(m=>m.id===s.chat.model)?.name||'';return '';}
   function renderTabs(){
     bar.innerHTML='<div class="workspace-tab-list" role="tablist" aria-label="Открытые вкладки">'+tabs.map(t=>`<div class="workspace-tab ${t.id===currentId?'is-current':''}"><button type="button" class="workspace-tab-select" role="tab" id="tab-${t.id}" data-switch-tab="${t.id}" aria-selected="${t.id===currentId}" aria-controls="workspace-tab-content" tabindex="${t.id===currentId?'0':'-1'}" title="${escapeText(titleOf(t)+(detailOf(t)?' · '+detailOf(t):''))}">${icon(pageIcons[t.state.section]||'book')}<span>${escapeText(titleOf(t))}</span></button><button type="button" class="workspace-tab-close" data-close-tab="${t.id}" aria-label="Закрыть вкладку: ${escapeText(titleOf(t))}">${icon('close')}</button></div>`).join('')+'</div><button class="icon-button" id="new-tab" aria-label="Новая вкладка" title="Новая вкладка · Ctrl / Cmd T">'+icon('plus')+'</button>';
     area.setAttribute('aria-labelledby','tab-'+currentId);drawIcons(bar);
@@ -75,6 +75,7 @@
     const hasBook=current()?.state.hasBook;
     contextLabel.textContent=hasBook?'Бхагавад-гита · 2.47':'Вся библиотека';
     $('#context-pin').hidden=!hasBook;context.querySelector('.context-book').hidden=!hasBook;
+    window.readerSyncContext?.();
     question.placeholder=hasBook?'Ваш вопрос по тексту…':'Ваш вопрос по библиотеке…';
     $('.ai-intro p').textContent=hasBook?'Обсудите текущий стих или найдите связанные места в книгах.':'Задайте вопрос о шастрах или найдите связанные места в библиотеке.';
     const prompts=hasBook?['Что означает действие без привязанности?','Сопоставить с БГ 2.48','Найти связанные места']:['Как понимать действие без привязанности?','Найти тексты о карма-йоге','Сопоставить действие и бездействие'];
@@ -109,7 +110,7 @@
     restoring=true;const generation=++restoreGeneration;
     if($('#dialog').open)$('#dialog').close();$('.toast').hidden=true;$('#selection-actions').hidden=true;
     for(const c of ['tree-hidden','focus-mode','mobile-tree','reference-detail-open','reading-bookmarks-open'])document.body.classList.remove(c);
-    const s=state;
+    const s=state;window.readerRestore?.(s.reading);
     saved.chatModel=availableModels().some(m=>m.id===s.chat.model)?s.chat.model:defaultModelId;
     saved.converter=clone(s.converter);
     searchPrefs=clone(s.search.prefs);if(!availableModels().some(m=>m.id===searchPrefs.model))searchPrefs.model=defaultModelId;
@@ -136,7 +137,7 @@
     $('#focus').setAttribute('aria-pressed',String(s.classes.includes('focus-mode')));
     $('#toggle-tree').setAttribute('aria-expanded',String(!s.classes.includes('tree-hidden')));
     $('#toggle-tree').setAttribute('aria-label',s.classes.includes('tree-hidden')?'Показать дерево книг':'Скрыть дерево книг');
-    refreshModelPicker();updateContext();fitChatInput();syncNavigation();
+    refreshModelPicker();updateContext();fitChatInput();syncNavigation();window.readerRestore?.(s.reading);
     const scroll=()=>{if(generation!==restoreGeneration)return;$('.book-scroll').scrollTop=s.scroll.book;$('#workspace-panel').scrollTop=s.scroll.workspace;$('#ai-scroll').scrollTop=s.scroll.chat;$('#notes-panel').scrollTop=s.scroll.notes;$('.catalog').scrollTop=s.scroll.catalog;};
     scroll();requestAnimationFrame(scroll);restoring=false;
   }
