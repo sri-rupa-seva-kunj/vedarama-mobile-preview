@@ -24,7 +24,7 @@ function syncNavigation() {
     if (selected) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
   document.querySelectorAll('[data-mobile]').forEach(b => {
-    const target = document.body.classList.contains('mobile-tree') ? 'catalog' : ['saved', 'references'].includes(active) ? 'more' : active;
+    const target = document.body.classList.contains('mobile-tree') ? 'catalog' : ['saved', 'references', 'converter'].includes(active) ? 'more' : active;
     const selected = b.dataset.mobile === target;
     b.classList.toggle('active', selected);
     if (selected) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
@@ -58,8 +58,20 @@ showSection = function(next, resetPanel = true) {
   if (next === 'notes' || next === 'ai') { openTool(next, 'page'); return; }
   document.body.classList.remove('tool-page', 'tool-panel');
   baseShowSection(next, resetPanel);
+  if (next === 'converter') renderConverter();
   syncNavigation();
 };
+function renderConverter() {
+  const state = saved.converter || {from:'IAST',to:'Кириллица',text:''};
+  const choices = selected => ['IAST','Деванагари','Кириллица'].map(name => `<option ${name===selected?'selected':''}>${name}</option>`).join('');
+  $('#workspace-panel').innerHTML = workspaceHeader('ИНСТРУМЕНТЫ','Транслитерация','Преобразование санскритского текста между системами записи.') + `<div class="converter-grid"><section class="converter-card"><label for="converter-from">Исходная запись</label><select id="converter-from">${choices(state.from)}</select><label for="converter-input" class="converter-text-label">Текст для преобразования</label><textarea id="converter-input" aria-label="Исходный текст транслитерации" placeholder="Вставьте текст…" spellcheck="false">${escapeText(state.text)}</textarea><button id="converter-clear" class="outline-button">Очистить текст</button></section><section class="converter-card"><label for="converter-to">Преобразовать в</label><select id="converter-to">${choices(state.to)}</select><label for="converter-result" class="converter-text-label">Результат</label><textarea id="converter-result" readonly placeholder="Здесь появится преобразованный текст"></textarea><span class="converter-status">Предпросмотр интерфейса</span></section></div><p class="workspace-footnote">В макете преобразование пока не подключено. Введённый текст и выбранные системы записи сохраняются на этом устройстве.</p>`;
+  wireWorkspace();
+  const save = () => { saved.converter = {from:$('#converter-from').value,to:$('#converter-to').value,text:$('#converter-input').value}; persist(); };
+  $('#converter-input').oninput = save;
+  $('#converter-from').onchange = save;
+  $('#converter-to').onchange = save;
+  $('#converter-clear').onclick = () => { $('#converter-input').value=''; save(); $('#converter-input').focus(); };
+}
 renderSaved = function(query = '') { baseRenderSaved(query); syncNavigation(); };
 renderNotes = function() {
   baseRenderNotes();
@@ -117,7 +129,7 @@ document.querySelectorAll('.rail-item').forEach(b => {
 
 $('.mobile-nav').innerHTML = [['catalog','folder','Каталог'],['read','book','Читать'],['notes','note','Заметки'],['ai','spark','AI'],['more','more','Ещё']].map(([id,ico,label]) => `<button data-mobile="${id}">${icon(ico)}<span>${label}</span></button>`).join('');
 function openMore() {
-  simpleDialog('Разделы Ведарамы', '<div class="mobile-menu">' + [['references','book','Справочники','Термины, личности и места'],['shelves','shelf','Мои полки','Подборки книг'],['bookmarks','bookmark','Закладки','Сохранённые места'],['settings','settings','Вид и тема','Размер текста и оформление']].map(([id,ico,title,caption]) => `<button data-menu="${id}">${icon(ico)}<span><strong>${title}</strong><small>${caption}</small></span>${icon('right')}</button>`).join('') + '</div><div class="menu-links"><a href="logos/">Варианты логотипа ↗</a><button id="mobile-about">О макете</button></div>');
+  simpleDialog('Разделы Ведарамы', '<div class="mobile-menu">' + [['references','book','Справочники','Термины, личности и места'],['shelves','shelf','Мои полки','Подборки книг'],['bookmarks','bookmark','Закладки','Сохранённые места'],['converter','globe','Транслитерация','Системы записи санскрита'],['settings','settings','Вид и тема','Размер текста и оформление']].map(([id,ico,title,caption]) => `<button data-menu="${id}">${icon(ico)}<span><strong>${title}</strong><small>${caption}</small></span>${icon('right')}</button>`).join('') + '</div><div class="menu-links"><a href="logos/">Варианты логотипа ↗</a><button id="mobile-about">О макете</button></div>');
   $('#dialog').dataset.kind = 'menu';
   document.querySelectorAll('[data-menu]').forEach(b => b.onclick = () => { $('#dialog').close(); if (b.dataset.menu === 'references') showSection('references'); else openDialog(b.dataset.menu); });
   $('#mobile-about').onclick = () => { $('#dialog').close(); openDialog('brief'); };
@@ -132,6 +144,7 @@ $('#dialog').addEventListener('click', e => { if (e.target === $('#dialog')) { c
 const navOpenDialog = openDialog;
 openDialog = function(key) {
   if (key === 'catalog') { openCatalogue(); return; }
+  if (key === 'converter') { showSection('converter'); return; }
   navOpenDialog(key);
   if (key === 'settings') {
     $('#dialog').dataset.kind = 'settings';
@@ -174,4 +187,5 @@ $('.inspector-tabs').addEventListener('pointercancel', endSheetGesture);
 renderNotes();
 drawIcons();
 updateToolMode();
+if (new URLSearchParams(location.search).get('section') === 'converter') showSection('converter');
 descriptions.brief = ['Ведарама · макет 04', '<p>Единые подсказки и подсветка разделов. Справочники находятся после заметок. Кнопка выбора книги открывает каталог.</p><p>Заметки и AI открываются отдельной страницей из навигации или рядом с книгой из панели чтения. Переключение сохраняет текст заметки и диалог.</p><p>На телефоне: компактная шапка, нижняя навигация, меню дополнительных разделов и контекстная панель поверх книги. Светлая и тёмная темы применяются ко всем элементам.</p><p>Это интерактивный макет: AI и серверные сервисы не подключены.</p><div class="chips"><a href="mobile-preview.html?v=4">Мобильный показ ↗</a><a href="logos/">Логотипы ↗</a></div>'];
