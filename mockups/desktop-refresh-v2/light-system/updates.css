@@ -77,8 +77,8 @@
 .rail .rail-item{color:var(--secondary);transition:color .16s ease,background-color .16s ease;box-shadow:none}
 .rail .rail-item.active{background:transparent;color:var(--gold-dark);box-shadow:none}
 .rail .rail-item.active::before{content:'';position:absolute;left:-6px;top:13px;width:2px;height:18px;border-radius:2px;background:var(--gold-dark)}
-.rail .rail-item .language-glyph{width:28px;height:28px;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;fill:none}
-.rail .rail-item .language-sanskrit{width:26px;height:26px;fill:currentColor;stroke:none}
+.rail .rail-item .language-glyph{width:25px;height:25px;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;fill:none}
+
 .catalog-tabs{gap:8px}
 .catalog-tabs button{position:relative;border:0;background:transparent;color:var(--secondary);padding:10px 2px 12px;transition:color .16s ease}
 .catalog-tabs button.selected{border:0;background:transparent;color:var(--ink)}
