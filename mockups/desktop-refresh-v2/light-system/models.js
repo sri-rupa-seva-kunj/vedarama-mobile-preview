@@ -9,18 +9,25 @@ const modelProviders = [
 const freshModelDraft = () => ({id:null,provider:'openai',name:'Моя OpenAI',url:modelProviders[0].url,model:modelProviders[0].model,key:'',context:1050000,tokens:4000,protocol:'auto',reasoning:'auto'});
 let modelDraft=freshModelDraft(), modelFormOpen=false, modelVerified=false, modelReturnMode='page';
 if(!Array.isArray(saved.modelConnections)) saved.modelConnections=[];
-if(!saved.modelConnections.some(m=>m.id===saved.chatModel)) saved.chatModel='demo';
-function chosenModel(){return saved.modelConnections.find(m=>m.id===saved.chatModel);}
+const featuredModels=[
+  {id:'preset-gpt-5.6-sol',name:'GPT-5.6 Sol',providerName:'OpenAI',model:'gpt-5.6-sol'},
+  {id:'preset-claude-sonnet-5',name:'Claude Sonnet 5',providerName:'Anthropic',model:'claude-sonnet-5'},
+  {id:'preset-gemini-3.1-pro',name:'Gemini 3.1 Pro',providerName:'Google',model:'gemini-3.1-pro-preview'}
+];
+const defaultModelId=featuredModels[0].id;
+function availableModels(){return [...featuredModels,...saved.modelConnections];}
+if(!availableModels().some(m=>m.id===saved.chatModel)){saved.chatModel=defaultModelId;persist();}
+function chosenModel(){return availableModels().find(m=>m.id===saved.chatModel)||featuredModels[0];}
 function modelProvider(id){return modelProviders.find(p=>p.id===id)||modelProviders[3];}
 
 $('#ai-panel .panel-context').insertAdjacentHTML('afterend','<div class="chat-model-bar"><button id="chat-model-picker" aria-label="Выбрать модель чата" aria-haspopup="dialog"></button><button id="manage-chat-models" class="icon-button" aria-label="Мои модели: подключить и настроить" title="Мои модели">'+icon('settings')+'</button></div>');
 function refreshModelPicker(){
   const model=chosenModel();
-  $('#chat-model-picker').innerHTML=icon('spark')+'<span><small>МОДЕЛЬ ЧАТА</small><strong>'+escapeText(model?.name||'Ведарама · демо')+'</strong></span>'+icon('down');
+  $('#chat-model-picker').innerHTML=icon('spark')+'<span><small>МОДЕЛЬ ЧАТА</small><strong>'+escapeText(model.name)+'</strong></span>'+icon('down');
   drawIcons($('.chat-model-bar'));
 }
 function openModelPicker(){
-  simpleDialog('Модель для диалога','<p class="model-dialog-hint">Выберите модель или добавьте своё подключение.</p><div class="model-options"><button data-pick-model="demo" aria-pressed="'+(!chosenModel())+'">'+icon('spark')+'<span><strong>Ведарама · демо</strong><small>Пример диалога в макете</small></span>'+icon(!chosenModel()?'check':'right')+'</button>'+saved.modelConnections.map(m=>`<button data-pick-model="${escapeText(m.id)}" aria-pressed="${saved.chatModel===m.id}">${icon('globe')}<span><strong>${escapeText(m.name)}</strong><small>${escapeText(m.model)} · сохранено в макете</small></span>${icon(saved.chatModel===m.id?'check':'right')}</button>`).join('')+'</div><button class="outline-button model-manage-link" id="picker-manage">'+icon('plus')+'Подключить свою модель</button>');
+  simpleDialog('Модель для диалога','<p class="model-dialog-hint">Выберите LLM или добавьте своё подключение. В макете ответы демонстрационные, запросы к моделям не отправляются.</p><div class="model-options">'+availableModels().map(m=>`<button data-pick-model="${escapeText(m.id)}" aria-pressed="${saved.chatModel===m.id}">${icon('spark')}<span><strong>${escapeText(m.name)}</strong><small>${escapeText(m.providerName||m.model)} · ${m.providerName?'пример в макете':'своё подключение'}</small></span>${icon(saved.chatModel===m.id?'check':'right')}</button>`).join('')+'</div><button class="outline-button model-manage-link" id="picker-manage">'+icon('plus')+'Подключить свою модель</button>');
   document.querySelectorAll('[data-pick-model]').forEach(b=>b.onclick=()=>{saved.chatModel=b.dataset.pickModel;persist();refreshModelPicker();$('#dialog').close();$('#chat-model-picker').focus();});
   $('#picker-manage').onclick=()=>{$('#dialog').close();openModels(true);};
 }
@@ -48,7 +55,7 @@ openMore=function(){
   drawIcons($('#mobile-models'));
 };
 function renderModels(){
-  $('#workspace-panel').innerHTML=workspaceHeader('AI-ПОМОЩНИК','Мои модели','Подключите свой сервис и выбирайте модель прямо в диалоге.')+`<div class="models-layout ${modelFormOpen?'editing-model':''}"><aside class="models-list"><div class="models-list-title"><h2>Доступные модели</h2><button id="new-model" class="icon-button" aria-label="Добавить подключение">${icon('plus')}</button></div><button class="connection-card ${!chosenModel()?'selected':''}" data-use-model="demo">${icon('spark')}<span><strong>Ведарама</strong><small>Демонстрационная модель</small></span>${!chosenModel()?icon('check'):''}</button><h3>Мои подключения <span>${saved.modelConnections.length}</span></h3>${saved.modelConnections.length?saved.modelConnections.map(m=>`<article class="connection-card custom-connection ${saved.chatModel===m.id?'selected':''}"><div class="connection-main">${icon('globe')}<span><strong>${escapeText(m.name)}</strong><small>${escapeText(m.model)}</small><em>Сохранено в макете</em></span></div><div class="connection-actions"><button data-use-model="${escapeText(m.id)}" ${saved.chatModel===m.id?'disabled':''}>${saved.chatModel===m.id?'Выбрана':'Выбрать'}</button><button data-edit-model="${escapeText(m.id)}">Настроить</button></div></article>`).join(''):'<div class="models-empty">'+icon('globe')+'<p>Здесь появятся ваши подключения</p><span>API-ключ и модель предоставляются выбранным сервисом.</span></div>'}<button class="outline-button" id="add-model">${icon('plus')}Добавить подключение</button></aside><section class="model-editor">${modelFormOpen?modelFormMarkup():`<div class="model-welcome"><div class="assistant-mark">${icon('spark')}</div><h2>Ваши модели — в привычном чате</h2><p>Выберите провайдера, укажите данные подключения и проверьте их. Сохранённая модель появится в списке над диалогом.</p><div class="provider-summary">${modelProviders.map(p=>`<span>${p.name}</span>`).join('')}</div><button class="gold-button" id="start-model">${icon('plus')}Подключить свою модель</button><small>Демонстрация интерфейса. Подключения к API не выполняются.</small></div>`}</section></div>`;
+  $('#workspace-panel').innerHTML=workspaceHeader('AI-ПОМОЩНИК','Мои модели','Подключите свой сервис и выбирайте модель прямо в диалоге.')+`<div class="models-layout ${modelFormOpen?'editing-model':''}"><aside class="models-list"><div class="models-list-title"><h2>Доступные модели</h2><button id="new-model" class="icon-button" aria-label="Добавить подключение">${icon('plus')}</button></div>${featuredModels.map(m=>`<button class="connection-card ${saved.chatModel===m.id?'selected':''}" data-use-model="${m.id}">${icon('spark')}<span><strong>${m.name}</strong><small>${m.providerName} · пример в макете</small></span>${saved.chatModel===m.id?icon('check'):''}</button>`).join('')}<h3>Мои подключения <span>${saved.modelConnections.length}</span></h3>${saved.modelConnections.length?saved.modelConnections.map(m=>`<article class="connection-card custom-connection ${saved.chatModel===m.id?'selected':''}"><div class="connection-main">${icon('globe')}<span><strong>${escapeText(m.name)}</strong><small>${escapeText(m.model)}</small><em>Сохранено в макете</em></span></div><div class="connection-actions"><button data-use-model="${escapeText(m.id)}" ${saved.chatModel===m.id?'disabled':''}>${saved.chatModel===m.id?'Выбрана':'Выбрать'}</button><button data-edit-model="${escapeText(m.id)}">Настроить</button></div></article>`).join(''):'<div class="models-empty">'+icon('globe')+'<p>Здесь появятся ваши подключения</p><span>API-ключ и модель предоставляются выбранным сервисом.</span></div>'}<button class="outline-button" id="add-model">${icon('plus')}Добавить подключение</button></aside><section class="model-editor">${modelFormOpen?modelFormMarkup():`<div class="model-welcome"><div class="assistant-mark">${icon('spark')}</div><h2>Ваши модели — в привычном чате</h2><p>Выберите провайдера, укажите данные подключения и проверьте их. Сохранённая модель появится в списке над диалогом.</p><div class="provider-summary">${modelProviders.map(p=>`<span>${p.name}</span>`).join('')}</div><button class="gold-button" id="start-model">${icon('plus')}Подключить свою модель</button><small>Демонстрация интерфейса. Подключения к API не выполняются.</small></div>`}</section></div>`;
   wireWorkspace();
   $('#workspace-back').innerHTML=icon('back')+'К диалогу';
   $('#workspace-back').onclick=()=>{openTool('ai',modelReturnMode);refreshModelPicker();};
@@ -99,7 +106,7 @@ function wireModelForm(){
     const id=modelDraft.id;
     simpleDialog('Удалить подключение?',`<p>«${escapeText(modelDraft.name)}» будет удалено из списка моделей. Текущий диалог останется.</p><div class="editor-actions"><button id="keep-model">Отмена</button><button class="gold-button" id="confirm-delete-model">Удалить</button></div>`);
     $('#keep-model').onclick=()=>$('#dialog').close();
-    $('#confirm-delete-model').onclick=()=>{saved.modelConnections=saved.modelConnections.filter(m=>m.id!==id);if(saved.chatModel===id)saved.chatModel='demo';persist();modelDraft.key='';modelFormOpen=false;$('#dialog').close();refreshModelPicker();renderModels();};
+    $('#confirm-delete-model').onclick=()=>{saved.modelConnections=saved.modelConnections.filter(m=>m.id!==id);if(saved.chatModel===id)saved.chatModel=defaultModelId;persist();modelDraft.key='';modelFormOpen=false;$('#dialog').close();refreshModelPicker();renderModels();};
   };
 }
 refreshModelPicker();

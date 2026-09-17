@@ -1,7 +1,8 @@
 // Search the actual sample text locally; AI responses are explicitly demonstrations.
 const searchModes={exact:'Точный поиск',ai:'ИИ-поиск',both:'Точный поиск + ИИ-поиск'};
-const defaultSearchPrefs={exact:true,ai:true,defaultMode:'both',scope:'all',shelf:'',match:'phrase',blocks:['original','gloss','translation','comment'],model:'demo'};
+const defaultSearchPrefs={exact:true,ai:true,defaultMode:'both',scope:'all',shelf:'',match:'phrase',blocks:['original','gloss','translation','comment'],model:defaultModelId};
 let searchPrefs={...defaultSearchPrefs,...saved.searchPreferences};
+if(!availableModels().some(m=>m.id===searchPrefs.model)){searchPrefs.model=defaultModelId;saved.searchPreferences={...searchPrefs};persist();}
 // Both methods are always available; remember the user's checked combination.
 searchPrefs.exact=true;searchPrefs.ai=true;
 function allowedSearchMode(mode){return mode==='both'?searchPrefs.exact&&searchPrefs.ai:mode==='ai'?searchPrefs.ai:searchPrefs.exact;}
@@ -9,8 +10,8 @@ function safeSearchMode(mode){return allowedSearchMode(mode)?mode:searchPrefs.ex
 let searchMode=safeSearchMode(searchPrefs.defaultMode),searchQuery='',searchLiteral='',searchSeparate=false,searchRun=null,searchDirty=false,searchResultTab='exact',modelsFromSearch=false;
 const searchBlockNames={original:'Оригинал',gloss:'Пословный перевод',translation:'Перевод',comment:'Комментарий'};
 const searchCorpus=[...document.querySelectorAll('.book-page [data-block]')].map(el=>({block:el.dataset.block,title:searchBlockNames[el.dataset.block],text:[...el.querySelectorAll('p')].map(p=>{const clone=p.cloneNode(true);clone.querySelectorAll('button').forEach(b=>b.remove());return clone.textContent.trim();}).join(' ')}));
-function searchModelOptions(value){return '<option value="demo"'+(value==='demo'?' selected':'')+'>Ведарама · демо</option>'+saved.modelConnections.map(m=>`<option value="${escapeText(m.id)}" ${m.id===value?'selected':''}>${escapeText(m.name)}</option>`).join('');}
-function searchModelLabel(id){return saved.modelConnections.find(m=>m.id===id)?.name||'Ведарама · демо';}
+function searchModelOptions(value){return availableModels().map(m=>`<option value="${escapeText(m.id)}" ${m.id===value?'selected':''}>${escapeText(m.name)}</option>`).join('');}
+function searchModelLabel(id){return availableModels().find(m=>m.id===id)?.name||featuredModels[0].name;}
 function searchScopeLabel(scope,shelf){return scope==='book'?'Бхагавад-гита':scope==='shelf'?(saved.shelves.find(s=>s.id===shelf)?.name||'Полка не выбрана'):'Вся библиотека';}
 const beforeSearchSection=showSection;
 showSection=function(next,resetPanel=true){beforeSearchSection(next,resetPanel);if(next==='search')renderSearch();};
