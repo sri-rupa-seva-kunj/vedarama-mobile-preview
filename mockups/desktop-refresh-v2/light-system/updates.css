@@ -100,4 +100,6 @@
 }
 @media(prefers-reduced-motion:reduce){.rail .rail-item,.catalog-tabs button,.catalog-tabs button::before,.catalog-search{transition:none}}
 
-.rail .rail-item .language-sanskrit{width:27px;height:27px;stroke-width:1.75}
+.rail .rail-item .language-sanskrit{width:29px;height:29px;stroke-width:1.3}
+
+
