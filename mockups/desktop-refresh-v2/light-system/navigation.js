@@ -115,7 +115,6 @@ $('#new-tab').onclick = openCatalogue;
 $('#new-tab').title = 'Выбрать книгу в каталоге';
 $('#new-tab').setAttribute('aria-label', 'Выбрать книгу в каталоге');
 document.addEventListener('keydown', e => {
-  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 't') { e.preventDefault(); openCatalogue(); }
   if (e.key === 'Escape' && !$('#dialog').open && view !== 'read') showSection('read');
 });
 const oldToggleTree = $('#toggle-tree').onclick;
