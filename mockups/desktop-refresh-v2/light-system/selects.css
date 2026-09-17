@@ -8,7 +8,7 @@ button.veda-select-trigger:disabled{opacity:.5;cursor:not-allowed}
 .veda-select-value{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .veda-select-arrow{width:8px;height:8px;border-right:1.5px solid var(--secondary);border-bottom:1.5px solid var(--secondary);transform:translateY(-2px) rotate(45deg);flex-shrink:0;margin-right:3px;transition:transform .15s}
 [aria-expanded=true]>.veda-select-arrow{transform:translateY(2px) rotate(225deg)}
-.veda-select-menu{position:fixed;inset:auto;margin:0;padding:6px;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--stroke) transparent;background:var(--white);color:var(--ink);border:1px solid var(--stroke);border-radius:15px;box-shadow:0 12px 32px #00000024,0 2px 5px #0000000a;z-index:100;animation:select-appear .12s ease-out;font:15px/1.4 'PT Sans',sans-serif}
+.veda-select-menu{position:fixed;inset:auto;margin:0;padding:6px;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;background:var(--white);color:var(--ink);border:1px solid var(--stroke);border-radius:15px;box-shadow:0 12px 32px #00000024,0 2px 5px #0000000a;z-index:100;animation:select-appear .12s ease-out;font:15px/1.4 'PT Sans',sans-serif}
 .veda-select-option{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:40px;padding:10px 12px;border-radius:9px;cursor:pointer;overflow-wrap:anywhere}
 .veda-select-option+.veda-select-option{margin-top:2px}
 .veda-select-option[aria-selected=true]{background:var(--accent-wash);color:var(--ink)}

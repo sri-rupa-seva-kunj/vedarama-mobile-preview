@@ -1,7 +1,7 @@
 /* Tabs contain the whole workspace and stay visible in every section. */
 .workspace-tabs{display:flex;align-items:center;gap:8px;height:46px;min-height:46px;padding:5px 12px 0 72px;border-bottom:1px solid var(--stroke);background:var(--panel-soft);flex-shrink:0}
-.workspace-tab-list{display:flex;align-items:stretch;gap:5px;min-width:0;max-width:calc(100% - 44px);overflow-x:auto;scrollbar-width:none;height:100%}
-.workspace-tab-list::-webkit-scrollbar{display:none}
+.workspace-tab-list{display:flex;align-items:stretch;gap:5px;min-width:0;max-width:calc(100% - 44px);overflow-x:auto;height:100%}
+
 .workspace-tab{display:flex;align-items:center;flex-shrink:0;min-width:140px;max-width:235px;border:1px solid transparent;border-bottom:0;border-radius:11px 11px 0 0;color:var(--secondary);position:relative}
 .workspace-tab.is-current{background:var(--white);border-color:var(--stroke);color:var(--ink)}
 .workspace-tab.is-current::after{content:'';position:absolute;bottom:0;left:12px;right:12px;height:2px;border-radius:2px;background:var(--gold-dark)}
