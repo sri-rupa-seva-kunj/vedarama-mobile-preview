@@ -6,8 +6,10 @@
   const pageIcons={new:'plus',read:'book',references:'book',ai:'spark',notes:'note',saved:'shelf',search:'search',models:'settings',converter:'globe',activity:'bell'};
   let tabs=[],currentId='',restoring=false,saveTimer,restoreGeneration=0,storageWarning=false;
   const bar=$('.tabs');bar.className='workspace-tabs';bar.setAttribute('aria-label','Рабочие вкладки');
-  $('.app-header').after(bar);
-  const area=$('.workarea');area.id='workspace-tab-content';area.setAttribute('role','tabpanel');
+  const globalHeader=document.createElement('header');globalHeader.className='global-tab-header';
+  $('.application').prepend(globalHeader);globalHeader.append($('.brand'),bar);
+  const area=document.createElement('section');area.className='tab-workspace';area.id='workspace-tab-content';area.setAttribute('role','tabpanel');
+  globalHeader.after(area);area.append($('.app-header'),$('.workarea'));
   const context=$('#ai-panel>.panel-context');
   // Give the context label a stable target without replacing its controls.
   const contextText=[...context.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());
@@ -30,7 +32,7 @@
     if($('#model-form'))readModelDraft();
     return {
       section,view,toolMode,hasBook:state.hasBook,backToSearch:!!$('.back-to-search'),
-      classes:['tree-hidden','focus-mode','mobile-tree','reference-detail-open'].filter(c=>document.body.classList.contains(c)),
+      classes:['tree-hidden','focus-mode','mobile-tree','reference-detail-open','reading-bookmarks-open'].filter(c=>document.body.classList.contains(c)),
       chat:{model:saved.chatModel,question:question.value,turns:[...document.querySelectorAll('#ai-messages .ai-turn')].map(t=>({text:t.querySelector('.question-bubble').textContent,model:t.dataset.modelName||featuredModels[0].name})),library:$('#library-scope').checked,pinned:$('#context-pin').getAttribute('aria-pressed')==='true'},
       search:{prefs:clone(searchPrefs),mode:searchMode,query:$('#library-query')?.value??searchQuery,literal:$('#literal-query')?.value??searchLiteral,separate:searchSeparate,run:clone(searchRun),dirty:searchDirty,resultTab:searchResultTab},
       reference:{category:referenceCategory,query:referenceQuery,active:activeReference},
@@ -106,7 +108,7 @@
   function restore(state){
     restoring=true;const generation=++restoreGeneration;
     if($('#dialog').open)$('#dialog').close();$('.toast').hidden=true;$('#selection-actions').hidden=true;
-    for(const c of ['tree-hidden','focus-mode','mobile-tree','reference-detail-open'])document.body.classList.remove(c);
+    for(const c of ['tree-hidden','focus-mode','mobile-tree','reference-detail-open','reading-bookmarks-open'])document.body.classList.remove(c);
     const s=state;
     saved.chatModel=availableModels().some(m=>m.id===s.chat.model)?s.chat.model:defaultModelId;
     saved.converter=clone(s.converter);
