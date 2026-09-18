@@ -62,6 +62,7 @@
  addBookmark=function(){const id='bg2'+state.verse;if(!saved.bookmarks.some(b=>b.id===id))saved.bookmarks.push({id,book:BOOK,title:'БГ 2.'+state.verse,label:'',verse:state.verse});syncBookmarks();toast('БГ 2.'+state.verse+' сохранён в закладках');};
  $('#bookmark').onclick=()=>{const id='bg2'+state.verse;if(saved.bookmarks.some(b=>b.id===id)){saved.bookmarks=saved.bookmarks.filter(b=>b.id!==id);syncBookmarks();toast('Закладка удалена');}else addBookmark();};
  window.readerJump=jump;
+ window.readerGetPreview=()=>{const verse=$('#reader-verse-'+state.verse);return (verse?.querySelector(state.language==='ru'?'[data-block=translation] p':'.edition-preview p')?.textContent||'').trim();};
  document.addEventListener('DOMContentLoaded',()=>{drawIcons(column);drawIcons($('#linked-books-panel'));applySettings();sync();const pin=$('#context-pin');pin.addEventListener('click',()=>{if(pin.getAttribute('aria-pressed')==='true')state.pinnedVerse=state.verse;sync();});});
  drawIcons(page);sync();
 })();

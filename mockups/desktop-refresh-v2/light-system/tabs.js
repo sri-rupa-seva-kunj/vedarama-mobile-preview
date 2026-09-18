@@ -31,7 +31,7 @@
     const position=(selector,key)=>$(selector).clientHeight?$(selector).scrollTop:state.scroll[key];
     if($('#model-form'))readModelDraft();
     return {
-      section,view,toolMode,hasBook:state.hasBook,backToSearch:!!$('.back-to-search'),reading:window.readerGetState?.()||null,
+      section,view,toolMode,hasBook:state.hasBook,backToSearch:!!$('.back-to-search'),reading:window.readerGetState?.()||null,readingPreview:window.readerGetPreview?.()||'',
       classes:['tree-hidden','focus-mode','mobile-tree','reference-detail-open','reading-bookmarks-open'].filter(c=>document.body.classList.contains(c)),
       chat:{model:saved.chatModel,question:question.value,turns:[...document.querySelectorAll('#ai-messages .ai-turn')].map(t=>({text:t.querySelector('.question-bubble').textContent,model:t.dataset.modelName||featuredModels[0].name})),library:$('#library-scope').checked,pinned:$('#context-pin').getAttribute('aria-pressed')==='true'},
       search:{prefs:clone(searchPrefs),mode:searchMode,query:$('#library-query')?.value??searchQuery,literal:$('#literal-query')?.value??searchLiteral,separate:searchSeparate,run:clone(searchRun),dirty:searchDirty,resultTab:searchResultTab},
@@ -60,6 +60,7 @@
     bar.querySelectorAll('[data-switch-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.switchTab));
     bar.querySelectorAll('[data-close-tab]').forEach(b=>b.onclick=()=>closeTab(b.dataset.closeTab));
     $('#new-tab').onclick=newTab;
+    document.dispatchEvent(new Event('workspace-tabs-change'));
     ensureActiveTabVisible();
     bar.querySelector('.workspace-tab-list').onkeydown=e=>{
       const id=e.target.closest('[data-switch-tab]')?.dataset.switchTab;if(!id)return;
@@ -187,6 +188,10 @@
   if(!tabs.length){const initial=blankState();initial.hasBook=true;const t={id:newId(),state:initial};tabs=[t];currentId=t.id;t.state=capture();if(requested&&pageNames[requested])showSection(requested);}
   if(requested){const url=new URL(location.href);url.searchParams.delete('section');url.searchParams.delete('q');try{history.replaceState(null,'',url);}catch{}}
   renderTabs();updateContext();persistTabs();
+  window.workspaceTabs={
+    overview(){checkpoint();return {activeId:currentId,tabs:tabs.map(t=>{const s=t.state;return {id:t.id,title:titleOf(t),detail:detailOf(t),section:s.section,icon:pageIcons[s.section]||'book',preview:s.section==='ai'?(s.chat.question||s.chat.turns.at(-1)?.text||'Новый разговор по библиотеке'):s.section==='search'?(s.search.query||'Поиск по книгам'):s.section==='notes'?(s.note.text||'Заметки к тексту'):s.section==='references'?(refEntries.find(r=>r.id===s.reference.active)?.title||'Термины, личности и места'):s.section==='read'?(s.readingPreview||'Бхагавад-гита · 2.'+(s.reading?.verse||47)):s.section==='converter'?(s.converter.text||'Преобразование санскрита'):s.section==='new'?'Книги, поиск и новый разговор':'Ваше рабочее пространство',context:s.section==='read'?(s.view==='ai'?'Открыт AI рядом с книгой':s.view==='notes'?'Открыты заметки':s.classes.includes('focus-mode')?'Режим чтения':'Позиция чтения сохранена'):s.section==='ai'&&s.chat.question?'Черновик сообщения':s.section==='search'?(s.search.mode==='both'?'Точный и ИИ-поиск':s.search.mode==='ai'?'ИИ-поиск':'Точный поиск'):''};})};},
+    activate:switchTab,create:newTab,close:closeTab
+  };
   descriptions.brief[0]='Ведарама · макет 05';
   descriptions.brief[1]='<p>Каждая вкладка — отдельное рабочее место: книги, справочники, AI и остальные разделы открываются внутри неё. Кнопка «+» начинает новую вкладку с чистым поиском и диалогом.</p><p>При переключении и после перезагрузки восстанавливаются раздел, положение чтения, результаты поиска, диалог и черновики. Полки, сохранённые заметки, подключения и тема общие для приложения.</p>'+descriptions.brief[1];
 })();
