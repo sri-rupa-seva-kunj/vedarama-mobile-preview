@@ -110,3 +110,9 @@ html:not([data-theme=dark]) .versebar,html:not([data-theme=dark]) .status-strip,
 .reader-floating .compact-mode svg{width:20px;height:20px}
 .reader-floating:has(.compact-mode) .current-verse{font-size:13px;white-space:nowrap;gap:4px}
 .floating-reader.with-dock{padding-bottom:156px}
+.brand{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
+.brand-mark{display:block;height:36px;width:auto;flex:none;object-fit:contain}
+html[data-theme=light] .fixed-stack>.brandbar,
+html[data-theme=light] .fixed-stack>.page-head,
+html[data-theme=light] .fixed-stack>.library-head,
+html[data-theme=light] .fixed-stack>.ai-toolbar{background:#f0f0f2}
