@@ -1,0 +1,22 @@
+/* Shared scrollbar treatment for pages, panels, menus, text fields and tabs. */
+:root{--scroll-thumb:#B8B5AF;--scroll-hover:#928D84;--scroll-active:#B78A54;--scroll-track:transparent;--scroll-size:10px}
+html[data-theme=dark]{--scroll-thumb:#555B64;--scroll-hover:#777E88;--scroll-active:#C99C66}
+html,*{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}
+.catalog,.book-scroll,.workspace-panel{scrollbar-gutter:stable}
+.workspace-tab-list{overflow-y:hidden}
+/* Use pseudo-elements where supported for rounded thumbs and no arrow buttons.
+   The standard properties above remain the Firefox fallback. */
+@supports selector(::-webkit-scrollbar){
+ html,*{scrollbar-width:auto;scrollbar-color:auto}
+ ::-webkit-scrollbar{width:var(--scroll-size);height:var(--scroll-size);background:transparent}
+ ::-webkit-scrollbar-track{background:var(--scroll-track);border-radius:999px}
+ ::-webkit-scrollbar-thumb{background:var(--scroll-thumb);background-clip:padding-box;border:3px solid transparent;border-radius:999px;min-height:32px;min-width:32px}
+ ::-webkit-scrollbar-thumb:hover{background-color:var(--scroll-hover);border-width:2px}
+ ::-webkit-scrollbar-thumb:active{background-color:var(--scroll-active);border-width:2px}
+ ::-webkit-scrollbar-button{display:none;width:0;height:0}
+ ::-webkit-scrollbar-corner{background:transparent}
+ .workspace-tab-list::-webkit-scrollbar{height:6px}
+ .workspace-tab-list::-webkit-scrollbar-thumb{border-width:1px 3px}
+}
+@media(max-width:700px){:root{--scroll-size:8px}}
+@media(forced-colors:active){html,*{scrollbar-color:auto;scrollbar-width:auto}::-webkit-scrollbar-thumb{background:ButtonText}::-webkit-scrollbar-track{background:Canvas}}
