@@ -33,3 +33,26 @@ dialog{border-radius:4px!important;box-shadow:0 6px 28px #0002;background:var(--
 .source-link{justify-content:flex-start;gap:8px}.source-link>i:last-child{margin-left:auto}.segmented{gap:12px}.segmented button{padding:8px 12px;min-width:90px;width:auto}.shelf-tile{min-height:90px}
 @media(min-width:1450px){.application:has(.inspector:not([hidden])) .book-page{padding-left:42px;padding-right:42px}}
 @media(min-width:701px) and (max-width:1180px){.catalog{width:254px;padding:0 12px}.global-tab-header>.brand{width:216px}.inspector{width:340px}.book-page{padding:24px 30px}.reading-toolbar{padding:0 16px}.reader-actions{gap:4px}.workspace-panel{padding:26px}}
+
+/* Desktop refinement: compact, consistent controls and a resizable catalogue. */
+.catalog-title{margin:0;padding:24px 0 20px 18px;gap:8px;min-height:76px;justify-content:flex-start}
+.catalog-title h2{margin:0;font-size:18px;line-height:1.35;min-width:0;flex:1}
+.catalog-title>span{margin:0;padding:0;background:transparent;color:var(--secondary);flex-shrink:0;font-size:12px}
+#collapse-catalog{width:26px;min-width:26px;height:30px;padding:5px;flex-shrink:0;color:var(--secondary)}
+#collapse-catalog svg{width:16px;height:16px}
+#activity-button.active,#activity-button[aria-pressed=true]{background:transparent;color:var(--gold-dark);box-shadow:inset 0 -1px var(--gold-dark)}
+#activity-button:hover{background:var(--surface)}
+#activity-button:focus:not(:focus-visible){outline:none}
+#activity-button:focus-visible{outline:1px solid var(--secondary);outline-offset:1px}
+.activity-dot{border-radius:2px;font-size:10px;min-width:14px;height:14px;line-height:14px;top:2px;right:3px}
+.reading-tools>button{height:36px;min-width:36px;padding:8px;color:var(--secondary)}
+.reading-tools>button svg{width:20px;height:20px;flex-shrink:0}
+.reading-tools .reading-line-icon,.reading-tools #exit-reading svg{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
+.reading-tools #exit-reading{color:var(--secondary);border-left:1px solid var(--stroke);margin-left:8px;padding-left:14px}
+.desktop-control-tip{position:fixed;z-index:100;background:var(--white);color:var(--ink);border:1px solid var(--stroke);border-radius:3px;padding:7px 12px;font:13px 'PT Sans',sans-serif;box-shadow:var(--shadow);pointer-events:none;opacity:0;transform:translateY(-4px);transition:opacity .14s ease .2s,transform .14s ease .2s;white-space:nowrap}
+.desktop-control-tip.visible{opacity:1;transform:translateY(0)}
+#catalog-resizer{position:fixed;width:8px;z-index:7;cursor:col-resize;touch-action:none;outline:0}
+#catalog-resizer::after{content:'';position:absolute;inset:0 3px;background:transparent;transition:background .14s ease}
+#catalog-resizer:hover::after,#catalog-resizer:focus-visible::after,.resizing-catalog #catalog-resizer::after{background:var(--gold-dark)}
+.resizing-catalog,.resizing-catalog *{cursor:col-resize!important;user-select:none!important}
+@media(prefers-reduced-motion:reduce){.desktop-control-tip,#catalog-resizer::after{transition:none}}
