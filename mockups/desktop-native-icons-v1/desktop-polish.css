@@ -17,7 +17,7 @@
 .tool-page .native-chat-main #ai-form{padding:12px max(28px,calc((100% - 840px)/2)) 8px;gap:8px 16px}
 .native-chat-main .ai-intro{padding:0 0 22px}
 .native-chat-main .ai-intro h2{font-size:21px;line-height:1.4}
-.native-chat-main .suggestions button{font-size:16px;padding:16px 0;min-height:52px}
+.native-chat-main .suggestions button{font-size:16px;padding:16px;min-height:52px}
 .native-chat-main #ai-form textarea{flex-basis:calc(100% - 54px)}
 .native-chat-main #ai-form>label{min-height:24px}
 .native-chat-main .question-bubble{margin:0}
@@ -67,3 +67,33 @@
 html[data-theme=dark] .global-search{background:var(--panel-soft);color:var(--ink)}
 html[data-theme=dark] .global-search input{color:var(--ink)}
 html[data-theme=dark] .global-search input::placeholder,html[data-theme=dark] .global-search svg,html[data-theme=dark] .global-search kbd{color:var(--secondary)}
+
+/* Hover bounds always include space around the label and trailing icon. */
+body:not(.tool-page) .native-chat-main .suggestions button{padding:12px}
+.native-chat-main .suggestions button{gap:16px;transition:background-color 160ms ease-out,color 160ms ease-out,border-color 160ms ease-out}
+.native-chat-main .suggestions button:hover{background:var(--panel-soft);border-color:var(--stroke)}
+.native-chat-main .suggestions button:focus-visible{background:var(--panel-soft);outline:1px solid var(--gold-dark);outline-offset:-2px}
+.native-chat-main .suggestions button:active{background:var(--accent-wash)}
+.native-dialogs header button{padding:6px 8px}
+.native-chat-main #native-add-verse{padding:4px 8px;height:auto;min-height:28px}
+#workspace-panel:has(.models-layout) .workspace-heading>.models-guide-button{padding:5px 8px}
+.catalog .personal>button{padding-left:8px;padding-right:8px}
+:is(.native-chat-main,.native-dialogs,.models-layout,.reader-actions,.reading-tools) button{transition:background-color 160ms ease-out,color 160ms ease-out,border-color 160ms ease-out}
+@media(max-height:560px){.native-chat-main #native-add-verse{padding:2px 6px;min-height:20px;height:20px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+@media(min-width:701px){
+ .rail{--rail-cell-height:44px;--rail-cell-gap:4px}
+ .rail .rail-scroll{gap:var(--rail-cell-gap);scrollbar-width:auto;scrollbar-color:auto;scrollbar-gutter:stable both-edges}
+ .rail .rail-bottom{gap:var(--rail-cell-gap)}
+ .rail .rail-item{display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:38px;max-width:100%;height:var(--rail-cell-height);min-height:var(--rail-cell-height);flex:0 0 var(--rail-cell-height);margin:0 auto;padding:0;line-height:1;transition:background-color 160ms ease-out,color 160ms ease-out}
+ .rail .rail-item>i{display:flex;align-items:center;justify-content:center;width:32px;height:32px;line-height:1;flex:0 0 32px}
+ .rail hr{height:1px;margin:6px auto}
+ .rail .rail-item:hover{background:var(--surface)}
+ .rail .rail-item:focus-visible{outline:1px solid var(--gold-dark);outline-offset:-2px}
+}
+@media(min-width:701px) and (max-height:760px){.rail{--rail-cell-height:40px;--rail-cell-gap:4px}}
+.rail-portal-tip{transition:opacity 140ms ease-out,transform 140ms ease-out}
+.rail-portal-tip.visible{transition-delay:180ms}
+
+.rail .rail-scroll::-webkit-scrollbar-thumb{border:0}
