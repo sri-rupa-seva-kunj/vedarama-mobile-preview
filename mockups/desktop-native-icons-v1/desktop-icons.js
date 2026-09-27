@@ -1,7 +1,22 @@
 // This variant uses SVG files from the native desktop QML application.
 (() => {
+ // Keep the order of shared sections from LeftMenu.qml; new tools follow Favorites.
+ const rail=$('.rail'),bottom=$('.rail-bottom');
+ const langButtons=['Книги на русском','Книги на английском','Книги на санскрите'].map(label=>$('.rail [aria-label="'+label+'"]'));
+ const divider=()=>document.createElement('hr');
+ const railSettings=document.createElement('button');railSettings.id='rail-settings';railSettings.className='rail-item';railSettings.setAttribute('aria-label','Настройки');railSettings.dataset.tip='Настройки';railSettings.onclick=()=>openDialog('settings');
+ bottom.prepend(railSettings);
+ const ordered=[...langButtons,divider(),$('.rail [data-nav=ai]'),$('#search-section-button'),$('#references-button'),$('.rail [data-dialog=converter]'),divider(),$('.rail [data-dialog=bookmarks]'),$('.rail [data-dialog=shelves]'),$('.rail [data-view=notes]'),bottom];
+ rail.querySelectorAll(':scope>hr').forEach(el=>el.remove());ordered.forEach(el=>rail.append(el));
+ $('.global-actions [data-dialog=settings]').classList.add('reading-global-settings');
  let sequence=0;
- function svg(key){let code=desktopIconData[key];if(!code)return '';const prefix='desktop-'+(++sequence)+'-';code=code.replace(/id="([^"]+)"/g,(_,id)=>'id="'+prefix+id+'"').replace(/url\(#([^)]+)\)/g,(_,id)=>'url(#'+prefix+id+')');return code.replace('<svg ','<svg class="desktop-app-icon" data-desktop-icon="'+key+'" aria-hidden="true" focusable="false" ');}
+ function svg(key){let code=desktopIconData[key];if(!code)return '';
+  // The native note outline is filled and becomes too heavy when enlarged.
+  // Retain its speech-note silhouette with a consistent screen-space stroke.
+  if(key==='note')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h18v14h-9l-5 4v-4H3Z M7 7h10 M7 11h6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
+  const boost={ru:.18,ruSelected:.18,en:.18,enSelected:.18,sa:.1,saSelected:.1,reference:.18,referenceSelected:.18,favorites:.18,favoritesSelected:.18,textSettings:.12,search:.12,book:.12,settings:.1};
+  if(boost[key])code=code.replace(/fill="currentColor"/g,'fill="currentColor" stroke="currentColor" stroke-width="'+boost[key]+'" stroke-linejoin="round" vector-effect="non-scaling-stroke"');
+  const prefix='desktop-'+(++sequence)+'-';code=code.replace(/id="([^"]+)"/g,(_,id)=>'id="'+prefix+id+'"').replace(/url\(#([^)]+)\)/g,(_,id)=>'url(#'+prefix+id+')');return code.replace('<svg ','<svg class="desktop-app-icon" data-desktop-icon="'+key+'" aria-hidden="true" focusable="false" ');}
  const map={book:'book',search:'search',spark:'ai',bookmark:'favorites',note:'note',settings:'settings',help:'help',globe:'globe',plus:'plus',close:'close',back:'back',forward:'forward',down:'down'};
  function put(selector,key){const el=document.querySelector(selector);if(el)el.innerHTML=svg(key);}
  function decorate(){
@@ -13,9 +28,11 @@
   const languages=[['Книги на русском','ru'],['Книги на английском','en'],['Книги на санскрите','sa']];
   for(const [label,key]of languages){const b=$('.rail [aria-label="'+label+'"]');if(b)b.innerHTML=svg(key+(b.classList.contains('active')?'Selected':''));}
   put('#references-button i',$('#references-button').classList.contains('active')?'referenceSelected':'reference');
+  put('#search-section-button i',$('#search-section-button').classList.contains('active')?'wbwSelected':'wbw');
   const bookmark=$('.rail [data-dialog=bookmarks]');if(bookmark)bookmark.innerHTML=svg(bookmark.classList.contains('active')?'favoritesSelected':'favorites');
   const converter=$('.rail [data-dialog=converter]');if(converter)converter.innerHTML=svg('converter');
   put('.global-actions [data-dialog=settings]','settings');
+  put('#rail-settings','settings');
   put('#focus i','reading');put('#exit-reading i','readingOff');
   for(const [id,key]of [['reading-ai','ai'],['reading-notes','note'],['reading-bookmarks','favorites'],['reading-appearance','textSettings']])put('#'+id,key);
   document.querySelectorAll('[data-dialog=settings] .aa').forEach(el=>el.innerHTML=svg('textSettings'));
@@ -26,6 +43,6 @@
  const previousSync=syncNavigation;syncNavigation=function(){previousSync();decorate();};
  for(const selector of ['.tree-root','.chapter.current'])$(selector).addEventListener('click',decorate);
  $('.review-bar>span').innerHTML='<b>Ведарама</b> · Десктоп · Оригинальные иконки приложения';
- descriptions.brief=['Вариант с иконками десктопной Ведарамы','<p>Использованы исходные SVG из текущей локальной десктопной реализации: языковые каталоги, справочники, избранное, AI, поиск, настройки, режим чтения, заметки и навигация.</p><p>Геометрия SVG сохранена. Цвет следует теме, как в компоненте SVGColor десктопного приложения.</p><p>Сохранены согласованные функции, независимые вкладки, изменение ширины дерева и подсказки. Полки, уведомления и переключатель дерева — новые элементы без прямого аналога в найденном наборе; их обозначения сохранены из предыдущего макета.</p><p>Поиск и AI демонстрационные. Локальные настройки этого варианта отделены от предыдущих макетов.</p><p><a href="gallery.html">Галерея экранов</a> · <a href="icon-reference.html">Исходные иконки</a></p>'];
+ descriptions.brief=['Десктопные иконки · согласованный вес','<p>Формы и порядок общих разделов основаны на десктопной Ведараме. Выровнены видимые размеры и толщина линий; контур заметки немного переработан. Исходные SVG сохранены отдельно.</p><p>После языков идут AI, поиск, справочники и транслитерация; затем избранное, новые полки и заметки. Внизу — настройки и помощь. Общий поиск макета занимает место поиска в пословном переводе. В режиме чтения настройки доступны в верхней панели.</p><p>Поиск и AI демонстрационные. Локальные настройки этого варианта отделены от предыдущих макетов.</p><p><a href="gallery.html">Галерея экранов</a> · <a href="icon-reference.html">Исходные иконки</a></p>'];
  decorate();
 })();

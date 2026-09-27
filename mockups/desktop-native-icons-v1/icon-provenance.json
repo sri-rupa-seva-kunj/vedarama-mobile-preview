@@ -178,5 +178,17 @@
     "source": "windows-desktop-work/qml/controls/Return.svg",
     "asset": "assets/desktop/return.svg",
     "sha256": "f99932764980bdc53108bf1b376cc6dedc540482d4779f0899eb9a27a05e5b2d"
+  },
+  {
+    "key": "wbw",
+    "source": "windows-desktop-work/qml/controls/WBWSearchButton.svg",
+    "asset": "assets/desktop/wbw.svg",
+    "sha256": "9c2cb381a6adf0a3c9d7b1ad37eca5825d298bf83f4e04cd38c0d0173573cd7f"
+  },
+  {
+    "key": "wbwSelected",
+    "source": "windows-desktop-work/qml/controls/WBWSearchButtonSelected.svg",
+    "asset": "assets/desktop/wbwSelected.svg",
+    "sha256": "8e9611863d47492eec6a57c90857dd95cb5e2b307f6966341ab6aa7ba842a0ec"
   }
 ]

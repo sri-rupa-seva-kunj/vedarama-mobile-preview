@@ -18,3 +18,30 @@ svg.desktop-app-icon{width:20px;height:20px;fill:none!important;stroke:none!impo
 .workspace-tab-select svg.desktop-app-icon[data-desktop-icon=ai]{width:22px;height:22px}
 .native-copy{gap:6px;align-items:center}.native-copy svg.desktop-app-icon{width:14px;height:14px}
 #collapse-catalog svg.desktop-app-icon{width:16px;height:16px}
+
+/* Optical sizing: compare visible contours, not the differently padded SVG boxes. */
+.rail .rail-item svg.desktop-app-icon{width:30px;height:30px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ru],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ruSelected],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=en],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=enSelected]{width:29px;height:29px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=sa],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=saSelected]{width:22px;height:20.2px}
+#search-section-button svg.desktop-app-icon{width:26px;height:26px}
+#search-section-button svg.desktop-app-icon[data-desktop-icon=wbw],#search-section-button svg.desktop-app-icon[data-desktop-icon=wbwSelected]{width:30px;height:30px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ai]{width:32px;height:32px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=favorites],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=favoritesSelected]{width:34px;height:34px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=reference],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=referenceSelected]{width:29px;height:29px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=converter]{width:22px;height:23.1px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=note]{width:26px;height:26px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=help]{width:22px;height:22px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=settings]{width:21px;height:21px}
+.rail .rail-item[data-dialog=shelves] svg{width:26px;height:26px;stroke-width:1.25}
+.rail{gap:4px}.rail hr{margin-top:7px;margin-bottom:7px}.rail-bottom{display:flex;flex-direction:column;gap:4px}
+body:not(.focus-mode) .global-actions>.reading-global-settings{display:none}
+.global-actions #activity-button>i>svg{width:23px;height:23px;stroke-width:1.35}
+.global-actions svg.desktop-app-icon{width:20px;height:20px}
+.reading-tools #reading-ai svg.desktop-app-icon,.reading-tools #reading-bookmarks svg.desktop-app-icon{width:29px;height:29px}
+.reading-tools #reading-notes svg.desktop-app-icon,.reader-actions svg.desktop-app-icon[data-desktop-icon=note]{width:23px;height:23px}
+.reading-tools #reading-appearance svg.desktop-app-icon,.reader-actions .aa svg.desktop-app-icon{width:21px;height:21px}
+.reading-tools #exit-reading svg.desktop-app-icon{width:18px;height:18px}
+.tree button svg.desktop-app-icon[data-desktop-icon=book]{width:15px;height:17px}
+.tree button svg.desktop-app-icon[data-desktop-icon=plus],.tree button svg.desktop-app-icon[data-desktop-icon=minus]{width:13px;height:13px}
+.tree button svg.desktop-app-icon[data-desktop-icon=plus] path,.tree button svg.desktop-app-icon[data-desktop-icon=minus] path{stroke-width:1.1;vector-effect:non-scaling-stroke}
+.global-tab-header .workspace-tab-close svg.desktop-app-icon{width:14px;height:14px}
