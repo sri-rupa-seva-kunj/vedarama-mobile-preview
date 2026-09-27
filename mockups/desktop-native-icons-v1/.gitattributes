@@ -1,0 +1,2 @@
+# Preserve original desktop SVG bytes and their provenance checksums.
+assets/desktop/*.svg -text
