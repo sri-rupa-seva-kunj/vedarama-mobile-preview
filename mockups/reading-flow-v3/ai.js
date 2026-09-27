@@ -52,10 +52,14 @@
     if (ready) return;
     ready = true;
     M = {
-      offline: S.variant === 'offline', noaccess: S.variant === 'noaccess',
-      selected: 'deepseek-r1', pendingModel: '', returnState: 'initial',
-      active: ['initial', 'default'].includes(S.variant) ? '' : 'chaitanya', draft: '', drafts: {}, query: '', notice: '', menu: '',
-      chats: [{ id: 'chaitanya', title: sampleQuestion, question: sampleQuestion, answer: sampleAnswer, cited: true, date: '26.08' }, { id: 'practice', title: 'Как повторять имя Кришны', question: 'Как повторять имя Кришны?', answer: 'Сохранён вопрос. Ответ в этом диалоге ещё не получен.', cited: false, date: '27.08' }],
+      offline: S.variant === 'offline', noaccess: !S.ai || S.variant === 'noaccess',
+      selected: 'deepseek-r1', pendingModel: '', returnState: 'initial', openedFromHistory: S.variant === 'history-answer',
+      active: ['initial', 'default', 'empty', 'no-results'].includes(S.variant) ? '' : 'chaitanya', draft: '', drafts: {}, query: S.variant === 'no-results' ? 'Аюрведа' : '', notice: '', menu: '', historyScroll: 0,
+      chats: S.page === 'ai-history' && S.variant === 'empty' ? [] : [
+        { id: 'chaitanya', title: sampleQuestion, question: sampleQuestion, answer: sampleAnswer, cited: true, date: '14:32', group: 'Сегодня', preview: 'Где прочитать об этом подробнее?', followup: true },
+        { id: 'practice', title: 'Как повторять имя Кришны', question: 'Как повторять имя Кришны?', answer: 'Сохранён вопрос. Ответ в этом диалоге ещё не получен.', cited: false, date: '10:15', group: 'Сегодня', preview: 'Вопрос сохранён · ответа пока нет', pending: true },
+        ...[['gita', 'С чего начать чтение Бхагавад-гиты', 'Вчера', '19:40'], ['service', 'Что означает бескорыстное служение', 'Вчера', '12:08'], ['bhakti', 'Девять процессов бхакти', 'Ранее', '24 сентября'], ['verse', 'Помоги разобраться в переводе стиха', 'Ранее', '22 сентября']].map(([id, title, group, date]) => ({ id, title, question: title, answer: 'Полный ответ этого диалога не включён в набор макетов.', cited: false, date, group, preview: 'Сохранённый диалог · демонстрационный пример' }))
+      ],
       models: [{ id: 'deepseek-r1', name: 'DeepSeek R1', detail: 'Системная · 128K контекст', system: true }, { id: 'openai-demo', name: 'OpenAI', detail: 'gpt-5.4', system: false }],
       form: { provider: 'OpenAI', name: 'OpenAI', model: 'gpt-5.4', reasoning: 'medium', url: '', protocol: 'auto', tokens: '4000', context: '400000' },
       pendingId: 'gpt-5.4', pendingReasoning: 'medium', verified: '', saved: false, sequence: 0
@@ -80,7 +84,7 @@
   function header(title) { return brand() + head(title).replace('data-act="back"', 'data-act="ai-back"'); }
   function toolbar() {
     const model = M.models.find(x => x.id === M.selected);
-    return brand() + `<header class="ai-toolbar"><div class="ai-title-row">${button('history', desktopIcon('history'), { attrs: 'aria-label="История диалогов"', cls: 'ai-icon' })}<span class="ai-toolbar-divider" aria-hidden="true"></span><h1>${state() === 'initial' ? 'AI-чат' : esc(current()?.title || 'Новый диалог')}</h1>${button('new', desktopIcon('plus'), { attrs: 'aria-label="Новый диалог"', cls: 'ai-icon', disabled: M.noaccess })}</div><div class="ai-model-row">${button('pick-model', `<span>${esc(model?.name || 'Выбрать модель')}</span>${desktopIcon('down')}`, { attrs: `aria-haspopup="listbox" aria-expanded="${state() === 'model-picker'}"`, disabled: running() || M.noaccess })}${button('models', `${desktopIcon('models')}<span>Модели</span>`, { cls: 'ai-manage-models', disabled: M.noaccess })}</div></header>`;
+    return brand() + `<header class="ai-toolbar"><div class="ai-title-row">${button('history', `${desktopIcon('history')}<span>Чаты</span>`, { attrs: 'aria-label="Все чаты — история диалогов"', cls: 'ai-history-link' })}<span class="ai-toolbar-divider" aria-hidden="true"></span><h1>${state() === 'initial' ? 'AI-чат' : esc(current()?.title || 'Новый диалог')}</h1>${button('new', desktopIcon('plus'), { attrs: 'aria-label="Новый диалог"', cls: 'ai-icon', disabled: M.noaccess })}</div><div class="ai-model-row">${button('pick-model', `<span>${esc(model?.name || 'Выбрать модель')}</span>${desktopIcon('down')}`, { attrs: `aria-haspopup="listbox" aria-expanded="${state() === 'model-picker'}"`, disabled: running() || M.noaccess })}${button('models', `${desktopIcon('models')}<span>Модели</span>`, { cls: 'ai-manage-models', disabled: M.noaccess })}</div></header>`;
   }
   function composer() {
     if (M.noaccess) return '';
@@ -107,7 +111,8 @@
     if (v === 'offline') M.offline = true;
     if (v === 'noaccess') M.noaccess = true;
     if (M.noaccess) {
-      layout(header('AI-чат'), `<div class="ai-page ai-empty" role="region" aria-labelledby="ai-access-title"><h1 id="ai-access-title">Доступ ограничен</h1><p>Для этого аккаунта не подключён доступ к AI-инструментам.</p>${button('library', 'Открыть Ведараму', { cls: 'ai-primary' })}</div>`, { bodyClass: 'ai-scroll', withDock: false });
+      S.ai = false;
+      layout(header('AI-чат'), `<div class="ai-page ai-empty" role="region" aria-labelledby="ai-access-title"><h1 id="ai-access-title">AI-раздел недоступен</h1><p>У вашего аккаунта сейчас нет доступа к этому разделу. Библиотека и остальные разделы по-прежнему доступны.</p>${button('library', 'В библиотеку', { cls: 'ai-primary' })}</div>`, { bodyClass: 'ai-scroll' });
       return;
     }
     if (v === 'model-picker') {
@@ -120,20 +125,25 @@
       body = question();
       if (v === 'processing' || v === 'composing') body += activity(v) + (v === 'composing' ? answer(true) : '');
       else if (v === 'error') body += answer(true) + `<section class="ai-card ai-error" role="alert"><h2>Не удалось завершить ответ</h2><p>${M.offline ? 'Соединение прервано. Вопрос и часть ответа сохранены.' : 'Ответ прерван. Вопрос и полученный текст сохранены.'}</p><div class="ai-actions">${button('retry', 'Повторить', { disabled: blocked(), cls: 'ai-primary' })}${button('edit-question', 'Вернуть вопрос в поле')}</div></section>`;
+      else if (current()?.pending) body += '<p class="ai-notice">Ответ пока не получен. Вы можете продолжить диалог.</p>';
       else body += answer(false, v === 'activity');
+      if (M.openedFromHistory && current()?.followup && ['history-answer', 'answer', 'activity'].includes(v)) body += '<div class="ai-message-time">Сегодня · 14:32</div><div class="ai-question">Где прочитать об этом подробнее?</div><article class="ai-card ai-answer"><p>Начните с «Шри Чайтанья-чаритамриты». В предыдущем ответе сохранены ссылки на источники.</p></article>';
     }
     const offline = M.offline ? `<div class="ai-banner" role="status">${ic('offline')}<span>Нет подключения · доступно сохранённое</span>${button('check', 'Проверить')}</div>` : '';
     layout(toolbar(), `<div class="ai-page">${offline}${M.notice ? `<p class="ai-notice" role="status">${esc(M.notice)}</p>` : ''}${body}</div>`, { bodyClass: 'ai-scroll', footer: composer() });
   }
   function historyRow(chat, menus = true) {
-    return `<article class="ai-history-row ${chat.id === M.active ? 'is-selected' : ''}" data-ai-chat="${esc(chat.id)}">${button('open-chat', `<strong>${esc(chat.title)}</strong><small>${chat.date}</small>`, { cls: 'ai-history-open', attrs: `data-ai-id="${esc(chat.id)}" ${chat.id === M.active ? 'aria-current="true"' : ''}` })}${menus ? button('chat-menu', 'Действия', { cls: 'ai-history-menu', attrs: `aria-label="Действия: ${esc(chat.title)}" data-ai-id="${esc(chat.id)}" aria-expanded="${M.menu === chat.id}"` }) : ''}${M.menu === chat.id && menus ? `<div class="ai-row-menu">${input('rename', 'Название диалога', chat.title)}${button('rename', 'Сохранить название', { attrs: `data-ai-id="${esc(chat.id)}"`, disabled: blocked() })}${button('delete-chat', 'Удалить диалог', { attrs: `data-ai-id="${esc(chat.id)}"`, disabled: blocked() })}</div>` : ''}</article>`;
+    return `<article class="ai-history-row ${chat.id === M.active ? 'is-selected' : ''}" data-ai-chat="${esc(chat.id)}">${button('open-chat', `<span class="ai-chat-meta">${esc(chat.date)}${chat.id === M.active ? ' · Открыт' : ''}</span><strong>${esc(chat.title)}</strong><small>${esc(chat.preview || chat.question)}</small>`, { cls: 'ai-history-open', attrs: `data-ai-id="${esc(chat.id)}" ${chat.id === M.active ? 'aria-current="true"' : ''}` })}${menus ? button('chat-menu', ic('more'), { cls: 'ai-history-menu', attrs: `aria-label="Действия: ${esc(chat.title)}" data-ai-id="${esc(chat.id)}" aria-expanded="${M.menu === chat.id}"` }) : ''}${M.menu === chat.id && menus ? `<div class="ai-row-menu">${input('rename', 'Название диалога', chat.title)}${button('rename', 'Сохранить название', { attrs: `data-ai-id="${esc(chat.id)}"`, disabled: blocked() })}${button('delete-chat', 'Удалить диалог', { attrs: `data-ai-id="${esc(chat.id)}"`, disabled: blocked() })}</div>` : ''}</article>`;
   }
   function history() {
-    layout(header('Диалоги'), `<div class="ai-page">${M.offline ? '<p class="ai-banner">Без сети · сохранённые на устройстве диалоги</p>' : ''}${button('new', `${desktopIcon('plus')}<span>Новый диалог</span>`, { cls: 'ai-primary', disabled: M.noaccess })}${input('query', 'Поиск по диалогам', M.query)}<div id="ai-history-results">${historyResults()}</div></div>`, { withDock: false, bodyClass: 'ai-scroll' });
+    layout(header('История чатов'), `<div class="ai-page ai-history-page">${M.offline ? '<p class="ai-banner">Без сети · сохранённые на устройстве диалоги</p>' : ''}${button('new', `${desktopIcon('plus')}<span>Новый чат</span>`, { cls: 'ai-primary ai-full', disabled: M.noaccess })}<div class="ai-history-search">${input('query', 'Поиск по чатам', M.query)}${button('clear-history', ic('cross'), { attrs: 'aria-label="Очистить поиск по чатам"', disabled: !M.query })}</div><div id="ai-history-results" aria-live="polite">${historyResults()}</div></div>`, { bodyClass: 'ai-scroll' });
+    document.querySelector('#page-scroll').scrollTop = M.historyScroll;
   }
   function historyResults() {
     const list = M.chats.filter(x => x.title.toLocaleLowerCase('ru').includes(M.query.toLocaleLowerCase('ru')));
-    return list.length ? list.map(x => historyRow(x)).join('') : '<p class="ai-notice">Диалоги не найдены. Измените запрос.</p>';
+    if (!M.chats.length) return '<section class="ai-empty"><h2>Здесь будут ваши чаты</h2><p>Начните новый разговор. Его можно будет снова открыть из этого списка.</p></section>';
+    if (!list.length) return '<section class="ai-empty"><h2>Чаты не найдены</h2><p>Попробуйте другое название или очистите поиск.</p></section>';
+    return `<p class="ai-notice">${M.query ? 'Найдено' : 'Всего чатов'}: ${list.length}</p>` + [...new Set(list.map(x => x.group || 'Сегодня'))].map(group => `<section class="ai-chat-group"><h2>${group}</h2>${list.filter(x => (x.group || 'Сегодня') === group).map(x => historyRow(x)).join('')}</section>`).join('');
   }
   function models() {
     layout(header('Модели AI'), `<div class="ai-page">${button('connect', `${desktopIcon('plus')}<span>Подключить модель</span>`, { cls: 'ai-primary', disabled: blocked() })}${['Системная', 'Подключённые'].map((label, i) => `<section><h2 class="ai-section-label">${label}</h2>${M.models.filter(x => x.system === !i).map(x => `<article class="ai-model-card"><strong>${esc(x.name)}</strong><p>${esc(x.detail)}</p><span class="ai-tag">${x.system ? 'Системная' : 'Подключена'}${x.id === M.selected ? ' · выбрана' : ''}</span>${button('use-model', 'Выбрать в чате', { attrs: `data-ai-value="${esc(x.id)}"`, disabled: blocked() })}</article>`).join('')}</section>`).join('')}<p class="ai-notice">Выбранная модель применяется к следующему ответу.</p></div>`, { withDock: false, bodyClass: 'ai-scroll' });
@@ -190,7 +200,7 @@
     }
   }
   function rememberDraft() { M.drafts[M.active || 'new'] = M.draft; }
-  function openChat(id) { rememberDraft(); M.active = id; M.draft = M.drafts[id] || ''; M.menu = ''; navigate('ai', 'answer'); }
+  function openChat(id) { rememberDraft(); if (S.page === 'ai-history') M.historyScroll = document.querySelector('#page-scroll').scrollTop; M.active = id; M.openedFromHistory = true; M.draft = M.drafts[id] || ''; M.menu = ''; navigate('ai', 'history-answer'); }
   function send() {
     if (blocked() || running() || !M.draft.trim()) return;
     const questionText = M.draft.trim();
@@ -203,7 +213,7 @@
     if (!ready || !S.page.startsWith('ai') || !field) return;
     const value = event.target.value;
     if (field === 'draft') { M.draft = value; rememberDraft(); const sendButton = document.querySelector('[data-act="ai-send"]'); if (sendButton) sendButton.disabled = blocked() || !value.trim(); }
-    else if (field === 'query') { M.query = value; document.querySelector('#ai-history-results').innerHTML = historyResults(); }
+    else if (field === 'query') { M.query = value; M.historyScroll = 0; document.querySelector('#ai-history-results').innerHTML = historyResults(); document.querySelector('[data-act=ai-clear-history]').disabled = !value; }
     else if (field === 'pendingId') { M.pendingId = value; document.querySelector('[data-act="ai-apply-id"]').disabled = !value.trim(); }
     else if (field === 'rename') M.rename = value;
     else if (Object.hasOwn(M.form, field)) { M.form[field] = value; updateForm(); const test = document.querySelector('[data-act="ai-test"]'); if (test) test.disabled = blocked() || !validForm(); const save = document.querySelector('[data-act="ai-save"]'); if (save) { save.disabled = true; save.textContent = 'Сохранить подключение'; } document.querySelector('.ai-test [role="status"]')?.remove(); }
@@ -223,18 +233,21 @@
     if (!ready) init();
     const value = target?.dataset.aiValue, id = target?.dataset.aiId;
     if (target?.disabled) return;
+    if ((!S.ai || M.noaccess) && !['ai-library', 'ai-back'].includes(a)) return;
     if (blocked() && ['ai-send', 'ai-retry', 'ai-finish', 'ai-test', 'ai-save', 'ai-delete-chat', 'ai-rename'].includes(a)) return;
     switch (a) {
       case 'ai-back':
-        if (S.page === 'ai-connect' && ['model-picker', 'reasoning-picker'].includes(state())) move('default');
+        if (!S.ai || M.noaccess) go('library');
+        else if (S.page === 'ai-connect' && ['model-picker', 'reasoning-picker'].includes(state())) move('default');
         else if (S.page === 'ai' && state() === 'model-picker') move(M.returnState);
         else if (S.history.length) back(); else if (S.page === 'ai') go('library'); else navigate('ai', M.offline ? 'offline' : 'initial');
         break;
       case 'ai-library': go('library'); break;
       case 'ai-history': navigate('ai-history'); break;
+      case 'ai-clear-history': M.query = ''; M.historyScroll = 0; render(); document.querySelector('[data-ai-field=query]')?.focus(); break;
       case 'ai-models': navigate('ai-models'); break;
       case 'ai-connect': if (!blocked()) navigate('ai-connect'); break;
-      case 'ai-new': rememberDraft(); M.active = ''; M.draft = M.drafts.new || ''; navigate('ai', 'initial'); break;
+      case 'ai-new': rememberDraft(); M.active = ''; M.openedFromHistory = false; M.draft = M.drafts.new || ''; navigate('ai', 'initial'); break;
       case 'ai-suggest': M.draft = ['Как пользоваться сервисом Vedarama AI?', sampleQuestion, 'Найди упоминания темы в книгах'][Number(target.dataset.aiIndex)] || sampleQuestion; rememberDraft(); render(); document.querySelector('[data-ai-field="draft"]')?.focus(); break;
       case 'ai-send': send(); break;
       case 'ai-finish': move('answer'); break;
@@ -268,5 +281,5 @@
     }
     return true;
   }
-  window.aiReview = { init, render() { if (!ready) init(); if (S.page === 'ai-history') history(); else if (S.page === 'ai-models') models(); else if (S.page === 'ai-connect') connect(); else root(); }, act };
+  window.aiReview = { init, render() { if (!ready) init(); M.noaccess = !S.ai || S.variant === 'noaccess'; if (M.noaccess) root(); else if (S.page === 'ai-history') history(); else if (S.page === 'ai-models') models(); else if (S.page === 'ai-connect') connect(); else root(); }, act };
 })();
