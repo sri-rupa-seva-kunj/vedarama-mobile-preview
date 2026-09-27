@@ -1,0 +1,69 @@
+/* Shared alignment rules for chat, model management and reading actions. */
+.native-chat-heading-hidden{display:none!important}
+.native-chat-main .chat-model-bar{height:56px;min-height:56px;flex-shrink:0;padding:8px 20px;gap:10px}
+.native-chat-main .chat-model-bar>button{height:36px;min-height:36px}
+.native-chat-main #chat-model-picker{flex:0 1 180px;max-width:180px;min-width:125px;height:36px;min-height:36px}
+#manage-chat-models.native-models-button{height:36px;min-height:36px}
+.native-chat-view-actions{display:flex;align-items:center;gap:8px;padding-left:12px;margin-left:2px;border-left:1px solid var(--stroke);flex-shrink:0}
+.native-chat-view-actions[hidden]{display:none}
+.native-chat-view-actions #tool-mode{display:flex;gap:7px;align-items:center;height:36px;min-height:36px;padding:6px 10px;font-size:12px;white-space:nowrap}
+.native-chat-view-actions #tool-mode svg{width:16px;height:16px}
+.native-chat-view-actions #tool-close{width:32px;height:36px;min-height:36px;margin:0;padding:7px}
+.native-chat-view-actions #tool-close svg{width:18px;height:18px}
+#native-dialog-title{font-size:17px;line-height:24px}
+.native-dialogs header{height:56px;min-height:56px;padding:8px 16px}
+.native-dialogs h3{font-size:17px}
+.tool-page .native-chat-main #ai-scroll{padding:28px max(28px,calc((100% - 840px)/2)) 20px}
+.tool-page .native-chat-main #ai-form{padding:12px max(28px,calc((100% - 840px)/2)) 8px;gap:8px 16px}
+.native-chat-main .ai-intro{padding:0 0 22px}
+.native-chat-main .ai-intro h2{font-size:21px;line-height:1.4}
+.native-chat-main .suggestions button{font-size:16px;padding:16px 0;min-height:52px}
+.native-chat-main #ai-form textarea{flex-basis:calc(100% - 54px)}
+.native-chat-main #ai-form>label{min-height:24px}
+.native-chat-main .question-bubble{margin:0}
+.native-chat-main #native-attachments{align-items:stretch}
+#workspace-panel:has(.models-layout){padding:32px max(28px,calc((100% - 1180px)/2)) 40px}
+#workspace-panel:has(.models-layout)>.workspace-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px;row-gap:12px;align-items:start;margin:0 0 28px;padding:0;max-width:none}
+#workspace-panel:has(.models-layout) .workspace-heading>div:first-child{grid-row:1/3;min-width:0}
+#workspace-panel:has(.models-layout) .workspace-heading h1{font-size:26px;line-height:1.25;margin:8px 0 10px}
+#workspace-panel:has(.models-layout) .workspace-heading p{font-size:14px;line-height:1.5;margin:0;max-width:600px}
+#workspace-panel:has(.models-layout) .workspace-heading>.models-return{grid-column:2;grid-row:1;justify-self:end;min-height:34px;height:34px;font-size:13px;padding:6px 10px}
+#workspace-panel:has(.models-layout) .workspace-heading>.models-guide-button{grid-column:2;grid-row:2;justify-self:end;min-height:30px;height:30px;border:0;font-size:12px;padding:4px 0;color:var(--gold-dark)}
+#workspace-panel:has(.models-layout) .workspace-heading>button svg{width:18px;height:18px}
+#workspace-panel .models-layout{grid-template-columns:260px minmax(0,1fr);gap:24px;max-width:none}
+.models-list-title{height:34px;margin-bottom:12px}.models-list-title h2{font-size:16px;margin:0}
+.models-list-title .icon-button{height:32px;width:32px;padding:6px}
+.models-list .connection-card{padding:14px;gap:12px;margin-bottom:10px}
+.models-list .connection-card strong{font-size:15px}.models-list .connection-card small{font-size:11px}
+.models-layout .model-editor{padding:24px}
+.model-editor .model-editor-heading{margin-bottom:20px}.model-editor .model-editor-heading h2{font-size:20px;margin:8px 0 0}
+.model-editor .model-guide-callout{display:none}
+.reading-toolbar .reader-actions{display:flex;align-items:center;gap:6px}
+.reading-toolbar .reader-actions>button{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;min-height:36px;margin:0;padding:6px 10px;line-height:20px;font-size:13px;color:var(--secondary)}
+.reading-toolbar .reader-actions>#bookmark{width:36px;padding:6px}
+.reader-actions>button>i,.reader-actions>button>.aa{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:0 0 24px;line-height:1}
+.reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=favorites]{width:26px;height:26px}
+.reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=note]{width:22px;height:22px}
+.reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=ai]{width:24px;height:24px}
+.reading-toolbar .reader-actions .aa svg.desktop-app-icon{width:22px;height:22px}
+.reader-actions svg[data-desktop-icon=ai] g[stroke-width]{stroke-width:1.25}
+.reading-toolbar .reader-actions .count{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:18px;padding:0 3px;margin:0;line-height:1;font-size:11px;vertical-align:middle}
+.reading-toolbar .reader-actions>button[aria-pressed=true]{color:var(--gold-dark)}
+@media(max-width:1200px){
+ .native-chat-view-actions #tool-mode{padding:6px;gap:5px;font-size:11px}
+ .native-chat-view-actions{padding-left:8px;gap:4px;margin:0}
+ .native-chat-main .chat-model-bar{padding:8px 14px;gap:8px}
+ #native-dialog-title{font-size:15px}
+ #workspace-panel .models-layout{grid-template-columns:230px minmax(0,1fr);gap:20px}
+}
+@media(max-width:1050px){.tool-page #manage-chat-models.native-models-button span{display:none}.tool-page #manage-chat-models.native-models-button{width:36px;padding:8px}.tool-page .native-chat-main #chat-model-picker{flex-basis:150px;min-width:120px}.native-chat-view-actions #tool-mode span{max-width:96px;white-space:normal}}
+@media(max-height:560px){
+ .native-chat-main .chat-model-bar,.native-dialogs header{height:44px;min-height:44px;padding-top:4px;padding-bottom:4px}
+ .tool-page .native-chat-main #ai-scroll{padding-top:14px}
+ .tool-page .native-chat-main #ai-form{padding-top:6px;padding-bottom:6px;gap:4px 16px}
+ .native-chat-main #ai-form>label{min-height:20px}
+}
+
+html[data-theme=dark] .global-search{background:var(--panel-soft);color:var(--ink)}
+html[data-theme=dark] .global-search input{color:var(--ink)}
+html[data-theme=dark] .global-search input::placeholder,html[data-theme=dark] .global-search svg,html[data-theme=dark] .global-search kbd{color:var(--secondary)}
