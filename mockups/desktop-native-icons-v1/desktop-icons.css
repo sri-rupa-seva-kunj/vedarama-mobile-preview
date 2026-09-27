@@ -23,7 +23,7 @@ svg.desktop-app-icon{width:20px;height:20px;fill:none!important;stroke:none!impo
 .rail .rail-item svg.desktop-app-icon{width:30px;height:30px}
 .rail .rail-item svg.desktop-app-icon[data-desktop-icon=ru],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ruSelected],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=en],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=enSelected]{width:29px;height:29px}
 .rail .rail-item svg.desktop-app-icon[data-desktop-icon=sa],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=saSelected]{width:22px;height:20.2px}
-#search-section-button svg.desktop-app-icon{width:26px;height:26px}
+#search-section-button svg.desktop-app-icon{width:24px;height:24px}
 #search-section-button svg.desktop-app-icon[data-desktop-icon=wbw],#search-section-button svg.desktop-app-icon[data-desktop-icon=wbwSelected]{width:30px;height:30px}
 .rail .rail-item svg.desktop-app-icon[data-desktop-icon=ai]{width:32px;height:32px}
 .rail .rail-item svg.desktop-app-icon[data-desktop-icon=favorites],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=favoritesSelected]{width:34px;height:34px}

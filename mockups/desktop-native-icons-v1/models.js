@@ -18,6 +18,7 @@ const freshModelDraft = () => ({id:null,provider:'openai',name:'Моя OpenAI',u
 let modelDraft=freshModelDraft(), modelFormOpen=false, modelVerified=false, modelReturnMode='page';
 if(!Array.isArray(saved.modelConnections)) saved.modelConnections=[];
 const featuredModels=[
+  {id:'preset-deepseek',name:'DeepSeek',providerName:'DeepSeek',model:'deepseek-chat'},
   {id:'preset-gpt-5.6-sol',name:'GPT-5.6 Sol',providerName:'OpenAI',model:'gpt-5.6-sol'},
   {id:'preset-claude-sonnet-5',name:'Claude Sonnet 5',providerName:'Anthropic',model:'claude-sonnet-5'},
   {id:'preset-gemini-3.1-pro',name:'Gemini 3.1 Pro',providerName:'Google',model:'gemini-3.1-pro-preview'}

@@ -33,7 +33,7 @@
     return {
       section,view,toolMode,hasBook:state.hasBook,backToSearch:!!$('.back-to-search'),reading:window.readerGetState?.()||null,readingPreview:window.readerGetPreview?.()||'',
       classes:['tree-hidden','focus-mode','mobile-tree','reference-detail-open','reading-bookmarks-open'].filter(c=>document.body.classList.contains(c)),
-      chat:{model:saved.chatModel,question:question.value,turns:[...document.querySelectorAll('#ai-messages .ai-turn')].map(t=>({text:t.querySelector('.question-bubble').textContent,model:t.dataset.modelName||featuredModels[0].name})),library:$('#library-scope').checked,pinned:$('#context-pin').getAttribute('aria-pressed')==='true'},
+      chat:{native:window.chatNativeGetState?.(),model:saved.chatModel,question:question.value,turns:[...document.querySelectorAll('#ai-messages .ai-turn')].map(t=>({text:t.querySelector('.question-bubble').textContent,model:t.dataset.modelName||featuredModels[0].name,contexts:JSON.parse(t.dataset.contexts||'[]')})),library:$('#library-scope').checked,pinned:$('#context-pin').getAttribute('aria-pressed')==='true'},
       search:{prefs:clone(searchPrefs),mode:searchMode,query:$('#library-query')?.value??searchQuery,literal:$('#literal-query')?.value??searchLiteral,separate:searchSeparate,run:clone(searchRun),dirty:searchDirty,resultTab:searchResultTab},
       reference:{category:referenceCategory,query:referenceQuery,active:activeReference},
       savedView:{tab:savedTab,shelf:activeShelf,query:$('#bookmark-search')?.value??state.savedView.query},
@@ -127,8 +127,9 @@
     editId=saved.notes.some(n=>n.id===s.note.editId)?s.note.editId:null;selectedQuote=s.note.selectedQuote;
     $('#note-editor').hidden=!s.note.open;$('#note-text').value=s.note.text;$('#note-quote').textContent=s.note.quote;$('#note-quote').hidden=!s.note.quote;
     $('#ai-messages').replaceChildren();$('.ai-intro').hidden=false;$('.suggestions').hidden=false;
-    for(const turn of s.chat.turns)appendChatTurn(turn.text,turn.model);
+    for(const turn of s.chat.turns)appendChatTurn(turn.text,turn.model,turn.contexts||[]);
     question.value=s.chat.question;updateQuestion();$('#library-scope').checked=s.chat.library;
+    window.chatNativeRestore?.(s.chat.native);
     $('#context-pin').setAttribute('aria-pressed',String(s.chat.pinned));$('#context-pin').textContent=s.chat.pinned?'Закреплён':'За чтением';
     showSection(s.section);
     if(s.section==='read'&&s.view!=='read')openTool(s.view,s.toolMode);
