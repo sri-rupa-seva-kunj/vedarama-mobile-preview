@@ -1,0 +1,182 @@
+[
+  {
+    "key": "ru",
+    "source": "windows-desktop-work/qml/controls/RusCatalogButton.svg",
+    "asset": "assets/desktop/ru.svg",
+    "sha256": "6c187e48c140ca4c608208fa3b1901fe0d1a73396ab8d06de36c903ca2759c7b"
+  },
+  {
+    "key": "ruSelected",
+    "source": "windows-desktop-work/qml/controls/RusCatalogButtonSelected.svg",
+    "asset": "assets/desktop/ruSelected.svg",
+    "sha256": "0c14cea107ce621c0e3f236eab0534f2a86fac93a548b4f5da616af902310ac8"
+  },
+  {
+    "key": "en",
+    "source": "windows-desktop-work/qml/controls/EngCatalogButton.svg",
+    "asset": "assets/desktop/en.svg",
+    "sha256": "6fd66e303dadae495870e081be8d295c1ec5b515a28f13aaabbf18ad580f8489"
+  },
+  {
+    "key": "enSelected",
+    "source": "windows-desktop-work/qml/controls/EngCatalogButtonSelected.svg",
+    "asset": "assets/desktop/enSelected.svg",
+    "sha256": "08c4c7453e1b62bfa3216a8f419ec854289e1e21932ab7310820395648cde3f9"
+  },
+  {
+    "key": "sa",
+    "source": "windows-desktop-work/qml/controls/SanCatalogButton.svg",
+    "asset": "assets/desktop/sa.svg",
+    "sha256": "375ffc79333934be214357ef170c0010f3aa1c7118adac4907cef9e7e6c9fc6b"
+  },
+  {
+    "key": "saSelected",
+    "source": "windows-desktop-work/qml/controls/SanCatalogButtonSelected.svg",
+    "asset": "assets/desktop/saSelected.svg",
+    "sha256": "2fb2db5c8e5880753e81c53e379fe6bd456f4baaebb877988bd3c1d147d9d057"
+  },
+  {
+    "key": "ai",
+    "source": "windows-desktop-work/qml/controls/AiButton.svg",
+    "asset": "assets/desktop/ai.svg",
+    "sha256": "937c588560a8164058a8bd85bb1d3586d19afb5985b23cfee728854c88b3149e"
+  },
+  {
+    "key": "favorites",
+    "source": "windows-desktop-work/qml/controls/FavoritesButton.svg",
+    "asset": "assets/desktop/favorites.svg",
+    "sha256": "33e7d332e971f81c04624bb1adb2890119d54b6cfbe9a3e6ff60c1276aadb4ee"
+  },
+  {
+    "key": "favoritesSelected",
+    "source": "windows-desktop-work/qml/controls/FavoritesButtonSelected.svg",
+    "asset": "assets/desktop/favoritesSelected.svg",
+    "sha256": "b100905225d9979338cedb0acf577191476c0fa44451a347fc213d06d162b0d3"
+  },
+  {
+    "key": "reference",
+    "source": "windows-desktop-work/qml/controls/GlossaryButton.svg",
+    "asset": "assets/desktop/reference.svg",
+    "sha256": "bd47afcd17987ff2238eefbfdd825338c8efbaee089ba5f79b806866f88feefe"
+  },
+  {
+    "key": "referenceSelected",
+    "source": "windows-desktop-work/qml/controls/GlossaryButtonSelected.svg",
+    "asset": "assets/desktop/referenceSelected.svg",
+    "sha256": "ffa3c63bb7e2881d9b41a44cc545b96f2045a12beca82686f29dbf91383b692a"
+  },
+  {
+    "key": "converter",
+    "source": "windows-desktop-work/qml/controls/ConverterButton.svg",
+    "asset": "assets/desktop/converter.svg",
+    "sha256": "80ad61809f3485fd39a400db842346a8e40df5299f25741ce7ac79d42ae96bdb"
+  },
+  {
+    "key": "search",
+    "source": "windows-desktop-work/qml/controls/Search.svg",
+    "asset": "assets/desktop/search.svg",
+    "sha256": "c9ed1557d95acec1197c692ed0411e0bcd5c83687d4a52afee55064fd452b831"
+  },
+  {
+    "key": "book",
+    "source": "windows-desktop-work/qml/TabItem/TreeView/IconBook.svg",
+    "asset": "assets/desktop/book.svg",
+    "sha256": "57832b76c7d329a0d81af4d6804ecdb6cc9fe521e81a756f9b46b2362341cb23"
+  },
+  {
+    "key": "reading",
+    "source": "windows-desktop-work/qml/controls/BookMode.svg",
+    "asset": "assets/desktop/reading.svg",
+    "sha256": "1d33a00653b1739a144fa56ab25723e0f7679bc54e068d5c65252893b5fc5d53"
+  },
+  {
+    "key": "readingOff",
+    "source": "windows-desktop-work/qml/controls/BookModeOff.svg",
+    "asset": "assets/desktop/readingOff.svg",
+    "sha256": "cbeca7ff6503917b94a816edeb6c139c910513f0e7f3ff333526f197d472f148"
+  },
+  {
+    "key": "textSettings",
+    "source": "windows-desktop-work/qml/controls/ContentSettingsIcon.svg",
+    "asset": "assets/desktop/textSettings.svg",
+    "sha256": "d1b88c9b4d27e9a759492d7db25da303ee34db86e50558a7b25fc470a8949dba"
+  },
+  {
+    "key": "settings",
+    "source": "windows-desktop-work/qml/controls/IconSettingsGray.svg",
+    "asset": "assets/desktop/settings.svg",
+    "sha256": "8abf6bb6ddec821f88477a247642a0397cb906439d4bd19be0b22f6bcd968f7b"
+  },
+  {
+    "key": "info",
+    "source": "windows-desktop-work/qml/controls/IconInfo.svg",
+    "asset": "assets/desktop/info.svg",
+    "sha256": "cae3bf473a53cbd91f6b5f94b0e7892b11c1a22c1c8d764fac46ad92b3e64285"
+  },
+  {
+    "key": "help",
+    "source": "windows-desktop-work/qml/controls/AboutButton.svg",
+    "asset": "assets/desktop/help.svg",
+    "sha256": "1dae20fdf1b6c1a7a05438a1c5ac71ce8d042f0e18121bbcefe1465baeade980"
+  },
+  {
+    "key": "globe",
+    "source": "windows-desktop-work/qml/controls/IconGlobus.svg",
+    "asset": "assets/desktop/globe.svg",
+    "sha256": "a8e91037c5b8e3bff8b64108ab39ef2203aa36c1251296bca3744da0770cebaf"
+  },
+  {
+    "key": "plus",
+    "source": "windows-desktop-work/qml/controls/Plus.svg",
+    "asset": "assets/desktop/plus.svg",
+    "sha256": "d5da9e33d0f641785acdf0086fec784af05ee53008161da467f70d651e98a10a"
+  },
+  {
+    "key": "minus",
+    "source": "windows-desktop-work/qml/controls/ScaleMinus.svg",
+    "asset": "assets/desktop/minus.svg",
+    "sha256": "3d08de94a381ae9cc2588a153e7b15b6e21146cba00a303fa07a42e317e53b7e"
+  },
+  {
+    "key": "close",
+    "source": "windows-desktop-work/qml/controls/CloseDark.svg",
+    "asset": "assets/desktop/close.svg",
+    "sha256": "1464c82e205472a9663a5d0f73fb92746c433491bd76b11190add4488f321c2a"
+  },
+  {
+    "key": "back",
+    "source": "windows-desktop-work/qml/controls/ArrowLeft.svg",
+    "asset": "assets/desktop/back.svg",
+    "sha256": "876d98f909bb63a59fc7a34dd0c567165ce290c69e734215ed3cc6f03da08e0d"
+  },
+  {
+    "key": "forward",
+    "source": "windows-desktop-work/qml/TabItem/forward.svg",
+    "asset": "assets/desktop/forward.svg",
+    "sha256": "c5a58773c09aab597570565c080d97b61294ac17dd3c9a998299fc6d35dfd28e"
+  },
+  {
+    "key": "down",
+    "source": "windows-desktop-work/qml/controls/VComboBoxIndicator.svg",
+    "asset": "assets/desktop/down.svg",
+    "sha256": "d76ddb6a4c949e8369515faeb6b8924b99ef5011ae70312fabaff8581836aa18"
+  },
+  {
+    "key": "note",
+    "source": "windows-desktop-work/res/web/images/favorite_message.svg",
+    "asset": "assets/desktop/note.svg",
+    "sha256": "3fde5304eef72ae1a45daad5da89e0b589f932f7dc809a8ea1efe9ee7a1084cd"
+  },
+  {
+    "key": "copy",
+    "source": "windows-desktop-work/qml/controls/copy.svg",
+    "asset": "assets/desktop/copy.svg",
+    "sha256": "6f9dd61ed3bd00c7537a476eec1d823011c4641064ad33168b82228d7c112490"
+  },
+  {
+    "key": "return",
+    "source": "windows-desktop-work/qml/controls/Return.svg",
+    "asset": "assets/desktop/return.svg",
+    "sha256": "f99932764980bdc53108bf1b376cc6dedc540482d4779f0899eb9a27a05e5b2d"
+  }
+]
