@@ -6,14 +6,16 @@
  const divider=()=>document.createElement('hr');
  const railSettings=document.createElement('button');railSettings.id='rail-settings';railSettings.className='rail-item';railSettings.setAttribute('aria-label','Настройки');railSettings.dataset.tip='Настройки';railSettings.onclick=()=>openDialog('settings');
  bottom.prepend(railSettings);
- const ordered=[...langButtons,divider(),$('.rail [data-nav=ai]'),$('#search-section-button'),$('#references-button'),$('.rail [data-dialog=converter]'),divider(),$('.rail [data-dialog=bookmarks]'),$('.rail [data-dialog=shelves]'),$('.rail [data-view=notes]'),bottom];
- rail.querySelectorAll(':scope>hr').forEach(el=>el.remove());ordered.forEach(el=>rail.append(el));
+ const ordered=[...langButtons,divider(),$('#search-section-button'),$('.rail [data-nav=ai]'),$('#references-button'),$('.rail [data-dialog=converter]'),divider(),$('.rail [data-dialog=bookmarks]'),$('.rail [data-dialog=shelves]'),$('.rail [data-view=notes]')];
+ const railScroll=document.createElement('div');railScroll.className='rail-scroll';railScroll.setAttribute('aria-label','Разделы библиотеки');
+ rail.querySelectorAll(':scope>hr').forEach(el=>el.remove());ordered.forEach(el=>railScroll.append(el));rail.prepend(railScroll);rail.append(bottom);
  $('.global-actions [data-dialog=settings]').classList.add('reading-global-settings');
  let sequence=0;
  function svg(key){let code=desktopIconData[key];if(!code)return '';
   // The native note outline is filled and becomes too heavy when enlarged.
   // Retain its speech-note silhouette with a consistent screen-space stroke.
   if(key==='note')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h18v14h-9l-5 4v-4H3Z M7 7h10 M7 11h6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
+  if(key==='ai')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M12 7V4 M2 12v4 M22 12v4 M9 16.5h6 M8 11.5v1 M16 11.5v1"/><circle cx="12" cy="2.75" r="1.25"/></g></svg>';
   const boost={ru:.18,ruSelected:.18,en:.18,enSelected:.18,sa:.1,saSelected:.1,reference:.18,referenceSelected:.18,favorites:.18,favoritesSelected:.18,textSettings:.12,search:.12,book:.12,settings:.1};
   if(boost[key])code=code.replace(/fill="currentColor"/g,'fill="currentColor" stroke="currentColor" stroke-width="'+boost[key]+'" stroke-linejoin="round" vector-effect="non-scaling-stroke"');
   const prefix='desktop-'+(++sequence)+'-';code=code.replace(/id="([^"]+)"/g,(_,id)=>'id="'+prefix+id+'"').replace(/url\(#([^)]+)\)/g,(_,id)=>'url(#'+prefix+id+')');return code.replace('<svg ','<svg class="desktop-app-icon" data-desktop-icon="'+key+'" aria-hidden="true" focusable="false" ');}
@@ -28,7 +30,7 @@
   const languages=[['Книги на русском','ru'],['Книги на английском','en'],['Книги на санскрите','sa']];
   for(const [label,key]of languages){const b=$('.rail [aria-label="'+label+'"]');if(b)b.innerHTML=svg(key+(b.classList.contains('active')?'Selected':''));}
   put('#references-button i',$('#references-button').classList.contains('active')?'referenceSelected':'reference');
-  put('#search-section-button i',$('#search-section-button').classList.contains('active')?'wbwSelected':'wbw');
+  put('#search-section-button i','search');
   const bookmark=$('.rail [data-dialog=bookmarks]');if(bookmark)bookmark.innerHTML=svg(bookmark.classList.contains('active')?'favoritesSelected':'favorites');
   const converter=$('.rail [data-dialog=converter]');if(converter)converter.innerHTML=svg('converter');
   put('.global-actions [data-dialog=settings]','settings');
@@ -43,6 +45,12 @@
  const previousSync=syncNavigation;syncNavigation=function(){previousSync();decorate();};
  for(const selector of ['.tree-root','.chapter.current'])$(selector).addEventListener('click',decorate);
  $('.review-bar>span').innerHTML='<b>Ведарама</b> · Десктоп · Оригинальные иконки приложения';
- descriptions.brief=['Десктопные иконки · согласованный вес','<p>Формы и порядок общих разделов основаны на десктопной Ведараме. Выровнены видимые размеры и толщина линий; контур заметки немного переработан. Исходные SVG сохранены отдельно.</p><p>После языков идут AI, поиск, справочники и транслитерация; затем избранное, новые полки и заметки. Внизу — настройки и помощь. Общий поиск макета занимает место поиска в пословном переводе. В режиме чтения настройки доступны в верхней панели.</p><p>Поиск и AI демонстрационные. Локальные настройки этого варианта отделены от предыдущих макетов.</p><p><a href="gallery.html">Галерея экранов</a> · <a href="icon-reference.html">Исходные иконки</a></p>'];
+ descriptions.brief=['Десктопные иконки · компактное окно','<p>Поиск обозначен лупой и расположен выше AI. Для AI используется тонкий контур робота, отличающийся от заметок.</p><p>При небольшой высоте окна разделы прокручиваются, а настройки и помощь остаются внизу. Подсказки доступны при наведении и с клавиатуры. В режиме чтения настройки остаются в верхней панели.</p><p>Поиск и AI демонстрационные. Локальные настройки этого варианта отделены от предыдущих макетов.</p><p><a href="gallery.html">Галерея экранов</a> · <a href="icon-reference.html">Исходные иконки</a></p>'];
+ // Portal hints avoid being clipped by the independently scrolling section list.
+ const hint=document.createElement('div');hint.className='rail-portal-tip';hint.id='rail-portal-tip';hint.role='tooltip';document.body.append(hint);let hinted=null;
+ const hideHint=()=>{hint.classList.remove('visible');hinted?.removeAttribute('aria-describedby');hinted=null;};
+ function showHint(button){hideHint();hinted=button;hint.textContent=button.dataset.tip||button.getAttribute('aria-label');const r=button.getBoundingClientRect();hint.style.left=(rail.getBoundingClientRect().right+8)+'px';hint.style.top=Math.max(8,Math.min(innerHeight-40,r.top+(r.height-32)/2))+'px';hint.classList.add('visible');button.setAttribute('aria-describedby',hint.id);}
+ rail.querySelectorAll('button').forEach(b=>{b.removeAttribute('title');b.addEventListener('pointerenter',()=>showHint(b));b.addEventListener('pointerleave',hideHint);b.addEventListener('focus',()=>{b.scrollIntoView({block:'nearest',inline:'nearest'});if(b.matches(':focus-visible'))showHint(b);});b.addEventListener('blur',hideHint);b.addEventListener('click',hideHint);});
+ railScroll.addEventListener('scroll',hideHint,{passive:true});window.addEventListener('resize',hideHint);document.addEventListener('keydown',e=>{if(e.key==='Escape')hideHint();});
  decorate();
 })();
