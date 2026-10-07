@@ -65,7 +65,7 @@
    filters.append(modelGroup);modelGroup.append(modelLabel,$('#search-manage-models'));
    $('#search-manage-models').innerHTML=icon('settings');$('#search-manage-models').setAttribute('aria-label','Подключить и настроить модели');$('#search-manage-models').title='Мои модели';
   }
-  $('.search-mode-description').textContent=searchMode==='exact'?'Точные совпадения в выбранных источниках.':searchMode==='ai'?'Ответ на вопрос со ссылками на выбранные источники.':'Точные совпадения и AI-ответ показаны отдельно.';
+  $('.search-mode-description').textContent=searchMode==='exact'?'Точные совпадения в выбранных источниках.':searchMode==='ai'?'Ответ на вопрос со ссылками на выбранные источники.':'Точные совпадения и ИИ-ответ показаны отдельно.';
   drawIcons(form);window.vedaSelects?.enhance?.(form);
  };
  runSearch=function(){

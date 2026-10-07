@@ -7,7 +7,7 @@ icons.expand = 'M8 3H3v5 M16 3h5v5 M3 16v5h5 M21 16v5h-5';
 icons.more = 'M5 12h.01 M12 12h.01 M19 12h.01';
 const notesRail = $('.rail [data-view="notes"]');
 notesRail.after($('#references-button'));
-$('#references-button').insertAdjacentHTML('afterend', '<button class="rail-item" data-nav="ai" aria-label="AI-помощник"><i data-icon="spark"></i></button>');
+$('#references-button').insertAdjacentHTML('afterend', '<button class="rail-item" data-nav="ai" aria-label="ИИ-помощник"><i data-icon="spark"></i></button>');
 $('.rail-item').dataset.nav = 'read';
 $('.inspector-tabs').innerHTML = '<h2 id="tool-title">Заметки</h2><button id="tool-mode" class="outline-button"></button><button id="tool-close" class="icon-button" aria-label="Вернуться к книге"><i data-icon="close"></i></button>';
 $('#notes-panel .panel-context').insertAdjacentHTML('afterend', '<label class="search-box notes-search"><i data-icon="search"></i><input id="notes-search" placeholder="Найти в заметках" aria-label="Поиск по заметкам"></label>');
@@ -35,7 +35,7 @@ function updateToolMode() {
   document.body.classList.toggle('tool-page', open && toolMode === 'page');
   document.body.classList.toggle('tool-panel', open && toolMode === 'panel');
   document.body.classList.remove('mobile-inspector');
-  $('#tool-title').textContent = view === 'ai' ? 'AI-помощник' : toolMode === 'page' ? 'Мои заметки' : 'Заметки к тексту';
+  $('#tool-title').textContent = view === 'ai' ? 'ИИ-помощник' : toolMode === 'page' ? 'Мои заметки' : 'Заметки к тексту';
   $('#tool-mode').innerHTML = icon(toolMode === 'page' ? 'panel' : 'expand') + '<span>' + (toolMode === 'page' ? (innerWidth <= 700 ? 'С книгой' : 'Рядом с книгой') : 'На всю страницу') + '</span>';
   $('#tool-mode').setAttribute('aria-label', toolMode === 'page' ? 'Показать в контексте книги' : 'Открыть отдельной страницей');
   drawIcons($('.inspector-tabs'));
@@ -126,7 +126,7 @@ document.querySelectorAll('.rail-item').forEach(b => {
   b.removeAttribute('title');
 });
 
-$('.mobile-nav').innerHTML = [['catalog','folder','Каталог'],['read','book','Читать'],['notes','note','Заметки'],['ai','spark','AI'],['more','more','Ещё']].map(([id,ico,label]) => `<button data-mobile="${id}">${icon(ico)}<span>${label}</span></button>`).join('');
+$('.mobile-nav').innerHTML = [['catalog','folder','Каталог'],['read','book','Читать'],['notes','note','Заметки'],['ai','spark','ИИ'],['more','more','Ещё']].map(([id,ico,label]) => `<button data-mobile="${id}">${icon(ico)}<span>${label}</span></button>`).join('');
 function openMore() {
   simpleDialog('Разделы Ведарамы', '<div class="mobile-menu">' + [['references','book','Справочники','Термины, личности и места'],['shelves','shelf','Мои полки','Подборки книг'],['bookmarks','bookmark','Закладки','Сохранённые места'],['converter','globe','Транслитерация','Системы записи санскрита'],['settings','settings','Вид и тема','Размер текста и оформление']].map(([id,ico,title,caption]) => `<button data-menu="${id}">${icon(ico)}<span><strong>${title}</strong><small>${caption}</small></span>${icon('right')}</button>`).join('') + '</div><div class="menu-links"><button id="mobile-about">О макете</button></div>');
   $('#dialog').dataset.kind = 'menu';
@@ -187,5 +187,5 @@ renderNotes();
 drawIcons();
 updateToolMode();
 if (new URLSearchParams(location.search).get('section') === 'converter') showSection('converter');
-descriptions.brief = ['Ведарама · макет 04', '<p>Единые подсказки и подсветка разделов. Справочники находятся после заметок. Кнопка выбора книги открывает каталог.</p><p>Заметки и AI открываются отдельной страницей из навигации или рядом с книгой из панели чтения. Переключение сохраняет текст заметки и диалог.</p><p>На телефоне: компактная шапка, нижняя навигация, меню дополнительных разделов и контекстная панель поверх книги. Светлая и тёмная темы применяются ко всем элементам.</p><p>Это интерактивный макет: AI и серверные сервисы не подключены.</p><div class="chips"><a href="mobile-preview.html?v=4">Мобильный показ ↗</a></div>'];
+descriptions.brief = ['Ведарама · макет 04', '<p>Единые подсказки и подсветка разделов. Справочники находятся после заметок. Кнопка выбора книги открывает каталог.</p><p>Заметки и ИИ открываются отдельной страницей из навигации или рядом с книгой из панели чтения. Переключение сохраняет текст заметки и диалог.</p><p>На телефоне: компактная шапка, нижняя навигация, меню дополнительных разделов и контекстная панель поверх книги. Светлая и тёмная темы применяются ко всем элементам.</p><p>Это интерактивный макет: ИИ и серверные сервисы не подключены.</p><div class="chips"><a href="mobile-preview.html?v=4">Мобильный показ ↗</a></div>'];
 

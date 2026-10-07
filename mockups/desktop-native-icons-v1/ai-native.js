@@ -1,4 +1,4 @@
-// Desktop AI composition follows DesktopChatToolbar / DesktopChatSidebar.
+// Desktop ИИ composition follows DesktopChatToolbar / DesktopChatSidebar.
 // This is a local interaction prototype. No requests are sent to providers.
 (() => {
  const panel=$('#ai-panel'),copy=x=>JSON.parse(JSON.stringify(x));
@@ -7,7 +7,7 @@
  const fresh=()=>({id:uid(),title:'Новый диалог',turns:[],draft:'',attachments:[],model:defaultModelId,library:true});
  const main=document.createElement('div');main.className='native-chat-main';
  [...panel.children].filter(e=>!e.matches('.panel-context')).forEach(e=>main.append(e));panel.append(main);
- panel.insertAdjacentHTML('afterbegin',`<aside class="native-dialogs" aria-label="Диалоги AI"><header><h3>Диалоги</h3><button type="button" id="native-new-dialog">${icon('plus')}Новый</button></header><label class="native-dialog-search">${icon('search')}<input id="native-dialog-query" type="search" placeholder="Поиск по диалогам" aria-label="Поиск по диалогам"></label><div id="native-dialog-list"></div></aside>`);
+ panel.insertAdjacentHTML('afterbegin',`<aside class="native-dialogs" aria-label="Диалоги ИИ"><header><h3>Диалоги</h3><button type="button" id="native-new-dialog">${icon('plus')}Новый</button></header><label class="native-dialog-search">${icon('search')}<input id="native-dialog-query" type="search" placeholder="Поиск по диалогам" aria-label="Поиск по диалогам"></label><div id="native-dialog-list"></div></aside>`);
  const historyIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.2-5.7L3.5 8.5M3.5 4.5v4h4M12 7v5l3 2"/></svg>';
  $('.chat-model-bar').insertAdjacentHTML('afterbegin',`<button type="button" id="native-history-toggle" class="icon-button" aria-label="Скрыть диалоги" title="Показать или скрыть диалоги">${historyIcon}</button><strong id="native-dialog-title">Новый диалог</strong>`);
  $('#manage-chat-models').innerHTML=icon('settings')+'<span>Модели</span>';
@@ -62,14 +62,14 @@
   simpleDialog('Добавить стих в чат',`<p>Выберите стих из открытого фрагмента главы. Текст останется в контексте диалога при переходе по книге.</p><div class="native-verse-picker">${[46,47,48,49,50].map(n=>{const c=readVerse(n);return `<button type="button" data-attach-verse="${n}"><strong>Бхагавад-гита · 2.${n}${n===current?' · читаю сейчас':''}</strong><span>${escapeText(c.text.slice(0,160))}…</span>${icon('plus')}</button>`;}).join('')}</div><p class="model-dialog-hint">В макете доступны тексты 46–50. Прикрепляется текст выбранного издания.</p>`);
   document.querySelectorAll('[data-attach-verse]').forEach(b=>b.onclick=()=>{addVerse(Number(b.dataset.attachVerse));$('#dialog').close();question.focus();});
  };
- document.querySelectorAll('.continuous-verse-heading').forEach(h=>{const n=Number(h.parentElement.dataset.readerVerse);h.insertAdjacentHTML('beforeend',`<button type="button" class="native-verse-chat" data-verse-chat="${n}" title="Добавить текст ${n} в AI-чат">${icon('spark')}<span>В чат</span></button>`);h.querySelector('[data-verse-chat]').onclick=()=>addVerse(n,true);});
+ document.querySelectorAll('.continuous-verse-heading').forEach(h=>{const n=Number(h.parentElement.dataset.readerVerse);h.insertAdjacentHTML('beforeend',`<button type="button" class="native-verse-chat" data-verse-chat="${n}" title="Добавить текст ${n} в ИИ-чат">${icon('spark')}<span>В чат</span></button>`);h.querySelector('[data-verse-chat]').onclick=()=>addVerse(n,true);});
  const previousAppend=appendChatTurn;
  appendChatTurn=function(text,modelName=chosenModel().name,contexts=copy(attachments)){
   previousAppend(text,modelName);const turn=$('#ai-messages .ai-turn:last-child');turn.dataset.contexts=JSON.stringify(contexts);
   if(contexts.length){turn.querySelector('.chat-user').insertAdjacentHTML('beforebegin','<div class="native-sent-contexts">'+contexts.map(c=>`<details><summary>${icon('book')}${escapeText(c.address)}<small>В контексте</small></summary><p>${escapeText(c.text)}</p></details>`).join('')+'</div>');}
   // Keep the preview honest: illustrate delivery of context, not a model response to arbitrary verses.
   const answer=turn.querySelector('.chat-assistant');
-  answer.innerHTML=`<div class="native-answer-model">${modelBrand(availableModels().find(m=>m.name===modelName)||{model:modelName})}<span>${escapeText(modelName)}</span><small>Пример ответа</small></div><p>${contexts.length?'Стих добавлен в контекст этого сообщения. Здесь появится разбор текста и ответ на ваш вопрос.':'Здесь появится ответ на ваш вопрос по библиотеке.'}</p><p class="native-answer-demo">AI в макете не подключён; запрос к модели не отправляется.</p>`;
+  answer.innerHTML=`<div class="native-answer-model">${modelBrand(availableModels().find(m=>m.name===modelName)||{model:modelName})}<span>${escapeText(modelName)}</span><small>Пример ответа</small></div><p>${contexts.length?'Стих добавлен в контекст этого сообщения. Здесь появится разбор текста и ответ на ваш вопрос.':'Здесь появится ответ на ваш вопрос по библиотеке.'}</p><p class="native-answer-demo">ИИ в макете не подключён; запрос к модели не отправляется.</p>`;
   drawIcons(turn);
  };
  $('#ai-form').onsubmit=e=>{e.preventDefault();const text=question.value.trim();if(!text)return;

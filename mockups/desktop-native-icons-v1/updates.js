@@ -3,9 +3,9 @@ icons.bell='M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9 M10 21h4';
 saved.activityRead=Array.isArray(saved.activityRead)?saved.activityRead:[];
 let activityTab='all';
 const activityItems=[
- {id:'news-reader',kind:'news',label:'Новости Ведарамы',title:'Больше пространства для чтения',text:'Единая светлая и тёмная тема, заметки рядом с книгой и отдельная страница для разговора с AI. Посмотрите, как устроен обновлённый интерфейс.',action:'Открыть книгу',target:'read',icon:'book'},
+ {id:'news-reader',kind:'news',label:'Новости Ведарамы',title:'Больше пространства для чтения',text:'Единая светлая и тёмная тема, заметки рядом с книгой и отдельная страница для разговора с ИИ. Посмотрите, как устроен обновлённый интерфейс.',action:'Открыть книгу',target:'read',icon:'book'},
  {id:'notice-models',kind:'notice',label:'Подсказка',title:'Подключите свою модель для чата',text:'В разделе «Мои модели» можно выбрать провайдера и посмотреть пошаговую инструкцию подключения.',action:'К подключению моделей',target:'models',icon:'spark'},
- {id:'news-search',kind:'news',label:'Новости Ведарамы',title:'Два способа поиска в одном месте',text:'Ищите точную фразу, задавайте вопрос своими словами или включайте оба способа одновременно. Цитаты из книг и ответ AI отображаются отдельно.',action:'Попробовать поиск',target:'search',icon:'search'}
+ {id:'news-search',kind:'news',label:'Новости Ведарамы',title:'Два способа поиска в одном месте',text:'Ищите точную фразу, задавайте вопрос своими словами или включайте оба способа одновременно. Цитаты из книг и ответ ИИ отображаются отдельно.',action:'Попробовать поиск',target:'search',icon:'search'}
 ];
 const activityButton=document.createElement('button');
 activityButton.className='icon-button activity-entry';activityButton.id='activity-button';activityButton.onclick=()=>showSection('activity');
