@@ -158,3 +158,14 @@ body.focus-mode.focus-catalog-open #catalog-resizer{z-index:16}
 .global-tab-header .workspace-tab-select svg.desktop-app-icon[data-desktop-icon=ai],.global-tab-header .workspace-tab-select svg.desktop-app-icon[data-desktop-icon=note]{width:20px;height:20px}
 .reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=ai],.reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=note]{width:22px;height:22px}
 .reading-tools #reading-ai svg.desktop-app-icon,.reading-tools #reading-notes svg.desktop-app-icon,.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ai],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=note]{width:24px;height:24px}
+
+/* Match the native active workspace frame and continuous accent rule. */
+.global-tab-header{position:relative}
+.global-tab-header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--gold-dark);pointer-events:none;z-index:2}
+.global-tab-header .workspace-tab.is-current{border:1px solid var(--gold-dark)}
+.global-tab-header .workspace-tab.is-current::after,.global-tab-header .workspace-tab.is-current::before,.global-tab-header .workspace-tab.is-current+.workspace-tab::before{display:none}
+
+/* Supplied wordmark, converted to SVG paths without substituting a font. */
+.global-tab-header>.brand img{height:32px;width:auto;max-width:none;display:block}
+.global-tab-header>.brand b{display:none}
+@media(max-width:700px){.global-tab-header>.brand img{display:none}.global-tab-header>.brand::before{content:"";display:block;width:12px;height:32px;background:url("assets/vedarama-new-tilak-light.svg") center/contain no-repeat}html[data-theme=dark] .global-tab-header>.brand::before{background-image:url("assets/vedarama-new-tilak-dark.svg")}}

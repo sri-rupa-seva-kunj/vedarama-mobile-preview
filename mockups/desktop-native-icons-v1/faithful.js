@@ -6,8 +6,8 @@
  icons.spark='M4 4h16v12H10l-6 4V4Z';
  drawIcons=function(root=document){originalDraw(root);root.querySelectorAll('i[data-icon]').forEach(el=>{const key=map[el.dataset.icon];if(key&&faithfulIcons[key]){el.innerHTML=faithfulIcons[key];el.querySelector('svg')?.classList.add('native-mark');}});root.querySelectorAll('.tree i[data-icon=down]').forEach(el=>el.innerHTML=faithfulIcons.minus);root.querySelectorAll('.tree i[data-icon=right]').forEach(el=>el.innerHTML=faithfulIcons.plus);root.querySelectorAll('.tree i[data-icon=book]').forEach(el=>el.innerHTML=faithfulIcons['nav-book']);};
  const themed=applyTheme;
- applyTheme=function(theme){themed(theme);$('.brand img').src='assets/logo2-tilak.svg';};
- $('.brand img').alt='Тилака Ведарамы';applyTheme(saved.theme||'light');
+ applyTheme=function(theme){themed(theme);$('.brand img').src='assets/vedarama-new-'+document.documentElement.dataset.theme+'.svg';};
+ $('.brand img').alt='Ведарама';applyTheme(saved.theme||'light');
  $('.review-bar>span').innerHTML='<b>Ведарама</b> · Десктоп · Существующая дизайн-система';
  $('.mobile-preview-link').href='gallery.html';$('.mobile-preview-link').textContent='Все состояния ↗';
  descriptions.brief=['Дополнительный макет десктопа','<p>Вариант в существующей системе Ведарамы: PT Sans и Gaura PT Serif, исходная SVG-тилака, книжные иконки, плоские панели и компактные прямоугольные элементы.</p><p>Функции сохранены: независимые вкладки, непрерывное чтение, связанные издания, заметки, полки, справочники, ИИ и два режима поиска.</p><p>Визуальная основа — согласованные мобильные материалы, итерация 10 от 24 сентября. Этот вариант отдельный: прежний десктоп и мобильные макеты не изменены.</p><p>Поиск, ответы ИИ, подключения и загрузки демонстрационные. Вкладки, черновики и настройки сохраняются локально, отдельно от старого макета.</p><p><a href="gallery.html">Открыть галерею состояний</a></p>'];
