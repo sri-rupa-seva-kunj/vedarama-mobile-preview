@@ -143,11 +143,18 @@ body.focus-mode.focus-catalog-open #catalog-resizer{z-index:16}
 
 @media(min-width:1280px){body.focus-mode.focus-catalog-open #book-catalog{position:static;box-shadow:none}}
 
-/* Keep each workspace visibly separate, including inactive tabs. */
-.global-tab-header .workspace-tab-list{gap:4px}
-.global-tab-header .workspace-tab{border-color:var(--stroke);background:var(--panel-soft);border-radius:3px 3px 0 0}
+/* One divider between workspaces; no tab frames. */
+.global-tab-header .workspace-tab-list{gap:0}
+.global-tab-header .workspace-tab{border:0;background:transparent;border-radius:0}
+.global-tab-header .workspace-tab+.workspace-tab::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:1px;background:var(--stroke);pointer-events:none}
+.global-tab-header #new-tab svg.desktop-app-icon,.global-tab-header .workspace-tab-select svg.desktop-app-icon[data-desktop-icon=plus]{width:16px;height:16px}
 .global-tab-header .workspace-tab:hover{background:var(--surface)}
 .global-tab-header .workspace-tab.is-current,.global-tab-header .workspace-tab.is-current:hover{background:var(--white);color:var(--ink)}
 /* Focus outlines are disabled throughout this mockup. */
 *:focus,*:focus-visible,*:focus-within{outline:none!important}
 #compact-catalog-toggle{border:0!important}
+
+/* Match the two chat-shaped marks in every shared control row. */
+.global-tab-header .workspace-tab-select svg.desktop-app-icon[data-desktop-icon=ai],.global-tab-header .workspace-tab-select svg.desktop-app-icon[data-desktop-icon=note]{width:20px;height:20px}
+.reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=ai],.reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=note]{width:22px;height:22px}
+.reading-tools #reading-ai svg.desktop-app-icon,.reading-tools #reading-notes svg.desktop-app-icon,.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ai],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=note]{width:24px;height:24px}
