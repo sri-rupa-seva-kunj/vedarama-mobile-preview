@@ -8,7 +8,7 @@
  drawIcons(toggle);drawIcons(focusToggle);
  const compactToggle=document.createElement('button');compactToggle.id='compact-catalog-toggle';compactToggle.innerHTML='<i data-icon="book"></i><span class="catalog-toggle-label">Открыть каталог</span>';
  $('.reading-toolbar').prepend(compactToggle);compactToggle.setAttribute('aria-controls',catalog.id);drawIcons(compactToggle);
- $('.catalog-title').insertAdjacentHTML('beforeend','<button id="collapse-catalog" class="catalog-hide-button" aria-label="Скрыть каталог книг" aria-controls="book-catalog">Скрыть каталог</button>');
+ $('.catalog-title').insertAdjacentHTML('beforeend','<button id="collapse-catalog" class="catalog-hide-button" aria-label="Скрыть каталог книг" aria-controls="book-catalog"><span class="catalog-hide-label">Скрыть каталог</span></button>');
  const collapse=$('#collapse-catalog');collapse.insertAdjacentHTML('afterbegin',fold);drawIcons($('.catalog-title'));
  toggle.setAttribute('aria-controls','book-catalog');
  // A distinct icon means returning to the full workspace, not toggling a sidebar.
