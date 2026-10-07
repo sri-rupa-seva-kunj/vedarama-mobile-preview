@@ -46,7 +46,7 @@
 .reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=note]{width:22px;height:22px}
 .reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=ai]{width:24px;height:24px}
 .reading-toolbar .reader-actions .aa svg.desktop-app-icon{width:22px;height:22px}
-.reader-actions svg[data-desktop-icon=ai] g[stroke-width]{stroke-width:1.25}
+.reader-actions svg[data-desktop-icon=ai] g[stroke-width]{stroke-width:1.2}
 .reading-toolbar .reader-actions .count{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:18px;padding:0 3px;margin:0;line-height:1;font-size:11px;vertical-align:middle}
 .reading-toolbar .reader-actions>button[aria-pressed=true]{color:var(--gold-dark)}
 @media(max-width:1200px){
@@ -97,3 +97,20 @@ body:not(.tool-page) .native-chat-main .suggestions button{padding:12px}
 .rail-portal-tip.visible{transition-delay:180ms}
 
 .rail .rail-scroll::-webkit-scrollbar-thumb{border:0}
+
+/* Equal insets win over the older #ai-panel toolbar rules. */
+#ai-panel .native-chat-main .chat-model-bar{height:56px;min-height:56px;padding:9px 20px;align-items:center;gap:10px}
+#ai-panel .native-dialogs header{height:56px;min-height:56px;padding:9px 16px}
+#workspace-panel .workspace-heading h1{margin-top:0}
+.search-page-heading h1,.new-tab-page h1{margin-top:0}
+.reader-footer svg.desktop-app-icon[data-desktop-icon=globe]{width:14px;height:14px}
+.chapter-navigation svg.desktop-app-icon[data-desktop-icon=back],.chapter-navigation svg.desktop-app-icon[data-desktop-icon=forward]{width:20px;height:20px}
+.chapter-navigation svg.desktop-app-icon[data-desktop-icon=down]{width:16px;height:16px}
+@media(max-width:1200px){#ai-panel .native-chat-main .chat-model-bar{padding:9px 16px;gap:8px}}
+@media(max-height:560px){#ai-panel .native-chat-main .chat-model-bar,#ai-panel .native-dialogs header{height:48px;min-height:48px;padding-top:5px;padding-bottom:5px}}
+
+/* Match the catalog field to the surrounding theme. */
+html[data-theme=dark] .catalog-search{background:var(--panel-soft);color:var(--ink);border-color:var(--stroke)}
+html[data-theme=dark] .catalog-search input{background:transparent;color:var(--ink)}
+html[data-theme=dark] .catalog-search input::placeholder,html[data-theme=dark] .catalog-search svg{color:var(--secondary)}
+.model-editor-heading h2{margin-top:0}
