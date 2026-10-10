@@ -21,6 +21,8 @@ function syncNavigation() {
     const key = b.dataset.nav || b.dataset.view || (b.id === 'references-button' ? 'references' : b.dataset.dialog);
     const selected = b.dataset.libraryLanguage ? active === 'read' && b.dataset.libraryLanguage === window.libraryLanguage : key === active || (active === 'saved' && key === savedTab);
     b.classList.toggle('active', selected);
+    // Rail buttons navigate to pages; opening a book tool must not press them.
+    b.removeAttribute('aria-pressed');
     if (selected) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
   document.querySelectorAll('[data-mobile]').forEach(b => {

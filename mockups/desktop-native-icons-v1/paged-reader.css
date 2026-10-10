@@ -1,7 +1,7 @@
 #reading-pages{gap:7px;white-space:nowrap;font-size:12px}
 #reading-pages[aria-pressed=true]{background:var(--panel-soft);color:var(--gold-dark)}
 #reading-pages svg{width:20px;height:20px;flex-shrink:0}
-.paged-reader-controls{display:none;align-items:center;gap:10px;flex-direction:row-reverse}
+.paged-reader-controls{display:none;align-items:center;gap:10px}
 .paged-reader-controls button{width:36px;height:36px;padding:8px}
 .paged-reader-controls span{min-width:60px;text-align:center;font-variant-numeric:tabular-nums;color:var(--secondary)}
 .paged-reader-controls button:disabled{opacity:.3;cursor:default}
@@ -23,8 +23,8 @@ body.paged-reading .book-page p{orphans:2;widows:2}
 body.paged-reading .chapter-end{break-inside:avoid}
 .spread-edge{display:none;position:absolute;top:50%;translate:0 -50%;width:48px;height:116px;align-items:center;justify-content:center;padding:8px;border:0;border-radius:6px;background:transparent;color:var(--secondary);z-index:6;opacity:.65}
 body.paged-reading .spread-edge{display:flex}
-.spread-edge-next{left:max(6px,calc((100% - 1000px)/2 - 56px))}
-.spread-edge-prev{right:max(6px,calc((100% - 1000px)/2 - 56px))}
+.spread-edge-next{right:max(6px,calc((100% - 1000px)/2 - 56px))}
+.spread-edge-prev{left:max(6px,calc((100% - 1000px)/2 - 56px))}
 .spread-edge svg,.spread-edge svg.desktop-app-icon{width:32px;height:48px;stroke-width:1.5}
 .spread-edge:not(:disabled):hover,.spread-edge:focus-visible{background:var(--panel-soft);color:var(--gold-dark);opacity:1}
 .spread-edge:disabled{opacity:.16;cursor:default}
