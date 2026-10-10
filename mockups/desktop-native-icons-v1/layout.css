@@ -20,7 +20,7 @@
 .reading-tools>button{height:36px;min-width:36px;border-radius:6px;padding:8px;color:var(--secondary)}
 .reading-tools>button:hover{background:var(--surface);color:var(--ink)}
 .reading-tools>button[aria-pressed=true]{color:var(--gold-dark);background:var(--accent-wash)}
-.reading-tools #exit-reading{gap:8px;margin-left:6px;border-left:1px solid var(--stroke);border-radius:0;padding-left:14px;font-size:12px;color:var(--ink)}
+.reading-tools #exit-reading{gap:8px;margin-left:6px;border-left:0;border-radius:0;padding-left:14px;font-size:12px;color:var(--ink)}
 .focus-mode .reading-tools{display:flex}
 .focus-mode .tab-workspace .app-header,.focus-mode .reading-toolbar,.focus-mode .reader-footer,.focus-mode .review-bar,.focus-mode .mobile-nav{display:none!important}
 .focus-mode .application{height:var(--phone-height,100dvh);min-height:0}

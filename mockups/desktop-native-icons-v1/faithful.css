@@ -48,7 +48,7 @@ dialog{border-radius:4px!important;box-shadow:0 6px 28px #0002;background:var(--
 .reading-tools>button{height:36px;min-width:36px;padding:8px;color:var(--secondary)}
 .reading-tools>button svg{width:20px;height:20px;flex-shrink:0}
 .reading-tools .reading-line-icon,.reading-tools #exit-reading svg{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
-.reading-tools #exit-reading{color:var(--secondary);border-left:1px solid var(--stroke);margin-left:8px;padding-left:14px}
+.reading-tools #exit-reading{color:var(--secondary);border-left:0;margin-left:8px;padding-left:14px}
 .desktop-control-tip{position:fixed;z-index:100;background:var(--white);color:var(--ink);border:1px solid var(--stroke);border-radius:3px;padding:7px 12px;font:13px 'PT Sans',sans-serif;box-shadow:var(--shadow);pointer-events:none;opacity:0;transform:translateY(-4px);transition:opacity .14s ease .2s,transform .14s ease .2s;white-space:nowrap}
 .desktop-control-tip.visible{opacity:1;transform:translateY(0)}
 :is(#catalog-resizer,#search-catalog-resizer){position:fixed;width:8px;z-index:7;cursor:col-resize;touch-action:none;outline:0}
