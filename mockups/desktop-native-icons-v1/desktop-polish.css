@@ -116,10 +116,11 @@ html[data-theme=dark] .catalog-search input::placeholder,html[data-theme=dark] .
 .model-editor-heading h2{margin-top:0}
 
 /* Explicit catalogue actions: icon, action label and direction. */
-#toggle-tree{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:152px;min-width:152px;height:34px;min-height:34px;padding:5px 9px;font-size:13px;white-space:nowrap;border:0;color:var(--secondary)}
+#toggle-tree{display:inline-flex;align-items:center;justify-content:flex-start;gap:7px;width:152px;min-width:152px;height:34px;min-height:34px;padding:5px 9px;font-size:13px;white-space:nowrap;border:0;color:var(--secondary)}
 #toggle-tree i,#reading-catalog i{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 #toggle-tree svg.desktop-app-icon,#reading-catalog svg.desktop-app-icon{width:20px;height:20px}
 .catalog-fold{width:12px;height:12px;flex-shrink:0;transition:transform 160ms ease}
+#toggle-tree>.catalog-fold{margin-left:auto}
 #toggle-tree:not(.catalog-is-open)>.catalog-fold{transform:rotate(180deg)}
 #toggle-tree.catalog-is-open{background:transparent;color:var(--secondary)}
 #toggle-tree:hover,#toggle-tree:focus-visible{background:var(--surface);color:var(--ink)}
@@ -159,13 +160,27 @@ body.focus-mode.focus-catalog-open #catalog-resizer{z-index:16}
 .reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=ai],.reading-toolbar .reader-actions svg.desktop-app-icon[data-desktop-icon=note]{width:22px;height:22px}
 .reading-tools #reading-ai svg.desktop-app-icon,.reading-tools #reading-notes svg.desktop-app-icon,.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ai],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=note]{width:24px;height:24px}
 
-/* Match the native active workspace frame and continuous accent rule. */
+/* A filled active tab joins the continuous rule without a surrounding frame. */
 .global-tab-header{position:relative}
-.global-tab-header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--gold-dark);pointer-events:none;z-index:2}
-.global-tab-header .workspace-tab.is-current{border:1px solid var(--gold-dark)}
+.global-tab-header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:4px;background:var(--accent-wash);pointer-events:none;z-index:2}
+.global-tab-header .workspace-tab.is-current{border:0}
 .global-tab-header .workspace-tab.is-current::after,.global-tab-header .workspace-tab.is-current::before,.global-tab-header .workspace-tab.is-current+.workspace-tab::before{display:none}
 
 /* Supplied wordmark, converted to SVG paths without substituting a font. */
 .global-tab-header>.brand img{height:32px;width:auto;max-width:none;display:block}
 .global-tab-header>.brand b{display:none}
 @media(max-width:700px){.global-tab-header>.brand img{display:none}.global-tab-header>.brand::before{content:"";display:block;width:12px;height:32px;background:url("assets/vedarama-new-tilak-light.svg") center/contain no-repeat}html[data-theme=dark] .global-tab-header>.brand::before{background-image:url("assets/vedarama-new-tilak-dark.svg")}}
+
+.library-note-list{display:grid;gap:12px;margin-top:24px;max-width:760px}
+#workspace-panel #note-editor{margin:24px 0 0;padding:20px;background:var(--panel-soft);border-radius:3px}
+.library-note-card{padding:18px 20px;background:var(--panel-soft);border:1px solid var(--stroke);border-radius:3px}
+.library-note-heading{display:flex;align-items:center;gap:8px;color:var(--secondary);font:12px/1.3 'PT Sans',sans-serif;text-transform:uppercase}
+.library-note-heading>i{display:flex}.library-note-heading>i svg{width:18px;height:18px;color:var(--gold-dark)}
+.library-note-heading>span{flex:1}
+.library-note-heading>button{display:flex;align-items:center;justify-content:center;width:32px;height:32px;padding:8px;color:var(--secondary)}
+.library-note-heading>button:hover{background:var(--surface);color:var(--ink)}
+.library-note-heading>button svg{width:16px;height:16px}
+.library-note-card blockquote{margin:12px 0 8px;padding-left:12px;border-left:2px solid var(--gold-dark);color:var(--secondary);font:14px/1.5 'PT Sans',sans-serif}
+.library-note-card>p{margin:10px 0 0;color:var(--ink);font:15px/1.6 'PT Sans',sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}
+.library-note-list>.empty-state{min-height:180px;max-width:100%;margin-top:0}
+.library-note-list>.empty-state>i svg{width:22px;height:22px;color:var(--gold-dark)}

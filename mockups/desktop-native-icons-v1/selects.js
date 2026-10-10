@@ -62,6 +62,7 @@
   }
   function enhance(root){
     root.querySelectorAll('select').forEach(select=>{
+      if(select.closest('.desktop-motion-ghost'))return;
       if(entries.has(select)){sync(select);return;}
       const wrap=document.createElement('span');wrap.className='veda-select';
       const button=document.createElement('button');button.type='button';button.className='veda-select-trigger';button.setAttribute('role','combobox');button.setAttribute('aria-haspopup','listbox');button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','veda-options-'+(++serial));

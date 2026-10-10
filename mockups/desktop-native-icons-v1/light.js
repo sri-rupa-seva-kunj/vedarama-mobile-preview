@@ -21,7 +21,7 @@ $('#bookmark').onclick=()=>{saved.bookmark=!saved.bookmark;persist();updateBookm
 document.querySelectorAll('[data-question]').forEach(b=>b.onclick=()=>{$('#ai-question').value=b.dataset.question;$('#ai-question').focus();});
 
 const pageMessages=()=>toast('В макете показан БГ 2.47. Переходы к другим стихам будут доступны в приложении.');
-['back','forward','previous-verse','next-verse','bottom-prev','bottom-next'].forEach(id=>$('#'+id).onclick=pageMessages);
+['previous-verse','next-verse','bottom-prev','bottom-next'].forEach(id=>$('#'+id).onclick=pageMessages);
 document.querySelectorAll('[data-verse]').forEach(b=>b.onclick=()=>{if(b.dataset.verse!=='47')pageMessages();});
 $('#catalog-search').oninput=e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('.tree button').forEach(b=>b.hidden=!!q&&!b.textContent.toLowerCase().includes(q));};
 document.querySelectorAll('[data-catalog]').forEach(b=>b.onclick=()=>toast(`Раздел «${b.dataset.catalog}» сохраняется в приложении. Макет показывает дерево категорий.`));

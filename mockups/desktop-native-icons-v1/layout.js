@@ -16,7 +16,7 @@ function renderReadingBookmarks(){
  $('#reading-add-bookmark').onclick=()=>{addBookmark();renderReadingBookmarks();};
  root.querySelectorAll('[data-reading-bookmark]').forEach(b=>b.onclick=()=>{window.readerJump?.(Number(b.dataset.readingBookmark.replace('bg2','')));if(innerWidth<=700)document.body.classList.remove('reading-bookmarks-open');});
  root.querySelectorAll('[data-reading-bookmark-remove]').forEach(b=>b.onclick=()=>{saved.bookmarks=saved.bookmarks.filter(x=>x.id!==b.dataset.readingBookmarkRemove);syncBookmarks();renderReadingBookmarks();});
- $('#reading-all-bookmarks').onclick=()=>{document.body.classList.remove('focus-mode');savedTab='bookmarks';showSection('saved');};
+ $('#reading-all-bookmarks').onclick=()=>{savedTab='bookmarks';showSection('saved');};
 }
 function syncReadingLayout(){
  const focus=document.body.classList.contains('focus-mode'),bookmarks=document.body.classList.contains('reading-bookmarks-open');

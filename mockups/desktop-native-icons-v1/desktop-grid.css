@@ -1,0 +1,147 @@
+/* Fixed shell columns use the catalogue's default width, never its dragged width. */
+:root {
+  --desktop-rail-width: 52px;
+  --desktop-catalog-default-width: 284px;
+  --desktop-content-start: calc(var(--desktop-rail-width) + var(--desktop-catalog-default-width));
+  --desktop-page-inset: 24px;
+  --desktop-page-top: 32px;
+  --desktop-content-max: 1180px;
+}
+
+@media (min-width: 701px) {
+  .global-tab-header {
+    display: grid;
+    grid-template-columns: var(--desktop-content-start) minmax(0, 1fr) auto auto;
+    gap: 0;
+    padding: 0 14px 0 0;
+  }
+  .global-tab-header > .brand {
+    grid-column: 1;
+    width: auto;
+    margin: 0;
+    justify-content: flex-start;
+    padding-left: calc(var(--desktop-rail-width) + 10px);
+  }
+  .global-tab-header > .workspace-tabs {
+    grid-column: 2;
+    margin: 0;
+    padding-left: 0;
+  }
+  .global-tab-header > .reading-tools { grid-column: 3; }
+  .global-tab-header > .global-actions { grid-column: 4; }
+
+  .tab-workspace .app-header {
+    display: grid;
+    grid-template-columns: var(--desktop-rail-width) 152px calc(var(--desktop-catalog-default-width) - 152px) minmax(0, 1fr) auto;
+    gap: 0;
+    padding: 0 14px 0 0;
+  }
+  .tab-workspace .app-header #toggle-tree {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .tab-workspace .app-header .global-search {
+    grid-column: 4;
+    width: 100%;
+    justify-self: start;
+    flex: none;
+    margin: 0;
+  }
+  .tab-workspace .app-header #focus {
+    grid-column: 5;
+    justify-self: end;
+    margin: 0;
+  }
+
+  /* Full section pages share the search/tab axis; nested cards keep their own inset. */
+  #workspace-panel,
+  #workspace-panel:has(.models-layout) {
+    padding: var(--desktop-page-top) var(--desktop-page-inset) 40px var(--desktop-catalog-default-width);
+  }
+  #workspace-panel > * { max-width: var(--desktop-content-max); }
+  #workspace-panel > :is(.search-page, .activity-page, .new-tab-page) {
+    margin: 0;
+    padding-top: 0;
+  }
+  #workspace-panel > .new-tab-page { max-width: 860px; }
+  #workspace-panel > .activity-page { max-width: 1000px; }
+  #workspace-panel :is(.workspace-heading, .search-page-heading) { align-items: flex-start; }
+  #workspace-panel:has(.models-layout) .workspace-heading h1 { margin-top: 0; }
+  #workspace-panel .search-page-heading h1 { margin: 0; }
+  #workspace-panel .models-layout { max-width: var(--desktop-content-max); }
+  #workspace-panel :is(.workspace-controls, .shelf-detail-toolbar) { gap: var(--desktop-page-inset); }
+
+  .tool-page .inspector:has(#notes-panel:not([hidden])) {
+    padding-top: var(--desktop-page-top);
+    padding-left: var(--desktop-catalog-default-width);
+    padding-right: var(--desktop-page-inset);
+  }
+  .tool-page .inspector:has(#notes-panel:not([hidden])) > * {
+    width: 100%;
+    max-width: 860px;
+  }
+  .tool-page .inspector:has(#notes-panel:not([hidden])) > .inspector-tabs {
+    min-height: 54px;
+    height: 54px;
+    padding-bottom: 12px;
+    align-items: flex-start;
+  }
+
+  /* Dialogue history occupies the same default column as the catalogue. */
+  .tool-page .native-dialogs { width: var(--desktop-catalog-default-width); }
+  .tool-page .native-dialog-search { margin-right: 16px; margin-left: 16px; }
+  .tool-page #native-dialog-list { padding-right: 16px; padding-left: 16px; }
+  .tool-page .native-chat-main { container-type: inline-size; }
+  .tool-page #ai-panel .native-chat-main .chat-model-bar {
+    padding-right: var(--desktop-page-inset);
+    padding-left: var(--desktop-page-inset);
+  }
+  .tool-page .native-chat-main #ai-scroll {
+    padding: var(--desktop-page-top) var(--desktop-page-inset) 20px;
+  }
+  .tool-page .native-chat-main #ai-scroll > * {
+    max-width: 860px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .tool-page .native-chat-main #ai-form {
+    padding-right: max(var(--desktop-page-inset), calc(100% - 884px));
+    padding-left: var(--desktop-page-inset);
+    max-width: none;
+    width: 100%;
+    align-self: flex-start;
+  }
+  .tool-page .native-chat-main .ai-disclaimer { width: min(100%, 908px); }
+}
+
+@media (min-width: 701px) and (max-width: 1050px) {
+  #workspace-panel .models-layout,
+  #workspace-panel .converter-grid { grid-template-columns: minmax(0, 1fr); }
+  #workspace-panel:has(.models-layout) > .workspace-heading { grid-template-columns: minmax(0, 1fr); }
+  #workspace-panel:has(.models-layout) .workspace-heading > div:first-child { grid-row: auto; }
+  #workspace-panel:has(.models-layout) .workspace-heading > :is(.models-return, .models-guide-button) {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+  }
+  #workspace-panel .search-page .search-extra { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .focus-mode .reading-tools > :is(#reading-notes, #reading-bookmarks, #reading-appearance, #exit-reading) { display: none; }
+  .focus-mode .reading-tools > #reading-more { display: flex; }
+  .focus-mode .reading-tools > #reading-catalog { width: 36px; min-width: 36px; padding: 8px; }
+  .focus-mode #reading-catalog span { display: none; }
+}
+
+/* Wrap controls when the chat itself is narrow, including a resized application window. */
+@container (max-width: 720px) {
+  .tool-page #ai-panel .native-chat-main .chat-model-bar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 56px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .tool-page #native-dialog-title { flex-basis: calc(100% - 48px); }
+  .tool-page #manage-chat-models span,
+  .tool-page .native-chat-view-actions #tool-mode span { display: none; }
+  .tool-page .native-chat-view-actions { margin-left: auto; }
+}

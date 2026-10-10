@@ -1,0 +1,2183 @@
+{
+  "cases": [
+    {
+      "name": "one-to-two",
+      "before": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": false,
+          "index": 0,
+          "count": 1,
+          "step": 0,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(102, 107, 112)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 0,
+          "y": 44,
+          "width": 1526,
+          "height": 7598.671875,
+          "top": 44,
+          "right": 1526,
+          "bottom": 7642.671875,
+          "left": 0
+        },
+        "next": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "previous": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "stageCount": 0
+      },
+      "samples": [
+        {
+          "t": 0,
+          "opacity": 0,
+          "oldOpacity": 1,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 60,
+          "opacity": 0,
+          "oldOpacity": 0.684643,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 120,
+          "opacity": 0,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 200,
+          "opacity": 0.684643,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 280,
+          "opacity": 1,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        }
+      ],
+      "runs": [
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "desktop-motion-mask local-carousel-mask",
+          "duration": 120,
+          "frames": [
+            {
+              "opacity": "1"
+            },
+            {
+              "opacity": "0"
+            }
+          ]
+        },
+        {
+          "target": "book-scroll",
+          "duration": 160,
+          "frames": [
+            {
+              "opacity": "0"
+            },
+            {
+              "opacity": "1"
+            }
+          ]
+        }
+      ],
+      "final": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": true,
+          "index": 2,
+          "count": 10,
+          "step": 1056,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(102, 107, 112)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 268,
+          "y": 72,
+          "width": 1000,
+          "height": 591,
+          "top": 72,
+          "right": 1268,
+          "bottom": 663,
+          "left": 268
+        },
+        "next": {
+          "x": 212,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 260,
+          "bottom": 425.5,
+          "left": 212
+        },
+        "previous": {
+          "x": 1276,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 1324,
+          "bottom": 425.5,
+          "left": 1276
+        },
+        "stageCount": 0
+      },
+      "visualFrames": [
+        0,
+        60,
+        120,
+        200,
+        280
+      ]
+    },
+    {
+      "name": "two-to-one",
+      "before": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": true,
+          "index": 2,
+          "count": 10,
+          "step": 1056,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(102, 107, 112)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 268,
+          "y": 72,
+          "width": 1000,
+          "height": 591,
+          "top": 72,
+          "right": 1268,
+          "bottom": 663,
+          "left": 268
+        },
+        "next": {
+          "x": 212,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 260,
+          "bottom": 425.5,
+          "left": 212
+        },
+        "previous": {
+          "x": 1276,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 1324,
+          "bottom": 425.5,
+          "left": 1276
+        },
+        "stageCount": 0
+      },
+      "samples": [
+        {
+          "t": 0,
+          "opacity": 0,
+          "oldOpacity": 1,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 60,
+          "opacity": 0,
+          "oldOpacity": 0.684643,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 120,
+          "opacity": 0,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 200,
+          "opacity": 0.684643,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 280,
+          "opacity": 1,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        }
+      ],
+      "runs": [
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "desktop-motion-mask local-carousel-mask",
+          "duration": 120,
+          "frames": [
+            {
+              "opacity": "1"
+            },
+            {
+              "opacity": "0"
+            }
+          ]
+        },
+        {
+          "target": "book-scroll",
+          "duration": 160,
+          "frames": [
+            {
+              "opacity": "0"
+            },
+            {
+              "opacity": "1"
+            }
+          ]
+        }
+      ],
+      "final": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": false,
+          "index": 2,
+          "count": 10,
+          "step": 1056,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(102, 107, 112)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 0,
+          "y": -1480,
+          "width": 1526,
+          "height": 7598.671875,
+          "top": -1480,
+          "right": 1526,
+          "bottom": 6118.671875,
+          "left": 0
+        },
+        "next": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "previous": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "stageCount": 0
+      },
+      "visualFrames": [
+        0,
+        60,
+        120,
+        200,
+        280
+      ]
+    },
+    {
+      "name": "dark-one-to-two",
+      "before": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": false,
+          "index": 2,
+          "count": 10,
+          "step": 1056,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(180, 184, 184)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 0,
+          "y": -1480,
+          "width": 1526,
+          "height": 7598.671875,
+          "top": -1480,
+          "right": 1526,
+          "bottom": 6118.671875,
+          "left": 0
+        },
+        "next": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "previous": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "stageCount": 0
+      },
+      "samples": [
+        {
+          "t": 0,
+          "opacity": 0,
+          "oldOpacity": 1,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 60,
+          "opacity": 0,
+          "oldOpacity": 0.684643,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 120,
+          "opacity": 0,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 200,
+          "opacity": 0.684643,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 280,
+          "opacity": 1,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        }
+      ],
+      "runs": [
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "desktop-motion-mask local-carousel-mask",
+          "duration": 120,
+          "frames": [
+            {
+              "opacity": "1"
+            },
+            {
+              "opacity": "0"
+            }
+          ]
+        },
+        {
+          "target": "book-scroll",
+          "duration": 160,
+          "frames": [
+            {
+              "opacity": "0"
+            },
+            {
+              "opacity": "1"
+            }
+          ]
+        }
+      ],
+      "final": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": true,
+          "index": 2,
+          "count": 10,
+          "step": 1056,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(180, 184, 184)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 268,
+          "y": 72,
+          "width": 1000,
+          "height": 591,
+          "top": 72,
+          "right": 1268,
+          "bottom": 663,
+          "left": 268
+        },
+        "next": {
+          "x": 212,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 260,
+          "bottom": 425.5,
+          "left": 212
+        },
+        "previous": {
+          "x": 1276,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 1324,
+          "bottom": 425.5,
+          "left": 1276
+        },
+        "stageCount": 0
+      },
+      "visualFrames": [
+        0,
+        60,
+        120,
+        200,
+        280
+      ]
+    },
+    {
+      "name": "dark-two-to-one",
+      "before": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": true,
+          "index": 2,
+          "count": 10,
+          "step": 1056,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(180, 184, 184)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 268,
+          "y": 72,
+          "width": 1000,
+          "height": 591,
+          "top": 72,
+          "right": 1268,
+          "bottom": 663,
+          "left": 268
+        },
+        "next": {
+          "x": 212,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 260,
+          "bottom": 425.5,
+          "left": 212
+        },
+        "previous": {
+          "x": 1276,
+          "y": 309.5,
+          "width": 48,
+          "height": 116,
+          "top": 309.5,
+          "right": 1324,
+          "bottom": 425.5,
+          "left": 1276
+        },
+        "stageCount": 0
+      },
+      "samples": [
+        {
+          "t": 0,
+          "opacity": 0,
+          "oldOpacity": 1,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 60,
+          "opacity": 0,
+          "oldOpacity": 0.684643,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 120,
+          "opacity": 0,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 200,
+          "opacity": 0.684643,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        },
+        {
+          "t": 280,
+          "opacity": 1,
+          "oldOpacity": 0,
+          "translate": "none",
+          "scale": "none",
+          "rect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "oldRect": {
+            "x": 0,
+            "y": 44,
+            "width": 1536,
+            "height": 647,
+            "top": 44,
+            "right": 1536,
+            "bottom": 691,
+            "left": 0
+          },
+          "transition": true,
+          "inert": true
+        }
+      ],
+      "runs": [
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "",
+          "duration": 160,
+          "frames": [
+            {},
+            {}
+          ]
+        },
+        {
+          "target": "desktop-motion-mask local-carousel-mask",
+          "duration": 120,
+          "frames": [
+            {
+              "opacity": "1"
+            },
+            {
+              "opacity": "0"
+            }
+          ]
+        },
+        {
+          "target": "book-scroll",
+          "duration": 160,
+          "frames": [
+            {
+              "opacity": "0"
+            },
+            {
+              "opacity": "1"
+            }
+          ]
+        }
+      ],
+      "final": {
+        "focus": true,
+        "phase": "idle",
+        "section": "read",
+        "view": "read",
+        "toolMode": "panel",
+        "paged": {
+          "active": false,
+          "index": 2,
+          "count": 10,
+          "step": 1056,
+          "order": "right-left"
+        },
+        "scene": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "incoming": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 0
+        },
+        "book": {
+          "x": 0,
+          "y": 44,
+          "width": 1536,
+          "height": 647,
+          "top": 44,
+          "right": 1536,
+          "bottom": 691,
+          "left": 0
+        },
+        "plate": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "tab": {
+          "x": 336,
+          "y": 4,
+          "width": 166,
+          "height": 39,
+          "top": 4,
+          "right": 502,
+          "bottom": 43,
+          "left": 336
+        },
+        "count": "1",
+        "countColor": "rgb(180, 184, 184)",
+        "overflow": 0,
+        "ghosts": 0,
+        "moving": 0,
+        "panel": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "panelSlot": {
+          "x": 1536,
+          "y": 44,
+          "width": 0,
+          "height": 691,
+          "top": 44,
+          "right": 1536,
+          "bottom": 735,
+          "left": 1536
+        },
+        "rail": [
+          "ru"
+        ],
+        "flip": false,
+        "spread": {
+          "x": 0,
+          "y": -1480,
+          "width": 1526,
+          "height": 7598.671875,
+          "top": -1480,
+          "right": 1526,
+          "bottom": 6118.671875,
+          "left": 0
+        },
+        "next": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "previous": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "stageCount": 0
+      },
+      "visualFrames": [
+        0,
+        60,
+        120,
+        200,
+        280
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "Bell absent from reading mode",
+      "value": true
+    },
+    {
+      "name": "one-to-two has two opacity animations",
+      "value": true
+    },
+    {
+      "name": "one-to-two blocks invisible book controls",
+      "value": true
+    },
+    {
+      "name": "one-to-two uses opacity without a slide",
+      "value": true
+    },
+    {
+      "name": "one-to-two hides the old view before showing the new view",
+      "value": true
+    },
+    {
+      "name": "one-to-two leaves no invisible source or mask",
+      "value": true
+    },
+    {
+      "name": "Two-page mode enabled",
+      "value": true
+    },
+    {
+      "name": "two-to-one has two opacity animations",
+      "value": true
+    },
+    {
+      "name": "two-to-one blocks invisible book controls",
+      "value": true
+    },
+    {
+      "name": "two-to-one uses opacity without a slide",
+      "value": true
+    },
+    {
+      "name": "two-to-one hides the old view before showing the new view",
+      "value": true
+    },
+    {
+      "name": "two-to-one leaves no invisible source or mask",
+      "value": true
+    },
+    {
+      "name": "dark-one-to-two has two opacity animations",
+      "value": true
+    },
+    {
+      "name": "dark-one-to-two blocks invisible book controls",
+      "value": true
+    },
+    {
+      "name": "dark-one-to-two uses opacity without a slide",
+      "value": true
+    },
+    {
+      "name": "dark-one-to-two hides the old view before showing the new view",
+      "value": true
+    },
+    {
+      "name": "dark-one-to-two leaves no invisible source or mask",
+      "value": true
+    },
+    {
+      "name": "dark-two-to-one has two opacity animations",
+      "value": true
+    },
+    {
+      "name": "dark-two-to-one blocks invisible book controls",
+      "value": true
+    },
+    {
+      "name": "dark-two-to-one uses opacity without a slide",
+      "value": true
+    },
+    {
+      "name": "dark-two-to-one hides the old view before showing the new view",
+      "value": true
+    },
+    {
+      "name": "dark-two-to-one leaves no invisible source or mask",
+      "value": true
+    },
+    {
+      "name": "Exiting two-page reading restores ordinary view",
+      "value": true
+    },
+    {
+      "name": "Bell returns in ordinary mode",
+      "value": true
+    },
+    {
+      "name": "Search scope catalogue is visible",
+      "value": true
+    },
+    {
+      "name": "Reading and search catalogue styles match",
+      "value": true
+    },
+    {
+      "name": "Book checkboxes and category checkbox present",
+      "value": true
+    },
+    {
+      "name": "Selecting a row updates checkbox and category state",
+      "value": true
+    },
+    {
+      "name": "Category selects all four books",
+      "value": true
+    },
+    {
+      "name": "Filtering shows one matching book",
+      "value": true
+    },
+    {
+      "name": "Category collapses",
+      "value": true
+    },
+    {
+      "name": "Splitter available beside catalogue",
+      "value": true
+    },
+    {
+      "name": "Real splitter drag changes width by 80 pixels",
+      "value": true
+    },
+    {
+      "name": "Keyboard resizes by 20 pixels",
+      "value": true
+    },
+    {
+      "name": "Width and selection survive form rerender",
+      "value": true
+    },
+    {
+      "name": "Closing catalogue hides splitter",
+      "value": true
+    },
+    {
+      "name": "No page overflow at 1000 pixels",
+      "value": true
+    },
+    {
+      "name": "Width and selection survive reload",
+      "value": true
+    },
+    {
+      "name": "Selection count remains visible after English library",
+      "value": true
+    },
+    {
+      "name": "Search catalogue starts with category tab selected",
+      "value": true
+    },
+    {
+      "name": "Reduced motion changes format without fade layers",
+      "value": true
+    },
+    {
+      "name": "No JavaScript errors or leftover masks",
+      "value": true
+    }
+  ],
+  "errors": [],
+  "visual": {
+    "root": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "700",
+      "line-height": "18.2px",
+      "min-height": "34px",
+      "padding-left": "4px",
+      "padding-top": "8px",
+      "gap": "8px"
+    },
+    "book": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "700",
+      "line-height": "18.2px",
+      "min-height": "34px",
+      "padding-left": "17px",
+      "padding-top": "8px",
+      "gap": "7px"
+    },
+    "title": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "700",
+      "line-height": "24.3px",
+      "min-height": "auto",
+      "padding-left": "0px",
+      "padding-top": "0px",
+      "gap": "normal"
+    },
+    "tabs": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "11px",
+      "font-weight": "400",
+      "line-height": "15.4px",
+      "min-height": "32px",
+      "padding-left": "0px",
+      "padding-top": "6px",
+      "gap": "8px"
+    },
+    "background": "rgb(245, 243, 239)"
+  },
+  "searchVisual": {
+    "root": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "700",
+      "line-height": "18.2px",
+      "min-height": "34px",
+      "padding-left": "4px",
+      "padding-top": "8px",
+      "gap": "8px"
+    },
+    "book": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "14px",
+      "font-weight": "700",
+      "line-height": "18.2px",
+      "min-height": "34px",
+      "padding-left": "17px",
+      "padding-top": "8px",
+      "gap": "7px"
+    },
+    "title": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "18px",
+      "font-weight": "700",
+      "line-height": "24.3px",
+      "min-height": "auto",
+      "padding-left": "0px",
+      "padding-top": "0px",
+      "gap": "normal"
+    },
+    "tabs": {
+      "font-family": "\"PT Sans\", sans-serif",
+      "font-size": "11px",
+      "font-weight": "400",
+      "line-height": "15.4px",
+      "min-height": "32px",
+      "padding-left": "0px",
+      "padding-top": "6px",
+      "gap": "8px"
+    },
+    "background": "rgb(245, 243, 239)"
+  },
+  "final": {
+    "focus": true,
+    "phase": "idle",
+    "section": "read",
+    "view": "read",
+    "toolMode": "panel",
+    "paged": {
+      "active": true,
+      "index": 0,
+      "count": 14,
+      "step": 924,
+      "order": "right-left"
+    },
+    "scene": {
+      "x": 0,
+      "y": 44,
+      "width": 1000,
+      "height": 576,
+      "top": 44,
+      "right": 1000,
+      "bottom": 620,
+      "left": 0
+    },
+    "incoming": {
+      "x": 0,
+      "y": 44,
+      "width": 1000,
+      "height": 576,
+      "top": 44,
+      "right": 1000,
+      "bottom": 620,
+      "left": 0
+    },
+    "book": {
+      "x": 0,
+      "y": 44,
+      "width": 1000,
+      "height": 532,
+      "top": 44,
+      "right": 1000,
+      "bottom": 576,
+      "left": 0
+    },
+    "plate": {
+      "x": 336,
+      "y": 4,
+      "width": 166,
+      "height": 39,
+      "top": 4,
+      "right": 502,
+      "bottom": 43,
+      "left": 336
+    },
+    "tab": {
+      "x": 336,
+      "y": 4,
+      "width": 166,
+      "height": 39,
+      "top": 4,
+      "right": 502,
+      "bottom": 43,
+      "left": 336
+    },
+    "catalog": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "count": "1",
+    "countColor": "rgb(180, 184, 184)",
+    "overflow": 0,
+    "ghosts": 0,
+    "moving": 0,
+    "panel": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "panelSlot": {
+      "x": 1000,
+      "y": 44,
+      "width": 0,
+      "height": 576,
+      "top": 44,
+      "right": 1000,
+      "bottom": 620,
+      "left": 1000
+    },
+    "rail": [
+      "ru"
+    ],
+    "flip": false,
+    "spread": {
+      "x": 56,
+      "y": 64,
+      "width": 888,
+      "height": 492,
+      "top": 64,
+      "right": 944,
+      "bottom": 556,
+      "left": 56
+    },
+    "next": {
+      "x": 6,
+      "y": 260,
+      "width": 44,
+      "height": 100,
+      "top": 260,
+      "right": 50,
+      "bottom": 360,
+      "left": 6
+    },
+    "previous": {
+      "x": 950,
+      "y": 260,
+      "width": 44,
+      "height": 100,
+      "top": 260,
+      "right": 994,
+      "bottom": 360,
+      "left": 950
+    },
+    "stageCount": 0
+  }
+}

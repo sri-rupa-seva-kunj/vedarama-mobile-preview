@@ -1,0 +1,48 @@
+/* A warm, restrained surface treatment within the existing Vedarama palette. */
+html[data-theme=light]{--white:#fffefa;--panel-soft:#f5f3ef;--surface:#eeece6;--stroke:#dcd7ce;--ink:#262b2e;--secondary:#666b70;--accent-wash:#f3e9d9;--gold:#bc9156;--gold-dark:#92612e;--paper-shadow:0 3px 14px #57422c09;--card-hover:#fcf7ef}
+html[data-theme=dark]{--white:#292e30;--panel-soft:#222628;--surface:#303638;--stroke:#41474a;--ink:#eeeae2;--secondary:#b4b8b8;--accent-wash:#353b3d;--gold:#c9a36c;--gold-dark:#d3ab71;--paper-shadow:0 3px 14px #0002;--card-hover:#303334;--action-fill:#4a5357;--action-hover:#58636b;--action-active:#3f474b;--native-catalog:var(--panel-soft);--native-heading:var(--panel-soft)}
+.global-tab-header{background:var(--accent-wash)}
+.global-tab-header .workspace-tab.is-current,.global-tab-header .workspace-tab.is-current:hover{background:var(--panel-soft);box-shadow:none}
+.global-tab-header .workspace-tab.is-current .workspace-tab-select{color:var(--ink)}
+.global-tab-header .workspace-tab:hover:not(.is-current){background:var(--surface)}
+.global-tab-header::after{background:var(--panel-soft)}
+.tab-workspace .app-header{background:var(--panel-soft)}
+.global-search{background:var(--white);border-color:var(--stroke);box-shadow:inset 0 1px 2px #57422c04;transition:background-color 160ms,border-color 160ms,box-shadow 160ms}
+.global-search:hover,.global-search:focus-within{border-color:var(--gold-dark);box-shadow:0 0 0 2px var(--accent-wash)}
+.rail{background:var(--panel-soft)}
+.rail .rail-item.active{background:var(--accent-wash);border-color:transparent;box-shadow:inset 2px 0 var(--gold-dark)}
+.rail .rail-item:hover{background:var(--surface)}
+.catalog{background:var(--panel-soft)}
+.catalog .tree button.current,.catalog .verses button.current{background:var(--accent-wash)}
+.reader-footer,.chapter-navigation,.reading-toolbar{background:var(--panel-soft)}
+.application .chapter-navigation,.application .rail-bottom{background:var(--panel-soft)}
+.search-box,.catalog-search,.library-query-row,.veda-select-trigger{background:var(--white);transition:background-color 160ms,border-color 160ms,box-shadow 160ms}
+.search-box:focus-within,.catalog-search:focus-within,.library-query-row:focus-within{border-color:var(--gold-dark);box-shadow:0 0 0 2px var(--accent-wash)}
+:is(.outline-button,.text-button,.icon-button,.linked-language-grid span){transition:background-color 160ms,color 160ms,border-color 160ms,box-shadow 160ms}
+.outline-button:hover{background:var(--accent-wash);border-color:var(--gold-dark)}
+.gold-button{box-shadow:0 2px 4px #67441d12;transition:background-color 160ms,color 160ms,box-shadow 160ms}
+.gold-button:not(:disabled):hover{box-shadow:0 3px 8px #67441d20}
+.note-card,.library-note-card,.linked-edition,.connection-card,.search-book-picker,.settings-preview{border-color:var(--stroke);box-shadow:var(--paper-shadow)}
+.linked-edition,.library-note-card{transition:background-color 180ms,border-color 180ms,box-shadow 180ms}
+.linked-edition:hover,.library-note-card:hover{background:var(--card-hover);border-color:color-mix(in srgb,var(--gold-dark) 40%,var(--stroke));box-shadow:0 4px 16px #57422c0e}
+.linked-edition,.note-card,.library-note-card{border-radius:4px}
+.note-card blockquote,.library-note-card blockquote{border-left-color:var(--gold-dark)}
+.new-tab-shortcuts>button{border:1px solid var(--stroke);border-radius:4px;padding:20px;background:var(--white);transition:background-color 180ms,border-color 180ms,box-shadow 180ms,transform 180ms}
+.new-tab-shortcuts>button:hover{border-color:var(--gold-dark);background:var(--card-hover);box-shadow:var(--paper-shadow);transform:translateY(-2px)}
+.new-tab-shortcuts .new-tab-symbol{background:var(--accent-wash);border-radius:4px}
+.native-chat-main .suggestions button:hover{background:var(--accent-wash);border-color:var(--stroke)}
+.native-dialog-row.active,.native-dialog-row[aria-current=true]{background:var(--accent-wash)}
+dialog{box-shadow:0 18px 60px #15191f28;border-color:var(--stroke);border-radius:6px}
+dialog::backdrop{background:#1b222657;backdrop-filter:blur(2px)}
+dialog[open]{display:flex;flex-direction:column;overflow:hidden}
+dialog>.dialog-heading{position:static;flex-shrink:0;background:var(--white)}
+dialog>#dialog-body{overflow:auto;min-height:0;overscroll-behavior:contain}
+.settings-preview{scroll-margin-top:12px}
+.standalone-section-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.standalone-section-actions>button{min-height:36px;padding:8px 12px;font-size:13px;white-space:nowrap}
+@media(min-width:1001px){.new-tab-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media(min-width:701px) and (max-width:1000px){.new-tab-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.standalone-section-actions{flex-wrap:wrap;justify-content:flex-end}}
+.theme-choice-card{transition:background-color 180ms,border-color 180ms,box-shadow 180ms}
+.theme-choice input:checked+.theme-choice-card{box-shadow:0 2px 10px #67441d0d}
+html[data-theme=dark] .global-search{background:var(--white)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}.new-tab-shortcuts>button:hover{transform:none}}

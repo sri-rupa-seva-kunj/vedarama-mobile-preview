@@ -79,7 +79,7 @@ body:not(.tool-page) .native-chat-main #ai-form{padding:10px 12px 6px;gap:7px 12
 body:not(.tool-page) #ai-panel .native-dialogs{display:none}body:not(.tool-page) #ai-panel.native-panel-history-open .native-dialogs{display:flex}
 #chat-model-picker .model-brand{color:var(--gold-dark)}
 @media(max-height:560px){
- body.tool-panel:has(#ai-panel:not([hidden])) .tab-workspace>.app-header{display:none}
+ body.tool-panel:has(#ai-panel:not([hidden])) .tab-workspace .app-header{display:none}
  .inspector:has(#ai-panel:not([hidden]))>.inspector-tabs{min-height:36px;height:36px}
  .native-chat-main .chat-model-bar,body:not(.tool-page) .native-chat-main .chat-model-bar{min-height:40px;padding:3px 10px}
  .native-chat-main #ai-form,body:not(.tool-page) .native-chat-main #ai-form{gap:4px 12px;padding:6px 10px}

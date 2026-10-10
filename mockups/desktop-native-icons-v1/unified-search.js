@@ -18,13 +18,13 @@
  function matches(text,query,match){const terms=searchTerms(query,match).map(fold).filter(Boolean),value=fold(text);return terms.length&&(match==='any'?terms.some(t=>value.includes(t)):terms.every(t=>value.includes(t)));}
  const sourcesOf=run=>run.sources?.length?run.sources:['books'];
  const hasTexts=run=>sourcesOf(run).some(s=>s==='books'||s==='word');
- const scopeHasBook=run=>run.scope!=='shelf'||saved.shelves.find(s=>s.id===run.shelf)?.books.includes(BOOK);
+ const scopeHasBook=run=>run.scope==='catalog'?(run.selectedBooks||[]).includes(BOOK):run.scope!=='shelf'||saved.shelves.find(s=>s.id===run.shelf)?.books.includes(BOOK);
  function dictionaryRows(run){return refEntries.filter(e=>run.dictionaryCategory==='all'||!run.dictionaryCategory||e.category===run.dictionaryCategory).map(e=>({source:'dictionaries',id:e.id,title:e.title,text:e.definition+' '+e.body,search:e.title+' '+e.original+' '+e.definition+' '+e.body,entry:e}));}
  function wordRows(run){return scopeHasBook(run)?glossary.map(e=>({source:'word',id:e.id,title:e.word,text:e.translation,search:run.wordField==='word'?e.word+' '+e.aliases:run.wordField==='translation'?e.translation:e.word+' '+e.aliases+' '+e.translation,entry:e})):[];}
  const originalMatches=matchedSearchRows;
  matchedSearchRows=function(run){
   const list=[];
-  if(sourcesOf(run).includes('books'))list.push(...originalMatches(run).map(r=>({...r,source:'books'})));
+  if(sourcesOf(run).includes('books')&&scopeHasBook(run))list.push(...originalMatches(run).map(r=>({...r,source:'books'})));
   if(sourcesOf(run).includes('dictionaries'))list.push(...dictionaryRows(run).filter(r=>matches(r.search,run.literal,run.match)));
   if(sourcesOf(run).includes('word'))list.push(...wordRows(run).filter(r=>matches(r.search,run.literal,run.match)));
   return list;
@@ -72,6 +72,7 @@
   captureSearchInput();normalize();if(!searchQuery.trim()){$('#library-query').focus();return;}
   if(searchMode==='both'&&searchSeparate&&!searchLiteral.trim()){$('#literal-query').focus();return;}
   if(hasTexts(searchPrefs)&&searchPrefs.scope==='shelf'&&!searchPrefs.shelf){$('#search-shelf').focus();toast('Выберите полку для поиска.');return;}
+  if(hasTexts(searchPrefs)&&searchPrefs.scope==='catalog'&&!searchPrefs.selectedBooks?.length){$('#search-book-filter').focus();toast('Выберите хотя бы одну книгу в каталоге.');return;}
   searchMode=safeSearchMode(searchMode);
   searchRun={...searchPrefs,sources:[...searchPrefs.sources],blocks:[...searchPrefs.blocks],query:searchQuery.trim(),literal:searchMode==='both'&&searchSeparate?searchLiteral.trim():searchQuery.trim(),mode:searchMode};
   searchDirty=false;searchResultTab=searchMode==='ai'?'ai':'exact';$('#search-dirty').hidden=true;$('.global-search input').value=searchQuery;renderSearchResults();

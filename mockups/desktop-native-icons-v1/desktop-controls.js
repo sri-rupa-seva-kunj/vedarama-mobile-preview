@@ -31,7 +31,7 @@
  [toggle,compactToggle,collapse,...document.querySelectorAll('.reading-tools>button'),$('#activity-button')].forEach(b=>{b.removeAttribute('title');b.addEventListener('pointerenter',()=>showHint(b));b.addEventListener('pointerleave',hideHint);b.addEventListener('focus',()=>{if(b.matches(':focus-visible'))showHint(b);});b.addEventListener('blur',hideHint);b.addEventListener('click',hideHint);});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideHint();if(document.body.classList.contains('focus-catalog-open')&&!$('#dialog').open){e.preventDefault();e.stopImmediatePropagation();document.body.classList.remove('focus-catalog-open');focusToggle.focus({preventScroll:true});syncControls();}}},true);
  toggle.onclick=()=>{
-  if(section!=='read'){showSection('read');document.body.classList.remove('tree-hidden','focus-mode','focus-catalog-open');}
+  if(section!=='read'){showSection('read');document.body.classList.remove('tree-hidden');document.body.classList.toggle('focus-catalog-open',document.body.classList.contains('focus-mode'));}
   else if(document.body.classList.contains('focus-mode')){document.body.classList.toggle('focus-catalog-open');document.body.classList.remove('tree-hidden');}
   else if(getComputedStyle(catalog).display==='none'){document.body.classList.remove('tree-hidden','focus-mode');if(innerWidth<=1150&&view!=='read')showSection('read');}
   else document.body.classList.add('tree-hidden');
@@ -52,7 +52,8 @@
   compactToggle.setAttribute('aria-expanded',String(visible));compactToggle.setAttribute('aria-label',toggle.getAttribute('aria-label'));compactToggle.querySelector('span').textContent=visible?'Скрыть каталог':'Открыть каталог';
   focusToggle.setAttribute('aria-expanded',String(visible));focusToggle.setAttribute('aria-label',visible?'Скрыть каталог книг':'Открыть каталог книг');
   $('#activity-button').setAttribute('aria-pressed',String(section==='activity'));
-  splitter.hidden=!visible||innerWidth<=700;
+  const slot=catalog.closest('.desktop-motion-slot'),incomplete=slot&&!document.body.classList.contains('resizing-catalog')&&Math.abs(slot.getBoundingClientRect().width-catalog.getBoundingClientRect().width)>1;
+  splitter.hidden=incomplete||!visible||innerWidth<=700||!!window.workspaceMotionBusy||catalog.closest('.desktop-motion-slot')?.classList.contains('is-moving');
   if(visible){applyWidth(preferred);const r=catalog.getBoundingClientRect();splitter.style.left=(r.right-4)+'px';splitter.style.top=r.top+'px';splitter.style.height=r.height+'px';}
  }
  let drag=null;
@@ -64,7 +65,7 @@
  splitter.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const {min,max}=limits();applyWidth(e.key==='Home'?min:e.key==='End'?max:catalog.getBoundingClientRect().width+(e.key==='ArrowLeft'?-1:1)*(e.shiftKey?10:20),true);syncControls();});
  let scheduled=false;const schedule=()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;syncControls();});};
  new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});
- new ResizeObserver(schedule).observe(catalog);
+ new ResizeObserver(schedule).observe(catalog);document.addEventListener('desktop-layout-settled',schedule);
  window.addEventListener('resize',()=>{hideHint();schedule();});
  syncControls();
 })();

@@ -16,10 +16,10 @@ $('#notes-panel .panel-context').insertAdjacentHTML('beforeend', '<button class=
 document.querySelectorAll('.context-book').forEach(b => b.onclick = () => showSection('read'));
 
 function syncNavigation() {
-  const active = view !== 'read' ? view : section;
+  const active = section === 'read' && toolMode === 'panel' ? 'read' : view !== 'read' ? view : section;
   document.querySelectorAll('.rail-item').forEach(b => {
     const key = b.dataset.nav || b.dataset.view || (b.id === 'references-button' ? 'references' : b.dataset.dialog);
-    const selected = key === active || (active === 'saved' && key === savedTab);
+    const selected = b.dataset.libraryLanguage ? active === 'read' && b.dataset.libraryLanguage === window.libraryLanguage : key === active || (active === 'saved' && key === savedTab);
     b.classList.toggle('active', selected);
     if (selected) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
@@ -36,13 +36,14 @@ function updateToolMode() {
   document.body.classList.toggle('tool-panel', open && toolMode === 'panel');
   document.body.classList.remove('mobile-inspector');
   $('#tool-title').textContent = view === 'ai' ? 'ИИ-помощник' : toolMode === 'page' ? 'Мои заметки' : 'Заметки к тексту';
-  $('#tool-mode').innerHTML = icon(toolMode === 'page' ? 'panel' : 'expand') + '<span>' + (toolMode === 'page' ? (innerWidth <= 700 ? 'С книгой' : 'Рядом с книгой') : 'На всю страницу') + '</span>';
-  $('#tool-mode').setAttribute('aria-label', toolMode === 'page' ? 'Показать в контексте книги' : 'Открыть отдельной страницей');
+  $('#tool-mode').innerHTML = view === 'notes' ? icon('shelf') + '<span>Все заметки</span>' : icon(toolMode === 'page' ? 'panel' : 'expand') + '<span>' + (toolMode === 'page' ? (innerWidth <= 700 ? 'С книгой' : 'Рядом с книгой') : 'На всю страницу') + '</span>';
+  $('#tool-mode').setAttribute('aria-label', view === 'notes' ? 'Открыть заметки в моей библиотеке' : toolMode === 'page' ? 'Показать в контексте книги' : 'Открыть отдельной страницей');
   drawIcons($('.inspector-tabs'));
   filterNotes();
   syncNavigation();
 }
 function openTool(next, mode = 'panel') {
+  if (next === 'notes' && mode === 'page') { showSection('notes'); return; }
   section = mode === 'page' ? next : 'read';
   toolMode = mode;
   document.body.classList.remove('workspace-open', 'mobile-tree', 'reference-detail-open');
@@ -55,7 +56,8 @@ setView = function(next) {
   openTool(next, view === next ? toolMode : 'panel');
 };
 showSection = function(next, resetPanel = true) {
-  if (next === 'notes' || next === 'ai') { openTool(next, 'page'); return; }
+  if (next === 'notes') { savedTab = 'notes'; activeShelf = null; next = 'saved'; }
+  if (next === 'ai') { openTool(next, 'page'); return; }
   document.body.classList.remove('tool-page', 'tool-panel');
   baseShowSection(next, resetPanel);
   if (next === 'converter') renderConverter();
@@ -89,7 +91,7 @@ function filterNotes() {
   if (q && ![...document.querySelectorAll('.note-card')].some(card => !card.hidden)) $('#notes-list').insertAdjacentHTML('beforeend', '<p id="notes-no-results" class="empty-state">Заметок с таким текстом нет.</p>');
 }
 $('#notes-search').oninput = filterNotes;
-$('#tool-mode').onclick = () => { toolMode = toolMode === 'page' ? 'panel' : 'page'; section = toolMode === 'page' ? view : 'read'; updateToolMode(); };
+$('#tool-mode').onclick = () => { if (view === 'notes') { showSection('notes'); return; } toolMode = toolMode === 'page' ? 'panel' : 'page'; section = toolMode === 'page' ? view : 'read'; updateToolMode(); };
 $('#tool-close').onclick = () => showSection('read');
 removeEventListener('resize', updateMobileView);
 addEventListener('resize', updateToolMode);
@@ -98,6 +100,7 @@ addEventListener('resize', updateToolMode);
 document.addEventListener('click', event => {
   const b = event.target.closest('[data-view], [data-nav]');
   if (!b) return;
+  if (b.dataset.libraryLanguage) return;
   event.preventDefault(); event.stopImmediatePropagation();
   const next = b.dataset.nav || b.dataset.view;
   if (next === 'read') showSection('read');
@@ -106,7 +109,8 @@ document.addEventListener('click', event => {
 
 function openCatalogue() {
   showSection('read');
-  document.body.classList.remove('tree-hidden', 'focus-mode');
+  document.body.classList.remove('tree-hidden');
+  if (document.body.classList.contains('focus-mode')) document.body.classList.add('focus-catalog-open');
   if (innerWidth <= 700) document.body.classList.add('mobile-tree');
   $('#catalog-search').focus();
   syncNavigation();

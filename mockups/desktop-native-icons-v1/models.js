@@ -4,7 +4,7 @@ function modelBrand(value){
  const m=typeof value==='string'?{provider:value}:value;
  const text=[m.provider,m.providerName,m.model,m.id].filter(Boolean).join(' ').toLowerCase();
  const id=/claude|anthropic/.test(text)?'claude':/gemini|google/.test(text)?'gemini':/deepseek/.test(text)?'deepseek':/openai|gpt/.test(text)?'openai':'custom';
- return '<svg class="model-brand model-brand-'+id+'" viewBox="0 0 24 24" aria-hidden="true">'+(providerPaths[id]?'<path d="'+providerPaths[id]+'"/>':'<g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="m9.2 14.8-1.7 1.7a3.55 3.55 0 0 1-5-5l3-3a3.55 3.55 0 0 1 5 0M14.8 9.2l1.7-1.7a3.55 3.55 0 0 1 5 5l-3 3a3.55 3.55 0 0 1-5 0m-1.8 1.2 7.2-7.2"/></g>')+'</svg>';
+ return '<svg class="model-brand model-brand-'+id+'" viewBox="0 0 24 24" aria-hidden="true">'+(providerPaths[id]?'<path d="'+providerPaths[id]+'"/>':'<g fill="none" stroke="currentColor" stroke-width="1.4" transform="rotate(-45 12 12)"><rect x="2" y="9" width="12" height="6" rx="3"/><rect x="10" y="9" width="12" height="6" rx="3"/></g>')+'</svg>';
 }
 // Layout follows DesktopModelManagement.tsx and modelProviders.ts in the desktop app.
 // This prototype never sends credentials or connects to model providers.

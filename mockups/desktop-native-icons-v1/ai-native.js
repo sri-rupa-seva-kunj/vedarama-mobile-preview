@@ -20,10 +20,15 @@
  $('#native-dialog-query').oninput=renderHistory;
  function turns(){return [...document.querySelectorAll('#ai-messages .ai-turn')].map(t=>({text:t.querySelector('.question-bubble').textContent,model:t.dataset.modelName,contexts:JSON.parse(t.dataset.contexts||'[]')}));}
  function checkpoint(){const d=dialogs.find(x=>x.id===activeId);if(d)Object.assign(d,{turns:turns(),draft:question.value,attachments:copy(attachments),model:saved.chatModel,library:$('#library-scope').checked});}
+ function updateHistoryButton(){
+  const expanded=toolMode==='page'?!historyClosed:panel.classList.contains('native-panel-history-open');
+  $('#native-history-toggle').setAttribute('aria-expanded',String(expanded));
+  $('#native-history-toggle').setAttribute('aria-label',expanded?'Скрыть диалоги':'Показать диалоги');
+ }
+ const previousSync=syncNavigation;syncNavigation=function(){previousSync();updateHistoryButton();};
  function renderHistory(){
   panel.classList.toggle('native-history-closed',historyClosed);
-  $('#native-history-toggle').setAttribute('aria-expanded',String(toolMode==='page'?!historyClosed:panel.classList.contains('native-panel-history-open')));
-  $('#native-history-toggle').setAttribute('aria-label',historyClosed?'Показать диалоги':'Скрыть диалоги');
+  updateHistoryButton();
   const q=$('#native-dialog-query').value.toLowerCase().trim();
   const list=dialogs.filter(d=>(d.title+' '+d.turns.map(t=>t.text).join(' ')).toLowerCase().includes(q));
   $('#native-dialog-list').innerHTML=list.length?list.map(d=>`<button type="button" data-native-dialog="${d.id}" aria-current="${d.id===activeId?'true':'false'}"><strong>${escapeText(d.title)}</strong><small>${d.turns.length?d.turns.length+' сообщ.':'Новый разговор'}</small></button>`).join(''):'<p class="native-history-empty">Диалоги не найдены</p>';
