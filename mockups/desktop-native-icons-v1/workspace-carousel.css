@@ -11,8 +11,8 @@
 .continuous-reader{overflow:clip}
 .motion-book-scroll-copy::after{content:none!important;display:none!important}
 .motion-book-divider{pointer-events:none}
-@media(min-width:701px){.tool-panel .inspector,.tool-panel .inspector:has(#ai-panel:not([hidden])){width:410px}}
-@media(min-width:701px) and (max-width:1250px){.tool-panel .inspector,.tool-panel .inspector:has(#ai-panel:not([hidden])){width:350px}}
+@media(min-width:701px){.tool-panel .inspector,.tool-panel .inspector:has(#ai-panel:not([hidden])){width:var(--right-panel-width,410px)}}
+@media(min-width:701px) and (max-width:1250px){.tool-panel .inspector,.tool-panel .inspector:has(#ai-panel:not([hidden])){width:var(--right-panel-width,350px)}}
 .activity-list.is-list-moving{gap:0;overflow:clip}
 .activity-motion-row{position:relative;flex:none;overflow:clip;min-height:0}
 .activity-motion-row>.activity-motion-card{position:absolute;left:0;top:0;width:100%;margin:0;will-change:translate}

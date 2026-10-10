@@ -78,15 +78,19 @@
   Promise.all(runs.map(a=>a.finished)).then(()=>{if(panelRun===cleanup)cleanup();}).catch(()=>{});
  };
  window.finishPanelCarousel=()=>panelRun?.();
- window.beginReaderLayoutTransition=function(source){
+ window.beginReaderLayoutTransition=function(source,deferIncoming=false){
   if(window.workspaceMotionBusy||reduced.matches||!source.getBoundingClientRect().height)return;
   readerRun?.();const old=stage(source),opacity=source.style.opacity,inert=source.inert;window.readerLayoutTransition=true;
   source.style.opacity='0';source.inert=true;
-  const runs=[];let frame=0;
+  const runs=[];let frame=0,started=false;
   const cleanup=()=>{cancelAnimationFrame(frame);runs.forEach(a=>a.cancel());old.mask.remove();if(opacity)source.style.opacity=opacity;else source.style.removeProperty('opacity');source.inert=inert;window.readerLayoutTransition=false;if(readerRun===cleanup)readerRun=null;document.dispatchEvent(new Event('desktop-layout-settled'));};readerRun=cleanup;
-  return ()=>{frame=requestAnimationFrame(()=>{
+  const fadeOld=()=>runs.push(old.mask.animate([{opacity:1},{opacity:0}],{duration:120,easing:'ease-in',fill:'both'}));
+  // On leaving reading mode, hide the frozen spread before the shell can reflow it.
+  if(deferIncoming)fadeOld();
+  return ()=>{if(started)return;started=true;frame=requestAnimationFrame(()=>{
    if(readerRun!==cleanup)return;
-   runs.push(old.mask.animate([{opacity:1},{opacity:0}],{duration:120,easing:'ease-in',fill:'both'}),source.animate([{opacity:0},{opacity:1}],{duration:160,delay:120,easing:'ease-out',fill:'both'}));runs[1].finished.then(()=>{if(readerRun===cleanup)cleanup();}).catch(()=>{});
+   if(!deferIncoming)fadeOld();
+   const incoming=source.animate([{opacity:0},{opacity:1}],{duration:160,delay:deferIncoming?0:120,easing:'ease-out',fill:'both'});runs.push(incoming);incoming.finished.then(()=>{if(readerRun===cleanup)cleanup();}).catch(()=>{});
   });};
  };
  window.finishReaderLayoutTransition=()=>readerRun?.();

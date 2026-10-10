@@ -1,0 +1,7 @@
+@media(min-width:701px){
+ body:not(.tool-page) .reading-layout :is(.inspector,#linked-books-panel,#reading-bookmarks-panel){width:var(--right-panel-width,410px)}
+}
+#right-panel-resizer{position:fixed;width:8px;z-index:16;cursor:col-resize;touch-action:none;outline:0}
+#right-panel-resizer::after{content:'';position:absolute;inset:0 3px;background:transparent;transition:background .14s ease}
+#right-panel-resizer:hover::after,#right-panel-resizer:focus-visible::after,.resizing-right-panel #right-panel-resizer::after{background:var(--gold-dark)}
+@media(prefers-reduced-motion:reduce){#right-panel-resizer::after{transition:none}}

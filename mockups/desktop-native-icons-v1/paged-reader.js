@@ -4,7 +4,7 @@
  const preferenceKey='veda-desktop-spreads',reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const viewport=document.createElement('div');viewport.className='paged-reader-window';const initialScroll=scroll.scrollTop;page.before(viewport);viewport.append(page);scroll.scrollTop=initialScroll;
  scroll.tabIndex=0;scroll.setAttribute('aria-label','Текст книги');
- let wanted=localStorage.getItem(preferenceKey)==='2',active=false,index=0,count=1,step=0,frame=0,modeFrame=0,slide=null,drag=null,pendingVerse=null,oldStyles=null,restorePending=false,font=getComputedStyle(page).fontSize,layoutRequested=false,queuedIndex=null,layoutAfterTurn=false;
+ let wanted=localStorage.getItem(preferenceKey)==='2',active=false,index=0,count=1,step=0,frame=0,modeFrame=0,slide=null,drag=null,pendingVerse=null,oldStyles=null,restorePending=false,font=getComputedStyle(page).fontSize,layoutRequested=false,queuedIndex=null,layoutAfterTurn=false,exitTransition=null;
  function busy(){return !!document.querySelector('.desktop-motion-slot.is-moving')||document.body.classList.contains('resizing-catalog');}
  const toggle=document.createElement('button');toggle.id='reading-pages';toggle.title='Чтение на двух страницах: справа, затем слева';toggle.setAttribute('aria-label','Чтение на двух страницах');toggle.setAttribute('aria-pressed','false');
  toggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 4h9v16H2Z M13 4h9v16h-9Z M5 8h3 M16 8h3 M5 12h3 M16 12h3"/></svg><span>Две страницы</span>';tools.insertBefore(toggle,$('#exit-reading'));
@@ -59,7 +59,7 @@
   if(should===active){if(!active&&restorePending&&section==='read'&&scroll.getBoundingClientRect().height){restorePending=false;requestAnimationFrame(()=>baseJump(window.readerGetState().verse));}return;}
   if(busy()||window.workspaceMotionBusy)return;
   // Wait for the workspace chrome, then fade between the reading formats.
-  const begin=(layoutRequested||section==='read')?window.beginReaderLayoutTransition?.(scroll):null;layoutRequested=false;
+  const begin=exitTransition||((layoutRequested||section==='read')?window.beginReaderLayoutTransition?.(scroll):null);exitTransition=null;layoutRequested=false;
   active=should;
   if(active){oldStyles=Object.fromEntries(styleKeys.map(key=>[key,page.style.getPropertyValue(key)]));pendingVerse=window.readerGetState().verse;index=0;document.body.classList.add('paged-reading');scroll.scrollTop=0;layout();}
   else{slide?.cancel();document.body.classList.remove('paged-reading');styleKeys.forEach(key=>{if(oldStyles?.[key])page.style.setProperty(key,oldStyles[key]);else page.style.removeProperty(key);});if(section==='read'&&scroll.getBoundingClientRect().height){requestAnimationFrame(()=>{baseJump(window.readerGetState().verse);});}else restorePending=true;}
@@ -82,5 +82,10 @@
  new MutationObserver(records=>{if(records.some(r=>r.target===document.body))scheduleMode();const changes=records.filter(r=>page.contains(r.target));if(active&&changes.some(r=>r.type==='childList'||r.attributeName==='hidden'||(r.target===page&&getComputedStyle(page).fontSize!==font))){font=getComputedStyle(page).fontSize;if(changes.some(r=>r.type==='childList'&&r.target===page))pendingVerse=window.readerGetState().verse;schedule();}}).observe(document.body,{attributes:true,attributeFilter:['class','hidden','style'],childList:true,subtree:true});
  document.addEventListener('desktop-layout-settled',scheduleMode);window.addEventListener('resize',schedule);document.addEventListener('pointerup',schedule);
  window.finishReaderPageTurn=()=>{queuedIndex=null;window.readerPageTurn.cancel();if(active)syncVerse();};
+ for(const button of [$('#focus'),$('#exit-reading')]){const before=button.onclick;button.onclick=function(event){
+  if(active&&document.body.classList.contains('focus-mode')){window.finishReaderPageTurn();exitTransition=window.beginReaderLayoutTransition?.(scroll,true)||null;}
+  else if(exitTransition){exitTransition=null;window.finishReaderLayoutTransition?.();}
+  before.call(this,event);
+ };}
  window.pagedReader={next:()=>go(index+1),previous:()=>go(index-1),goToVerse:goVerse,setEnabled(value){layoutRequested=true;wanted=!!value;localStorage.setItem(preferenceKey,wanted?'2':'1');syncMode();},overview:()=>({active,index,count,step,order:'right-left'})};syncMode();
 })();
