@@ -11,6 +11,7 @@
 #personal-shelves .section-label button{width:28px;min-width:28px;height:28px;padding:5px}
 #personal-shelves .section-label button svg{width:18px;height:18px}
 .reading-toolbar{gap:8px}
+.tool-panel .inspector .context-book{display:none}
 .reading-toolbar>.chapter-navigation{background:transparent;border:0;padding:0;min-height:36px;flex:none;gap:2px}
 .reader-actions #bookmark{width:auto;min-width:max-content;flex:none;gap:7px;padding:6px 8px;font-size:14px;white-space:nowrap}
 .right-tool-host{display:flex;flex-direction:column;flex:none;width:var(--right-panel-width,410px);height:100%;min-height:0;overflow:clip;border-left:1px solid var(--stroke);background:var(--panel-soft)}

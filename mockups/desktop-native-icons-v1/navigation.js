@@ -93,7 +93,7 @@ function filterNotes() {
   if (q && ![...document.querySelectorAll('.note-card')].some(card => !card.hidden)) $('#notes-list').insertAdjacentHTML('beforeend', '<p id="notes-no-results" class="empty-state">Заметок с таким текстом нет.</p>');
 }
 $('#notes-search').oninput = filterNotes;
-$('#tool-mode').onclick = () => { if (view === 'notes') { showSection('notes'); return; } toolMode = toolMode === 'page' ? 'panel' : 'page'; section = toolMode === 'page' ? view : 'read'; updateToolMode(); };
+$('#tool-mode').onclick = () => { if (view === 'notes') { showSection('notes'); return; } openTool(view, toolMode === 'page' ? 'panel' : 'page'); };
 $('#tool-close').onclick = () => showSection('read');
 removeEventListener('resize', updateMobileView);
 addEventListener('resize', updateToolMode);

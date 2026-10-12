@@ -19,9 +19,11 @@
   if(contentChanges.takeRecords().length)invalidate();
   const cached=prepared;prepared=null;prepareJob?.();prepareJob=null;window.desktopMotion.settle();window.desktopMotion.flush();
   const previous=lastRoute,rect=scene.getBoundingClientRect(),old=cached||window.desktopMotion.snapshot(content);if(cached)window.desktopMotion.refreshSnapshot(content,old);
+  if(axis==='y')window.pagedReader.rememberRoute();
   window.workspaceMotionBusy=true;applying=true;
   try{apply();}finally{applying=false;}
   const next=route();lastRoute=next;document.querySelectorAll('.search-scope-catalog').forEach(el=>el.hidden=section!=='search'||el.dataset.closed==='true');window.desktopMotion.flush();
+  if(axis==='y')window.pagedReader.restoreRoute();
   if(onlyIfRoute&&previous===next){window.workspaceMotionBusy=false;after?.();return;}
   if(onlyIfRoute)sign=order.indexOf(next)>=order.indexOf(previous)?1:-1;
   if(reduced.matches||!rect.width||!rect.height){window.workspaceMotionBusy=false;after?.();return;}

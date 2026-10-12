@@ -4,7 +4,7 @@
  const preferenceKey='veda-desktop-spreads',reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const viewport=document.createElement('div');viewport.className='paged-reader-window';const initialScroll=scroll.scrollTop;page.before(viewport);viewport.append(page);scroll.scrollTop=initialScroll;
  scroll.tabIndex=0;scroll.setAttribute('aria-label','Текст книги');
- let wanted=localStorage.getItem(preferenceKey)==='2',active=false,index=0,count=1,step=0,frame=0,modeFrame=0,slide=null,drag=null,pendingVerse=null,selectedVerse=null,oldStyles=null,restorePending=false,font=getComputedStyle(page).fontSize,layoutRequested=false,queuedIndex=null,layoutAfterTurn=false,exitTransition=null;
+ let wanted=localStorage.getItem(preferenceKey)==='2',active=false,index=0,count=1,step=0,frame=0,modeFrame=0,slide=null,drag=null,pendingVerse=null,selectedVerse=null,oldStyles=null,restorePending=false,font=getComputedStyle(page).fontSize,layoutRequested=false,queuedIndex=null,layoutAfterTurn=false,exitTransition=null,routePosition=null;
  function busy(){return window.headerMotionBusy||!!document.querySelector('.desktop-motion-slot.is-moving')||document.body.classList.contains('resizing-catalog');}
  const toggle=document.createElement('button');toggle.id='reading-pages';toggle.title='Чтение на двух страницах: справа, затем слева';toggle.setAttribute('aria-label','Чтение на двух страницах');toggle.setAttribute('aria-pressed','false');
  toggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 4h9v16H2Z M13 4h9v16h-9Z M5 8h3 M16 8h3 M5 12h3 M16 12h3"/></svg><span>Две страницы</span>';tools.insertBefore(toggle,$('#exit-reading'));
@@ -43,8 +43,8 @@
   const right=page.getBoundingClientRect().right-matrix.m41,offset=right-(r.right-matrix.m41);
   go(Math.floor((Math.max(0,offset)+1)/step),false,false);
  }
- function layout(){
-  frame=0;if(!active||busy())return;if(window.readerPageTurn.active){layoutAfterTurn=true;return;}const keep=anchor(),s=getComputedStyle(scroll),width=Math.min(1000,scroll.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)),height=scroll.clientHeight-parseFloat(s.paddingTop)-parseFloat(s.paddingBottom),gap=innerWidth<=1050?36:56;
+ function layout(force=false,rememberedAnchor=null){
+  frame=0;if(!active||!force&&(busy()||window.workspaceMotionBusy))return;if(window.readerPageTurn.active){layoutAfterTurn=true;return;}const keep=rememberedAnchor?.el.isConnected?rememberedAnchor:anchor(),s=getComputedStyle(scroll),width=Math.min(1000,scroll.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)),height=scroll.clientHeight-parseFloat(s.paddingTop)-parseFloat(s.paddingBottom),gap=innerWidth<=1050?36:56;
   if(width<1||height<1)return;slide?.cancel();page.style.transform='translateX(0)';page.style.width=width+'px';page.style.height=height+'px';page.style.columnWidth=((width-gap)/2)+'px';page.style.columnGap=gap+'px';page.style.columnCount='2';page.style.columnFill='auto';page.style.direction='rtl';step=width+gap;
   const right=page.getBoundingClientRect().right,rects=blocks().flatMap(fragments),left=Math.min(right,...rects.map(r=>r.left));count=Math.max(1,Math.ceil((right-left+gap-1)/step));
   if(pendingVerse!==null){const verse=pendingVerse;pendingVerse=null;selectedVerse=verse;goVerse(verse);}
@@ -55,16 +55,20 @@
   else go(index,false,false);
   scroll.scrollTop=0;scroll.scrollLeft=0;
  }
- function schedule(){if(frame||!active)return;frame=requestAnimationFrame(layout);}
- function syncMode(){
+ function schedule(){if(frame||!active)return;frame=requestAnimationFrame(()=>layout());}
+ function syncMode(restoreRoute=false){
   const should=wanted&&document.body.classList.contains('focus-mode')&&section==='read';toggle.setAttribute('aria-pressed',String(should));position.hidden=!should;
   if(!should&&window.readerPageTurn.active){queuedIndex=null;window.readerPageTurn.cancel();syncVerse();}
   if(should===active){if(!active&&restorePending&&section==='read'&&scroll.getBoundingClientRect().height){restorePending=false;requestAnimationFrame(()=>baseJump(window.readerGetState().verse));}return;}
-  if(busy()||window.workspaceMotionBusy)return;
+  if(!restoreRoute&&(busy()||window.workspaceMotionBusy))return;
   // Wait for the workspace chrome, then fade between the reading formats.
-  const begin=exitTransition||((layoutRequested||section==='read')?window.beginReaderLayoutTransition?.(scroll):null);exitTransition=null;layoutRequested=false;
+  const begin=restoreRoute?null:exitTransition||((layoutRequested||section==='read')?window.beginReaderLayoutTransition?.(scroll):null);exitTransition=null;layoutRequested=false;
   active=should;
-  if(active){oldStyles=Object.fromEntries(styleKeys.map(key=>[key,page.style.getPropertyValue(key)]));pendingVerse=window.readerGetState().verse;index=0;document.body.classList.add('paged-reading');scroll.scrollTop=0;layout();}
+  if(active){oldStyles=Object.fromEntries(styleKeys.map(key=>[key,page.style.getPropertyValue(key)]));pendingVerse=window.readerGetState().verse;index=0;document.body.classList.add('paged-reading');scroll.scrollTop=0;
+   const state=window.readerGetState(),remembered=restoreRoute&&routePosition&&routePosition.verse===state.verse&&routePosition.edition===state.edition&&routePosition.language===state.language?routePosition:null;
+   if(remembered){pendingVerse=null;selectedVerse=remembered.selectedVerse;}
+   layout(restoreRoute,remembered?.anchor);if(restoreRoute)routePosition=null;
+  }
   else{selectedVerse=null;slide?.cancel();document.body.classList.remove('paged-reading');styleKeys.forEach(key=>{if(oldStyles?.[key])page.style.setProperty(key,oldStyles[key]);else page.style.removeProperty(key);});if(section==='read'&&scroll.getBoundingClientRect().height){requestAnimationFrame(()=>{baseJump(window.readerGetState().verse);});}else restorePending=true;}
   begin?.();
  }
@@ -90,5 +94,8 @@
   else if(exitTransition){exitTransition=null;window.finishReaderLayoutTransition?.();}
   before.call(this,event);
  };}
- window.pagedReader={next:()=>go(index+1),previous:()=>go(index-1),goToVerse:goVerse,setEnabled(value){layoutRequested=true;wanted=!!value;localStorage.setItem(preferenceKey,wanted?'2':'1');syncMode();},overview:()=>({active,index,count,step,order:'right-left'})};syncMode();
+ window.pagedReader={next:()=>go(index+1),previous:()=>go(index-1),goToVerse:goVerse,
+  rememberRoute(){if(active&&section==='read'&&document.body.classList.contains('focus-mode')){const state=window.readerGetState();routePosition={verse:state.verse,edition:state.edition,language:state.language,selectedVerse,anchor:anchor()};}},
+  restoreRoute(){if(wanted&&section==='read'&&document.body.classList.contains('focus-mode')){if(!active)syncMode(true);else layout(true);}},
+  setEnabled(value){layoutRequested=true;wanted=!!value;localStorage.setItem(preferenceKey,wanted?'2':'1');syncMode();},overview:()=>({active,index,count,step,order:'right-left'})};syncMode();
 })();
