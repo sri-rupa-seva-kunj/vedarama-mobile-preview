@@ -43,7 +43,8 @@
  };
 
  const bar=$('.workspace-tabs');let tabFrame=0;
- function updateTabs(){
+ function updateTabs(force=false){
+  if(window.headerMotionBusy&&!force)return;
   const list=bar.querySelector('.workspace-tab-list');if(!list)return;
   let overview=$('#tab-overview');
   if(!overview){overview=document.createElement('button');overview.id='tab-overview';overview.className='icon-button';overview.setAttribute('aria-label','Список всех вкладок');overview.title='Все вкладки';overview.innerHTML=icon('down');bar.append(overview);drawIcons(overview);
@@ -69,6 +70,6 @@
  }
  function scheduleTabs(){if(tabFrame)return;tabFrame=requestAnimationFrame(()=>{tabFrame=0;updateTabs();});}
  document.addEventListener('workspace-tabs-change',()=>{updateTabs();scheduleTabs();});
- new ResizeObserver(scheduleTabs).observe(bar);window.addEventListener('resize',scheduleTabs);updateTabs();
+ new ResizeObserver(scheduleTabs).observe(bar);window.addEventListener('resize',scheduleTabs);updateTabs();window.tabStripLayout={update:updateTabs};
 
 })();

@@ -2,9 +2,9 @@
 (() => {
   const STORE='vedarama-native-desktop-tabs-v1';
   const clone=value=>JSON.parse(JSON.stringify(value));
-  const pageNames={new:'Новая вкладка',read:'Бхагавад-гита',references:'Справочники',ai:'ИИ-помощник',notes:'Заметки',saved:'Моя библиотека',search:'Поиск',models:'Мои модели',converter:'Транслитерация',activity:'Новости'};
+  const pageNames={new:'Новая вкладка',read:'Бхагавад-гита',references:'Справочники',ai:'ИИ-помощник',notes:'Заметки',saved:'Моя библиотека',search:'Поиск',models:'Мои модели',converter:'Транслитерация',activity:'Новости',profile:'Профиль'};
   icons['tab-blank']='M3 4h18v16H3Z M3 8h18 M6 6h3';
-  const pageIcons={new:'tab-blank',read:'book',references:'book',ai:'spark',notes:'note',saved:'shelf',search:'search',models:'settings',converter:'globe',activity:'bell'};
+  const pageIcons={new:'tab-blank',read:'book',references:'book',ai:'spark',notes:'note',saved:'shelf',search:'search',models:'settings',converter:'globe',activity:'bell',profile:'user'};
   let tabs=[],currentId='',restoring=false,saveTimer,restoreGeneration=0,storageWarning=false;
   const bar=$('.tabs');bar.className='workspace-tabs';bar.setAttribute('aria-label','Рабочие вкладки');
   const globalHeader=document.createElement('header');globalHeader.className='global-tab-header';
@@ -166,13 +166,13 @@
     window.pageCarousel?.finish();checkpoint();const previousIndex=tabs.findIndex(t=>t.id===currentId),nextIndex=tabs.findIndex(t=>t.id===id),oldFocus=document.body.classList.contains('focus-mode');
     const destination=tabs.find(t=>t.id===id),targetFocus=destination.state.classes.includes('focus-mode');
     const apply=()=>{currentId=id;restore(destination.state,oldFocus);renderTabs();};
-    const after=()=>{if(oldFocus&&!targetFocus)window.prepareReaderFocusExit?.();document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();};
+    const after=()=>{if(oldFocus&&!targetFocus)window.prepareReaderFocusExit?.();if(window.setReaderFocusMode)window.setReaderFocusMode(targetFocus);else{document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();}window.desktopMotion?.flush(true);scheduleSave();};
     if(window.pageCarousel)window.pageCarousel.change('x',nextIndex>previousIndex?1:-1,apply,after);else {apply();after();}
     if(focusTab)$('#tab-'+id)?.focus({preventScroll:true});ensureActiveTabVisible();
   }
   function newTab(){
     window.pageCarousel?.finish();checkpoint();const oldFocus=document.body.classList.contains('focus-mode'),tab={id:newId(),state:blankState()};tabs.push(tab);
-    const apply=()=>{currentId=tab.id;restore(tab.state,oldFocus);renderTabs();},after=()=>{if(oldFocus)window.prepareReaderFocusExit?.();document.body.classList.remove('focus-mode');syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();$('#new-tab-query')?.focus({preventScroll:true});};
+    const apply=()=>{currentId=tab.id;restore(tab.state,oldFocus);renderTabs();},after=()=>{if(oldFocus)window.prepareReaderFocusExit?.();if(window.setReaderFocusMode)window.setReaderFocusMode(false);else{document.body.classList.remove('focus-mode');syncReadingLayout();}window.desktopMotion?.flush(true);scheduleSave();$('#new-tab-query')?.focus({preventScroll:true});};
     if(window.pageCarousel)window.pageCarousel.change('x',1,apply,after);else {apply();after();}ensureActiveTabVisible();
   }
   function closeTab(id){
@@ -181,7 +181,7 @@
     checkpoint();const index=tabs.findIndex(t=>t.id===id);if(index<0)return;
     const wasActive=id===currentId;tabs.splice(index,1);
     if(!tabs.length){newTab();return;}
-    if(wasActive){const destination=tabs[Math.min(index,tabs.length-1)],targetFocus=destination.state.classes.includes('focus-mode'),apply=()=>{currentId=destination.id;restore(destination.state,oldFocus);},after=()=>{if(oldFocus&&!targetFocus)window.prepareReaderFocusExit?.();document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();};if(window.pageCarousel)window.pageCarousel.change('x',index>=tabs.length?-1:1,apply,after);else {apply();after();}}
+    if(wasActive){const destination=tabs[Math.min(index,tabs.length-1)],targetFocus=destination.state.classes.includes('focus-mode'),apply=()=>{currentId=destination.id;restore(destination.state,oldFocus);},after=()=>{if(oldFocus&&!targetFocus)window.prepareReaderFocusExit?.();if(window.setReaderFocusMode)window.setReaderFocusMode(targetFocus);else{document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();}window.desktopMotion?.flush(true);scheduleSave();};if(window.pageCarousel)window.pageCarousel.change('x',index>=tabs.length?-1:1,apply,after);else {apply();after();}}
     if(section==='new')renderNewTab();renderTabs();persistTabs();if(focusTab)$('#tab-'+currentId)?.focus({preventScroll:true});
   }
   // Replace the old '+' action and intercept its legacy keyboard handler.

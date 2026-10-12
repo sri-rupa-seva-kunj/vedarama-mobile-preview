@@ -1,0 +1,12 @@
+/* The same grid tracks carry the logo, tabs and controls throughout a mode change. */
+@media(min-width:701px){
+ .global-tab-header.is-header-moving{isolation:isolate}
+ .global-tab-header.is-header-moving>.desktop-motion-slot{width:100%!important;min-width:0;overflow:clip}
+ .global-tab-header.is-header-moving>.motion-reading-catalog{overflow:visible}
+ .global-tab-header.is-header-moving>.desktop-motion-slot>:first-child{position:absolute;right:0;left:auto;top:0;max-width:none}
+ .global-tab-header.is-header-moving .header-control-copy{position:absolute!important;right:0!important;left:auto!important;top:0!important}
+ .global-tab-header.is-header-moving .workspace-tab{min-width:0!important;max-width:none!important}
+ .global-tab-header.is-header-moving .workspace-tab-select{min-width:0}
+ body.focus-mode .reading-tools>#reading-related{width:auto;min-width:52px;gap:3px}
+ body.focus-mode .reading-tools>#reading-related>small{display:inline;font-size:12px;line-height:18px;color:var(--gold-dark)}
+}

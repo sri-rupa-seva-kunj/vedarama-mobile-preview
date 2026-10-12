@@ -64,7 +64,7 @@
 // Tool panels use a carousel; reading formats use a quiet fade through blank space.
 (() => {
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),easing='cubic-bezier(.22,.7,.2,1)';let panelRun=null,readerRun=null;
- function stage(source){const r=source.getBoundingClientRect(),mask=document.createElement('div'),clone=window.desktopMotion.snapshot(source);mask.className='desktop-motion-mask local-carousel-mask';mask.inert=true;mask.setAttribute('aria-hidden','true');Object.assign(mask.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',zIndex:'4'});Object.assign(clone.style,{position:'absolute',left:'0',top:'0',width:r.width+'px',height:r.height+'px',margin:'0'});mask.append(clone);document.body.append(mask);window.desktopMotion.restoreScroll(clone);return {r,mask,clone};}
+ function stage(source){const r=source.getBoundingClientRect(),mask=document.createElement('div'),clone=window.motionSnapshots?window.motionSnapshots.take(source):window.desktopMotion.snapshot(source);mask.className='desktop-motion-mask local-carousel-mask';mask.inert=true;mask.setAttribute('aria-hidden','true');Object.assign(mask.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',zIndex:'4'});Object.assign(clone.style,{position:'absolute',left:'0',top:'0',width:r.width+'px',height:r.height+'px',margin:'0'});mask.append(clone);document.body.append(mask);window.desktopMotion.restoreScroll(clone);return {r,mask,clone};}
  window.panelCarousel=function(apply,sign){
   panelRun?.();const source=window.rightPanel.host,old=stage(source),border=parseFloat(getComputedStyle(source).borderLeftWidth)||0;
   Object.assign(old.mask.style,{left:(old.r.left+border)+'px',width:(old.r.width-border)+'px'});old.clone.style.left=-border+'px';
@@ -125,19 +125,19 @@
   }
   labels.set(id,text);
  }
- window.tabLabelMotion={set,display:shortLabel};
+ window.tabLabelMotion={set,display:shortLabel,refreshPlate:()=>place()};
  function place(){
   const item=bar.querySelector('.workspace-tab.is-current');if(!item)return;
   const list=bar.querySelector('.workspace-tab-list'),r=item.getBoundingClientRect(),base=list.getBoundingClientRect(),next={x:r.left-base.left+list.scrollLeft-list.clientLeft,w:r.width,h:r.height};
   const connected=!!plate?.isConnected&&plate.parentElement===list;
   if(!connected){plate?.remove();plate=document.createElement('div');plate.className='workspace-tab-plate';plate.setAttribute('aria-hidden','true');list.prepend(plate);}
-  if(connected&&bounds&&Math.abs(bounds.x-next.x)<.5&&Math.abs(bounds.w-next.w)<.5&&Math.abs(bounds.h-next.h)<.5)return;
+  if(!window.headerMotionBusy&&connected&&bounds&&Math.abs(bounds.x-next.x)<.5&&Math.abs(bounds.w-next.w)<.5&&Math.abs(bounds.h-next.h)<.5)return;
   const from=connected&&plateRun&&(plateRun.playState==='running'||plateRun.playState==='paused')?{x:new DOMMatrixReadOnly(getComputedStyle(plate).transform).m41,w:plate.getBoundingClientRect().width}:bounds;
   plateRun?.cancel();Object.assign(plate.style,{transform:'translateX('+next.x+'px)',width:next.w+'px',height:next.h+'px'});
-  if(from&&!reduced.matches&&(Math.abs(from.x-next.x)>.5||Math.abs(from.w-next.w)>.5))plateRun=plate.animate([{transform:'translateX('+from.x+'px)',width:from.w+'px'},{transform:'translateX('+next.x+'px)',width:next.w+'px'}],{duration:380,easing:'cubic-bezier(.22,.7,.2,1)'});
+  if(from&&!window.headerMotionBusy&&!reduced.matches&&(Math.abs(from.x-next.x)>.5||Math.abs(from.w-next.w)>.5))plateRun=plate.animate([{transform:'translateX('+from.x+'px)',width:from.w+'px'},{transform:'translateX('+next.x+'px)',width:next.w+'px'}],{duration:380,easing:'cubic-bezier(.22,.7,.2,1)'});
   bounds=next;
  }
  document.addEventListener('workspace-tabs-before-render',()=>{const list=bar.querySelector('.workspace-tab-list'),r=plate?.getBoundingClientRect(),b=list?.getBoundingClientRect();if(r&&b)bounds={x:r.left-b.left+list.scrollLeft-list.clientLeft,w:r.width,h:r.height};});
  function update(){bar.querySelectorAll('.workspace-tab-select').forEach(b=>set(b,b.dataset.fullLabel||b.querySelector(':scope>span').textContent));place();}
- document.addEventListener('workspace-tabs-change',update);new ResizeObserver(()=>requestAnimationFrame(update)).observe(bar);bar.addEventListener('scroll',()=>requestAnimationFrame(place),true);update();
+ document.addEventListener('workspace-tabs-change',update);new ResizeObserver(()=>window.headerMotionBusy?place():requestAnimationFrame(update)).observe(bar);bar.addEventListener('scroll',()=>requestAnimationFrame(place),true);update();
 })();

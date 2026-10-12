@@ -1,0 +1,19 @@
+.profile-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:24px;max-width:1160px;align-items:start}
+.profile-card{background:var(--white);border:1px solid var(--stroke);border-radius:6px;padding:26px;min-width:0}
+.profile-card h2{font-size:21px;margin:0 0 22px}
+.profile-card-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.profile-card-heading h2{margin:0}.profile-card-heading>span{font-size:13px;color:var(--secondary)}
+.profile-fields{display:grid;grid-template-columns:1fr 1fr;gap:22px 18px}.profile-fields>label{display:flex;flex-direction:column;gap:9px;min-width:0;font-size:15px}
+.profile-fields>label:last-child{grid-column:1/-1}.profile-fields input{width:100%;min-width:0;background:var(--panel-soft);border:1px solid var(--stroke);border-radius:3px;padding:12px 14px;color:var(--ink);font:inherit}
+.profile-fields input:focus{outline:2px solid var(--gold-dark);outline-offset:2px}
+.profile-email-note,.profile-local-note,.profile-card>p{font-size:14px;color:var(--secondary);line-height:1.6;margin:16px 0}
+.profile-local-note{padding-top:16px;margin-bottom:0;border-top:1px solid var(--stroke)}
+.profile-form-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}.profile-form-actions button{padding:11px 16px}
+.profile-form-actions .gold-button{background:var(--action-fill);color:var(--action-text)}
+#profile-save-status{font-size:14px;color:var(--gold-dark)}.profile-side{display:grid;gap:24px}
+.profile-access{margin:0}.profile-access>div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--stroke);font-size:14px}.profile-access>div:first-child{padding-top:0}
+.profile-access dt{color:var(--secondary)}.profile-access dd{margin:0;text-align:right}
+.profile-documents a{display:flex;align-items:center;gap:12px;padding:13px 0;color:var(--ink);text-decoration:none;border-top:1px solid var(--stroke);font-size:15px}.profile-documents a>span{flex:1}.profile-documents a svg{width:22px;height:22px;flex:none}.profile-documents a:hover{color:var(--gold-dark)}
+.profile-documents h2{margin-bottom:12px}#profile-models{margin-top:4px}
+@media(max-width:1000px){.profile-layout{grid-template-columns:minmax(0,1fr)}.profile-side{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.profile-card{padding:20px}.profile-fields,.profile-side{grid-template-columns:1fr}.profile-access>div{flex-wrap:wrap}.profile-fields>label:last-child{grid-column:auto}}

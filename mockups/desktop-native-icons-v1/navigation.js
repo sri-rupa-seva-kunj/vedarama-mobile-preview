@@ -105,7 +105,7 @@ document.addEventListener('click', event => {
   if (b.dataset.libraryLanguage) return;
   event.preventDefault(); event.stopImmediatePropagation();
   const next = b.dataset.nav || b.dataset.view;
-  if (next === 'read') showSection('read');
+  if (next === 'read' || next === 'profile') showSection(next);
   else openTool(next, b.closest('.rail') ? 'page' : 'panel');
 }, true);
 

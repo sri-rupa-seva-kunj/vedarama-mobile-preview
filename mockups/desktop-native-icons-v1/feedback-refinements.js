@@ -10,7 +10,7 @@
  const nav=document.querySelector('.chapter-navigation'),tools=document.querySelector('.reading-tools');
  const catalogPosition=document.createElement('div');catalogPosition.className='reading-catalog-position';document.querySelector('.workspace-tabs').before(catalogPosition);catalogPosition.append(document.querySelector('#reading-catalog'));
  function placeNavigation(){const target=document.body.classList.contains('focus-mode')?tools:toolbar;if(nav.parentElement!==target){if(target===tools)tools.prepend(nav);else toolbar.insertBefore(nav,actions);}}
- placeNavigation();new MutationObserver(placeNavigation).observe(document.body,{attributes:true,attributeFilter:['class']});
+ window.arrangeReaderHeader=placeNavigation;placeNavigation();new MutationObserver(placeNavigation).observe(document.body,{attributes:true,attributeFilter:['class']});
  window.desktopHints.register([...tools.querySelectorAll('button'),...nav.querySelectorAll('button')]);
  const syncRelated=()=>focusRelated.setAttribute('aria-pressed',related.getAttribute('aria-pressed')||'false');
  new MutationObserver(syncRelated).observe(related,{attributes:true,attributeFilter:['aria-pressed']});syncRelated();
