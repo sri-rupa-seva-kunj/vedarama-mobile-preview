@@ -1,0 +1,15 @@
+.catalog-title-window{position:relative;min-width:0;height:27px;line-height:27px;overflow:clip;white-space:nowrap}
+.catalog-title-text,.catalog-title-old{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.catalog-title-old{position:absolute;inset:0}
+#book-catalog:is([data-catalog-language=ru]:not([data-book-language=ru]),[data-catalog-language=en]:not([data-book-language=en]),[data-catalog-language=sa]:not([data-book-language=sa])) .chapter.current{background:transparent;color:var(--secondary)}
+.scope-language-picker{border:0;padding:0;margin:20px 0;min-width:0}
+.scope-language-picker legend{font-size:14px;color:var(--secondary);margin-bottom:8px}
+.scope-language-buttons{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.scope-language-buttons button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:5px 9px;background:transparent;border:0;border-radius:3px;color:var(--secondary)}
+.scope-language-buttons button>svg{width:28px;height:28px;flex:none}
+.scope-language-buttons button[aria-pressed=true],.scope-language-buttons button:hover{color:var(--gold-dark);background:transparent;border-color:transparent}
+.scope-language-buttons button:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
+.scope-language-caption{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--secondary);padding:12px 18px 3px}
+.scope-language-caption svg{width:24px;height:24px}
+.edition-demo-commentary{font:var(--reader-size,19px)/1.65 'Gaura PT Serif',serif;direction:ltr;margin-top:28px}
+.edition-demo-commentary h3{font:13px 'PT Sans',sans-serif;color:var(--secondary);margin-bottom:14px}

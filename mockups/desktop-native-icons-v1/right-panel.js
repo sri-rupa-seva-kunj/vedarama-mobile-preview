@@ -4,7 +4,7 @@
  const host=document.createElement('div');host.className='right-tool-host';host.hidden=true;layout.append(host);panels.forEach(panel=>host.append(panel));
  function kind(){if(!panels[1].hidden)return 'related';if(!panels[2].hidden&&document.body.classList.contains('reading-bookmarks-open'))return 'bookmarks';return !panels[0].hidden&&getComputedStyle(panels[0]).display!=='none'?view:null;}
  function sync(){const hidden=!panels.some(panel=>!panel.hidden&&getComputedStyle(panel).display!=='none');if(host.hidden!==hidden)host.hidden=hidden;}
- function change(apply,next){const previous=kind(),commit=()=>{apply();sync();};if(previous&&previous!==next&&!document.body.classList.contains('tool-page')&&window.panelCarousel)window.panelCarousel(commit,['related','notes','ai','bookmarks'].indexOf(next)>=['related','notes','ai','bookmarks'].indexOf(previous)?1:-1);else commit();}
+ function change(apply,next){const previous=kind(),commit=()=>{apply();if(panels[2].hidden===document.body.classList.contains('reading-bookmarks-open'))syncReadingLayout();sync();};if(previous&&previous!==next&&!document.body.classList.contains('tool-page')&&window.panelCarousel)window.panelCarousel(commit,['related','notes','ai','bookmarks'].indexOf(next)>=['related','notes','ai','bookmarks'].indexOf(previous)?1:-1);else commit();}
  window.rightPanel={host,kind,sync,change};
  const widthKey='vedarama-right-panel-width',defaultWidth=410,minWidth=320;
  let preferred=Number(localStorage.getItem(widthKey))||defaultWidth,drag=null,frame=0;

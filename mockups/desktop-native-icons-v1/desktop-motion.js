@@ -45,7 +45,7 @@
   const roots=[...entries].map(([el,entry])=>[el,entry.snapshot]).concat([...seen].filter(([el])=>el.matches(popups)).map(([el,entry])=>[el,entry.snapshot]));
   roots.forEach(([el,clone])=>{if(!clone||!el.contains(target))return;const source=[el,...el.querySelectorAll('*')],nodes=[clone,...clone.querySelectorAll('*')],index=source.indexOf(target),node=nodes.find(n=>Number(n.dataset.motionSourceIndex)===index);if(!node)return;if(event.type==='scroll'){node.dataset.motionScrollTop=target.scrollTop;node.dataset.motionScrollLeft=target.scrollLeft;}else if('value'in target){node.value=target.value;if('checked'in target)node.checked=target.checked;}});
  }
- function animate(el,key,from,to){const run=el.animate([{[key]:from},{[key]:to}],{duration,easing,fill:'both'});run.pause();run.currentTime=0;pending.push(run);run.finished.then(()=>run.cancel()).catch(()=>{});return run;}
+ function animate(el,key,from,to,options={}){const run=el.animate([{[key]:from},{[key]:to}],{duration,easing,fill:'both',...options});run.pause();run.currentTime=0;pending.push(run);run.finished.then(()=>run.cancel()).catch(()=>{});return run;}
  function wrap(el,axis,sign,initial){
   const rect=el.getBoundingClientRect(),slot=document.createElement('div');slot.className='desktop-motion-slot motion-'+axis;
   if(el.matches('.reading-tools'))slot.classList.add('motion-reading-tools');
@@ -97,7 +97,9 @@
   if(modal){const backdrop=document.createElement('div');backdrop.className='desktop-motion-backdrop';mask.append(backdrop);animate(backdrop,'opacity',prior.backdropOpacity||'1','0');}
   const clone=prior.snapshot;Object.assign(clone.style,{position:'absolute',inset:'auto',left:modal?r.left+'px':'0',top:modal?r.top+'px':'0',width:r.width+'px',height:r.height+'px',margin:'0'});mask.append(clone);document.body.append(mask);restoreScroll(clone);leaving.set(el,mask);
   const popup=el.matches(popups),current=prior.leaveFrom||getComputedStyle(el).translate,from=popup&&current&&current!=='none'?current:'0 0';
+  const selectionOpacity=el.matches('#selection-actions')?getComputedStyle(el).opacity:1;
   if(popup)el.getAnimations().forEach(run=>run.cancel());
+  if(el.matches('#selection-actions')){clone.style.opacity='1';const run=mask.animate([{opacity:selectionOpacity},{opacity:0}],{duration:150,easing:'ease-out',fill:'both'});run.finished.then(()=>{mask.remove();if(leaving.get(el)===mask)leaving.delete(el);}).catch(()=>mask.remove());return;}
   const run=popup?animate(clone,'translate',from,modal?'0 '+(-r.bottom)+'px':axis==='y'?'0 '+(sign*100)+'%':(sign*100)+'% 0'):animate(clone,'transform','translate(0)',`translate${axis.toUpperCase()}(${sign*100}%)`);run.finished.catch(()=>{}).finally(()=>{mask.remove();if(leaving.get(el)===mask)leaving.delete(el);});
  }
  function scan(initial=false){
@@ -127,7 +129,7 @@
    if(el.closest('.desktop-motion-ghost,.desktop-motion-mask'))continue;
    const show=visible(el),prior=seen.get(el),popup=el.matches(popups),owner=el.closest('.desktop-motion-slot'),rect=prior?.visible&&el.getAnimations().some(a=>a.playState==='running'||a.playState==='paused')?prior.rect:el.getBoundingClientRect();
    const route=el.matches('#workspace-panel')?section+'|'+savedTab+'|'+(activeShelf||''):el.matches('.continuous-reader')?'read':view+'|'+toolMode;
-   if(!initial&&show&&(!prior?.visible||(!popup&&route!==prior.route))&&!reduced.matches&&(popup||!window.workspaceMotionBusy&&!window.panelMotionBusy)){leaving.get(el)?.remove();leaving.delete(el);if(!owner?.classList.contains('is-moving')){el.getAnimations().filter(a=>a.animationName!=='desktop-backdrop-in').forEach(a=>a.cancel());const run=animate(el,'translate',el.matches('dialog')?'0 '+(-rect.bottom)+'px':popup?'0 -100%':'100% 0','0 0');if(popup&&!el.matches('dialog'))animate(el,'clipPath','inset(100% 0 0 0)','inset(0 0 0 0)');run.finished.then(()=>document.dispatchEvent(new Event('desktop-layout-settled'))).catch(()=>{});}}
+   if(!initial&&show&&(!prior?.visible||(!popup&&route!==prior.route))&&!reduced.matches&&(popup||!window.workspaceMotionBusy&&!window.panelMotionBusy)){leaving.get(el)?.remove();leaving.delete(el);if(!owner?.classList.contains('is-moving')){el.getAnimations().filter(a=>a.animationName!=='desktop-backdrop-in').forEach(a=>a.cancel());const run=el.matches('#selection-actions')?animate(el,'opacity','0','1',{duration:150,easing:'ease-out'}):animate(el,'translate',el.matches('dialog')?'0 '+(-rect.bottom)+'px':popup?'0 -100%':'100% 0','0 0');if(popup&&!el.matches('dialog,#selection-actions'))animate(el,'clipPath','inset(100% 0 0 0)','inset(0 0 0 0)');run.finished.then(()=>document.dispatchEvent(new Event('desktop-layout-settled'))).catch(()=>{});}}
    if(!initial&&!show&&prior?.visible&&popup)leave(el,prior);
    seen.set(el,{visible:show,rect,snapshot:show&&popup?snapshot(el):null,route});
   }

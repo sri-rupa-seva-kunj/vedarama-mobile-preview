@@ -35,7 +35,7 @@ $('#focus').onclick=()=>{
 $('#exit-reading').onclick=()=>{document.body.classList.remove('focus-mode');syncReadingLayout();};
 $('#reading-ai').onclick=()=>{if(view==='ai')showSection('read');else openTool('ai','panel');syncReadingLayout();};
 $('#reading-notes').onclick=()=>{if(view==='notes')showSection('read');else openTool('notes','panel');syncReadingLayout();};
-$('#reading-bookmarks').onclick=()=>{const wasOpen=document.body.classList.contains('reading-bookmarks-open');showSection('read');document.body.classList.toggle('reading-bookmarks-open',!wasOpen);syncReadingLayout();};
+$('#reading-bookmarks').onclick=()=>{const wasOpen=document.body.classList.contains('reading-bookmarks-open'),apply=()=>{showSection('read');document.body.classList.toggle('reading-bookmarks-open',!wasOpen);syncReadingLayout();};if(!wasOpen&&window.rightPanel)window.rightPanel.change(apply,'bookmarks');else apply();};
 $('#reading-bookmarks-close').onclick=()=>document.body.classList.remove('reading-bookmarks-open');
 $('#reading-appearance').onclick=()=>openDialog('settings');
 // Also runs after a saved tab restores its classes.

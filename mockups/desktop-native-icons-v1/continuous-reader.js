@@ -25,7 +25,7 @@
   $('#reader-position strong').textContent='Текст '+state.verse;
   $('#reader-prev').disabled=state.verse<=46;$('#reader-next').disabled=state.verse>=50;
   $('.breadcrumbs b').textContent='Текст '+state.verse;$('#footer-location').textContent='БГ 2.'+state.verse;
-  document.querySelectorAll('[data-verse]').forEach(b=>{b.classList.toggle('selected',Number(b.dataset.verse)===state.verse);});
+  document.querySelectorAll('[data-verse]').forEach(b=>{b.classList.toggle('selected',Number(b.dataset.verse)===state.verse&&(!window.libraryLanguage||window.libraryLanguage===state.language));});
   const edition=editions.find(e=>e.id===state.edition)||editions[0];
   $('#reader-edition-label').textContent=edition.name+' · '+languageNames[state.language];updateBookmark();
   $('#linked-books-toggle').setAttribute('aria-pressed',String(state.linkedOpen));
@@ -53,7 +53,8 @@
   if(lang!=='ru')page.querySelectorAll('.continuous-verse').forEach(e=>{
    const n=Number(e.dataset.readerVerse),english={46:'A larger understanding gives perspective to particular aims.',47:'Act without making the fruits of action your purpose, and do not become attached to inaction.',48:'Act with an even mind, letting go of attachment to success and failure.',49:'Let discerning understanding guide the purpose of your action.',50:'Cultivate the skill of acting without bondage to its results.'};
    const sanskrit={46:'यावानर्थ उदपाने सर्वतः सम्प्लुतोदके ।',47:'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।',48:'योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय ।',49:'दूरेण ह्यवरं कर्म बुद्धियोगाद्धनञ्जय ।',50:'बुद्धियुक्तो जहातीह उभे सुकृतदुष्कृते ।'};
-   e.insertAdjacentHTML('beforeend',`<div class="edition-preview" lang="${lang==='sa'?'sa':'en'}"><p>${lang==='en'?english[n]:sanskrit[n]}</p><small>${lang==='en'?'Illustrative paraphrase for the prototype.':'Фрагмент санскритского текста для макета.'}</small></div>`);
+   const commentary=lang==='en'?window.readerDemoEnglishCommentary:window.readerDemoCommentary[n];
+   e.insertAdjacentHTML('beforeend',`<div class="edition-preview" lang="${lang==='sa'?'sa':'en'}"><p>${lang==='en'?english[n]:sanskrit[n]}</p><small>${lang==='en'?'Illustrative paraphrase for the prototype.':'Фрагмент санскритского текста для макета.'}</small><section class="edition-demo-commentary" data-block="comment" lang="${lang==='en'?'en':'ru'}" ${saved.blocks?.comment===false?'hidden':''}><h3>${lang==='en'?'Illustrative reading notes for the prototype':'Демонстрационные пояснения для чтения'}</h3>${(commentary||[]).map(text=>'<p>'+escapeText(text)+'</p>').join('')}</section></div>`);
   });sync();
  }
  $('#reader-prev').onclick=()=>window.readerJump(state.verse-1);$('#reader-next').onclick=()=>window.readerJump(state.verse+1);
