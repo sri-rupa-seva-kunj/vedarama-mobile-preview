@@ -4,7 +4,7 @@
  const definitions=[
   ['.rail','x',-1],['.catalog','x',-1],['.right-tool-host','x',1],
   ['.tab-workspace .app-header','y',-1],['.reading-toolbar','y',-1],
-  ['.reader-footer','y',1],['.review-bar','y',1],['.reading-tools','x',1],['.global-actions','x',1],
+  ['.reader-footer','y',1],['.review-bar','y',1],['.reading-catalog-position','x',-1],['.reading-tools','x',1],['.global-actions','x',1],
   ['.native-dialogs','x',-1],['.search-book-picker','x',-1],['#note-editor','y',-1]
  ];
  const popups='dialog,.veda-select-menu,#selection-actions,.toast';
@@ -49,6 +49,7 @@
  function wrap(el,axis,sign,initial){
   const rect=el.getBoundingClientRect(),slot=document.createElement('div');slot.className='desktop-motion-slot motion-'+axis;
   if(el.matches('.reading-tools'))slot.classList.add('motion-reading-tools');
+  if(el.matches('.reading-catalog-position'))slot.classList.add('motion-reading-catalog');
   if(el.matches('.global-actions'))slot.classList.add('motion-global-actions');
   if(el.matches('.review-bar'))slot.classList.add('motion-review');
   el.before(slot);slot.append(el);

@@ -56,8 +56,8 @@
    e.insertAdjacentHTML('beforeend',`<div class="edition-preview" lang="${lang==='sa'?'sa':'en'}"><p>${lang==='en'?english[n]:sanskrit[n]}</p><small>${lang==='en'?'Illustrative paraphrase for the prototype.':'Фрагмент санскритского текста для макета.'}</small></div>`);
   });sync();
  }
- $('#reader-prev').onclick=()=>jump(state.verse-1);$('#reader-next').onclick=()=>jump(state.verse+1);
- $('#reader-position').onclick=()=>{simpleDialog('Перейти к тексту','<p>Глава 2 · в макете доступны тексты 46–50. Переход прокрутит главу до выбранного места.</p><div class="verse-jump-list">'+[46,47,48,49,50].map(n=>`<button data-jump-verse="${n}" aria-current="${n===state.verse?'location':'false'}">${n}</button>`).join('')+'</div>');document.querySelectorAll('[data-jump-verse]').forEach(b=>b.onclick=()=>{$('#dialog').close();jump(Number(b.dataset.jumpVerse));});};
+ $('#reader-prev').onclick=()=>window.readerJump(state.verse-1);$('#reader-next').onclick=()=>window.readerJump(state.verse+1);
+ $('#reader-position').onclick=()=>{simpleDialog('Перейти к тексту','<p>Глава 2 · в макете доступны тексты 46–50. Выберите место в тексте.</p><div class="verse-jump-list">'+[46,47,48,49,50].map(n=>`<button data-jump-verse="${n}" aria-current="${n===state.verse?'location':'false'}">${n}</button>`).join('')+'</div>');document.querySelectorAll('[data-jump-verse]').forEach(b=>b.onclick=()=>{$('#dialog').close();window.readerJump(Number(b.dataset.jumpVerse));});};
  $('#linked-books-toggle').onclick=()=>{if(state.linkedOpen){state.linkedOpen=false;sync();}else openLinked();};$('#linked-close').onclick=()=>{state.linkedOpen=false;sync();};
  document.querySelectorAll('[data-linked-verse]').forEach(b=>b.onclick=()=>openLinked(Number(b.dataset.linkedVerse)));
  document.querySelectorAll('[data-verse]').forEach(b=>b.onclick=()=>{const n=Number(b.dataset.verse);if(n>=46&&n<=50){showSection('read');jump(n);}else toast('В макете показан непрерывный фрагмент: тексты 46–50.');});

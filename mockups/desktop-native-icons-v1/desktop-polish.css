@@ -169,7 +169,7 @@ body.focus-mode.focus-catalog-open #catalog-resizer{z-index:16}
 /* Supplied wordmark, converted to SVG paths without substituting a font. */
 .global-tab-header>.brand img{height:32px;width:auto;max-width:none;display:block}
 .global-tab-header>.brand b{display:none}
-@media(max-width:700px){.global-tab-header>.brand img{display:none}.global-tab-header>.brand::before{content:"";display:block;width:12px;height:32px;background:url("assets/vedarama-new-tilak-light.svg") center/contain no-repeat}html[data-theme=dark] .global-tab-header>.brand::before{background-image:url("assets/vedarama-new-tilak-dark.svg")}}
+@media(max-width:700px){.global-tab-header>.brand img{display:none}.global-tab-header>.brand::before{content:"";display:block;width:12px;height:32px;background:url("assets/vedarama-new-tilak-light.svg?v=1.48") center/contain no-repeat}html[data-theme=dark] .global-tab-header>.brand::before{background-image:url("assets/vedarama-new-tilak-dark.svg?v=1.48")}}
 
 .library-note-list{display:grid;gap:12px;margin-top:24px;max-width:760px}
 #workspace-panel #note-editor{margin:24px 0 0;padding:20px;background:var(--panel-soft);border-radius:3px}
