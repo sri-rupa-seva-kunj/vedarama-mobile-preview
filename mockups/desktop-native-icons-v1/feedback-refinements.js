@@ -1,11 +1,16 @@
 // Reading navigation is shared by the toolbar and its counterpart in reading mode.
 (() => {
  const toolbar=document.querySelector('.reading-toolbar'),related=document.querySelector('#linked-books-toggle');
- document.querySelector('.breadcrumbs').hidden=true;toolbar.querySelector('.reader-actions').prepend(related);
+ document.querySelector('.breadcrumbs').hidden=true;const actions=toolbar.querySelector('.reader-actions');actions.insertBefore(related,actions.querySelector('[data-view=notes]'));
  const focusRelated=related.cloneNode(true);focusRelated.id='reading-related';focusRelated.title='Текст в других книгах';
  focusRelated.setAttribute('aria-label','Текст в других книгах');focusRelated.setAttribute('aria-controls','linked-books-panel');
  document.querySelector('.reading-tools').insertBefore(focusRelated,document.querySelector('#reading-pages'));
  focusRelated.onclick=()=>related.click();
+ const favorite=document.querySelector('#bookmark');favorite.insertAdjacentHTML('beforeend','<span>В избранное</span>');
+ const nav=document.querySelector('.chapter-navigation'),tools=document.querySelector('.reading-tools');
+ function placeNavigation(){const target=document.body.classList.contains('focus-mode')?tools:toolbar;if(nav.parentElement!==target){if(target===tools)tools.querySelector('#reading-catalog').after(nav);else toolbar.insertBefore(nav,actions);}}
+ placeNavigation();new MutationObserver(placeNavigation).observe(document.body,{attributes:true,attributeFilter:['class']});
+ window.desktopHints.register([...tools.querySelectorAll('button'),...nav.querySelectorAll('button')]);
  const syncRelated=()=>focusRelated.setAttribute('aria-pressed',related.getAttribute('aria-pressed')||'false');
  new MutationObserver(syncRelated).observe(related,{attributes:true,attributeFilter:['aria-pressed']});syncRelated();
  let frame=0;

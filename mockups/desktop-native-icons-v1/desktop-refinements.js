@@ -52,9 +52,10 @@
     $('#dialog-body').querySelectorAll('[data-overview-tab]').forEach(b=>b.onclick=()=>{$('#dialog').close();window.workspaceTabs.activate(b.dataset.overviewTab);});drawIcons($('#dialog-body'));
    };
   }
-  const count=list.children.length,compressed=count*190>bar.clientWidth-44;
+  const count=list.querySelectorAll(':scope>.workspace-tab').length,compressed=count*190>bar.clientWidth-44,dense=count*132>bar.clientWidth-88;
   bar.classList.toggle('is-compressed',compressed);overview.hidden=!compressed;
-  bar.style.setProperty('--compact-tab-width',Math.max(118,Math.min(190,(bar.clientWidth-88-48)/count))+'px');
+  bar.classList.toggle('is-dense',dense);
+  bar.style.setProperty('--compact-tab-width',Math.max(dense?80:118,Math.min(190,(bar.clientWidth-88-48)/count))+'px');
   list.querySelectorAll('.workspace-tab-select').forEach(button=>{
    const label=button.querySelector('span');if(!label)return;
    button.dataset.fullLabel||=label.textContent;

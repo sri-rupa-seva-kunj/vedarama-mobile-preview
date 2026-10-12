@@ -3,7 +3,8 @@
   const STORE='vedarama-native-desktop-tabs-v1';
   const clone=value=>JSON.parse(JSON.stringify(value));
   const pageNames={new:'Новая вкладка',read:'Бхагавад-гита',references:'Справочники',ai:'ИИ-помощник',notes:'Заметки',saved:'Моя библиотека',search:'Поиск',models:'Мои модели',converter:'Транслитерация',activity:'Новости'};
-  const pageIcons={new:'plus',read:'book',references:'book',ai:'spark',notes:'note',saved:'shelf',search:'search',models:'settings',converter:'globe',activity:'bell'};
+  icons['tab-blank']='M3 4h18v16H3Z M3 8h18 M6 6h3';
+  const pageIcons={new:'tab-blank',read:'book',references:'book',ai:'spark',notes:'note',saved:'shelf',search:'search',models:'settings',converter:'globe',activity:'bell'};
   let tabs=[],currentId='',restoring=false,saveTimer,restoreGeneration=0,storageWarning=false;
   const bar=$('.tabs');bar.className='workspace-tabs';bar.setAttribute('aria-label','Рабочие вкладки');
   const globalHeader=document.createElement('header');globalHeader.className='global-tab-header';
@@ -54,12 +55,16 @@
   function scheduleSave(){if(restoring)return;clearTimeout(saveTimer);saveTimer=setTimeout(persistTabs,350);}
   function iconOf(tab){const s=tab.state;return s.section==='saved'?({shelves:'shelf',bookmarks:'bookmark',notes:'note'}[s.savedView.tab]||'shelf'):(pageIcons[s.section]||'book');}
   function titleOf(tab){const s=tab.state;if(s.section==='read'&&s.reading?.edition&&s.reading.edition!=='base')return (s.reading.edition==='commentary'?'БГ · с комментариями':'БГ · параллельный перевод')+(s.reading.language==='ru'?'':' · '+s.reading.language.toUpperCase());return s.section==='saved'?(s.savedView.tab==='bookmarks'?'Закладки':s.savedView.tab==='notes'?'Заметки':'Полки'):pageNames[s.section]||'Ведарама';}
+  function bookLabel(tab){return tab.state.section==='read'?'БГ · 2.'+(tab.state.reading?.verse||46):'';}
   function detailOf(tab){const s=tab.state;if(s.section==='read')return s.view==='read'?('Глава 2 · Текст '+(s.reading?.verse||47)):s.view==='ai'?'Книга и ИИ':'Книга и заметки';if(s.section==='references')return refEntries.find(r=>r.id===s.reference.active)?.title||'';if(s.section==='search')return s.search.query;if(s.section==='ai')return availableModels().find(m=>m.id===s.chat.model)?.name||'';return '';}
   function renderTabs(){
     document.dispatchEvent(new Event('workspace-tabs-before-render'));
     const existing=[...bar.querySelectorAll('.workspace-tab-select')];
-    if(existing.length===tabs.length&&tabs.every((t,i)=>existing[i].dataset.switchTab===t.id&&existing[i].dataset.tabKind===iconOf(t)&&existing[i].dataset.tabName===titleOf(t))){
-      tabs.forEach((t,i)=>{const button=existing[i],active=t.id===currentId;button.closest('.workspace-tab').classList.toggle('is-current',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;button.title=titleOf(t)+(detailOf(t)?' · '+detailOf(t):'');});
+    if(existing.length===tabs.length&&tabs.every((t,i)=>existing[i].dataset.switchTab===t.id)){
+      tabs.forEach((t,i)=>{const button=existing[i],active=t.id===currentId,kind=iconOf(t),name=titleOf(t);button.closest('.workspace-tab').classList.toggle('is-current',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;button.title=name+(detailOf(t)?' · '+detailOf(t):'');button.dataset.bookLabel=bookLabel(t);
+        if(button.dataset.tabKind!==kind){const mark=button.querySelector(':scope>i,:scope>svg');if(mark)mark.outerHTML=icon(kind);drawIcons(button);}
+        button.dataset.tabKind=kind;button.dataset.tabName=name;if(window.tabLabelMotion)window.tabLabelMotion.set(button,name);else button.querySelector('span').textContent=bookLabel(t)||name;
+      });
       document.dispatchEvent(new Event('workspace-tabs-change'));return;
     }
     const previousScroll=bar.querySelector('.workspace-tab-list')?.scrollLeft||0;
@@ -67,7 +72,7 @@
     area.setAttribute('aria-labelledby','tab-'+currentId);drawIcons(bar);
     bar.querySelector('.workspace-tab-list').scrollLeft=previousScroll;
     bar.querySelectorAll('[data-switch-tab]').forEach(b=>b.onclick=()=>switchTab(b.dataset.switchTab));
-    bar.querySelectorAll('[data-switch-tab]').forEach(b=>{const tab=tabs.find(t=>t.id===b.dataset.switchTab);b.dataset.tabKind=iconOf(tab);b.dataset.tabName=titleOf(tab);});
+    bar.querySelectorAll('[data-switch-tab]').forEach(b=>{const tab=tabs.find(t=>t.id===b.dataset.switchTab);b.dataset.tabKind=iconOf(tab);b.dataset.tabName=titleOf(tab);b.dataset.bookLabel=bookLabel(tab);});
     bar.querySelectorAll('[data-close-tab]').forEach(b=>b.onclick=()=>closeTab(b.dataset.closeTab));
     $('#new-tab').onclick=newTab;
     document.dispatchEvent(new Event('workspace-tabs-change'));
@@ -159,15 +164,15 @@
     if(id===currentId||!tabs.some(t=>t.id===id))return;
     const focusTab=bar.contains(document.activeElement);
     window.pageCarousel?.finish();checkpoint();const previousIndex=tabs.findIndex(t=>t.id===currentId),nextIndex=tabs.findIndex(t=>t.id===id),oldFocus=document.body.classList.contains('focus-mode');
-    currentId=id;const targetFocus=current().state.classes.includes('focus-mode');
-    const apply=()=>{restore(current().state,oldFocus);renderTabs();};
-    const after=()=>{document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();};
+    const destination=tabs.find(t=>t.id===id),targetFocus=destination.state.classes.includes('focus-mode');
+    const apply=()=>{currentId=id;restore(destination.state,oldFocus);renderTabs();};
+    const after=()=>{if(oldFocus&&!targetFocus)window.prepareReaderFocusExit?.();document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();};
     if(window.pageCarousel)window.pageCarousel.change('x',nextIndex>previousIndex?1:-1,apply,after);else {apply();after();}
     if(focusTab)$('#tab-'+id)?.focus({preventScroll:true});ensureActiveTabVisible();
   }
   function newTab(){
-    window.pageCarousel?.finish();checkpoint();const oldFocus=document.body.classList.contains('focus-mode'),tab={id:newId(),state:blankState()};tabs.push(tab);currentId=tab.id;
-    const apply=()=>{restore(tab.state,oldFocus);renderTabs();},after=()=>{document.body.classList.remove('focus-mode');syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();$('#new-tab-query')?.focus({preventScroll:true});};
+    window.pageCarousel?.finish();checkpoint();const oldFocus=document.body.classList.contains('focus-mode'),tab={id:newId(),state:blankState()};tabs.push(tab);
+    const apply=()=>{currentId=tab.id;restore(tab.state,oldFocus);renderTabs();},after=()=>{if(oldFocus)window.prepareReaderFocusExit?.();document.body.classList.remove('focus-mode');syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();$('#new-tab-query')?.focus({preventScroll:true});};
     if(window.pageCarousel)window.pageCarousel.change('x',1,apply,after);else {apply();after();}ensureActiveTabVisible();
   }
   function closeTab(id){
@@ -176,7 +181,7 @@
     checkpoint();const index=tabs.findIndex(t=>t.id===id);if(index<0)return;
     const wasActive=id===currentId;tabs.splice(index,1);
     if(!tabs.length){newTab();return;}
-    if(wasActive){currentId=tabs[Math.min(index,tabs.length-1)].id;const targetFocus=current().state.classes.includes('focus-mode'),apply=()=>restore(current().state,oldFocus),after=()=>{document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();};if(window.pageCarousel)window.pageCarousel.change('x',index>=tabs.length?-1:1,apply,after);else {apply();after();}}
+    if(wasActive){const destination=tabs[Math.min(index,tabs.length-1)],targetFocus=destination.state.classes.includes('focus-mode'),apply=()=>{currentId=destination.id;restore(destination.state,oldFocus);},after=()=>{if(oldFocus&&!targetFocus)window.prepareReaderFocusExit?.();document.body.classList.toggle('focus-mode',targetFocus);syncReadingLayout();window.desktopMotion?.flush(true);scheduleSave();};if(window.pageCarousel)window.pageCarousel.change('x',index>=tabs.length?-1:1,apply,after);else {apply();after();}}
     if(section==='new')renderNewTab();renderTabs();persistTabs();if(focusTab)$('#tab-'+currentId)?.focus({preventScroll:true});
   }
   // Replace the old '+' action and intercept its legacy keyboard handler.
@@ -189,7 +194,7 @@
   },true);
   document.addEventListener('input',scheduleSave);
   document.addEventListener('change',scheduleSave);
-  document.addEventListener('click',()=>{if(!restoring)queueMicrotask(()=>{if(!restoring){checkpoint();const b=$('#tab-'+currentId);if(b){const label=b.querySelector('.tab-label-text')||b.querySelector('span');if(!window.tabLabelMotion)label.textContent=titleOf(current());else window.tabLabelMotion.set(b,titleOf(current()));b.title=titleOf(current())+(detailOf(current())?' · '+detailOf(current()):'');}scheduleSave();}});});
+  document.addEventListener('click',()=>{if(!restoring)queueMicrotask(()=>{if(!restoring){checkpoint();const b=$('#tab-'+currentId);if(b){b.dataset.bookLabel=bookLabel(current());const label=b.querySelector('.tab-label-text')||b.querySelector('span');if(!window.tabLabelMotion)label.textContent=bookLabel(current())||titleOf(current());else window.tabLabelMotion.set(b,titleOf(current()));b.title=titleOf(current())+(detailOf(current())?' · '+detailOf(current()):'');}scheduleSave();}});});
   document.addEventListener('scroll',scheduleSave,true);
   window.addEventListener('pagehide',persistTabs);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistTabs();});
@@ -209,7 +214,7 @@
   renderTabs();updateContext();persistTabs();
   window.workspaceTabs={
     overview(){checkpoint();return {activeId:currentId,tabs:tabs.map(t=>{const s=t.state;return {id:t.id,title:titleOf(t),detail:detailOf(t),section:s.section,icon:iconOf(t),preview:s.section==='ai'?(s.chat.question||s.chat.turns.at(-1)?.text||'Новый разговор по библиотеке'):s.section==='search'?(s.search.query||'Поиск по книгам'):s.section==='notes'?(s.note.text||'Заметки к тексту'):s.section==='references'?(refEntries.find(r=>r.id===s.reference.active)?.title||'Термины, личности и места'):s.section==='read'?(s.readingPreview||'Бхагавад-гита · 2.'+(s.reading?.verse||47)):s.section==='converter'?(s.converter.text||'Преобразование санскрита'):s.section==='new'?'Книги, поиск и новый разговор':'Ваше рабочее пространство',context:s.section==='read'?(s.view==='ai'?'Открыт ИИ рядом с книгой':s.view==='notes'?'Открыты заметки':s.classes.includes('focus-mode')?'Режим чтения':'Позиция чтения сохранена'):s.section==='ai'&&s.chat.question?'Черновик сообщения':s.section==='search'?(s.search.mode==='both'?'Точный и ИИ-поиск':s.search.mode==='ai'?'ИИ-поиск':'Точный поиск'):''};})};},
-    activate:switchTab,create:newTab,close:closeTab
+    activate:switchTab,create:newTab,close:closeTab,refresh:updateCurrentTitle
   };
   descriptions.brief[0]='Ведарама · макет 05';
   descriptions.brief[1]='<p>Каждая вкладка — отдельное рабочее место: книги, справочники, ИИ и остальные разделы открываются внутри неё. Кнопка «+» начинает новую вкладку с чистым поиском и диалогом.</p><p>При переключении и после перезагрузки восстанавливаются раздел, положение чтения, результаты поиска, диалог и черновики. Полки, сохранённые заметки, подключения и тема общие для приложения.</p>'+descriptions.brief[1];

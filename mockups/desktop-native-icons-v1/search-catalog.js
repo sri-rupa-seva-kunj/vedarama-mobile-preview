@@ -27,54 +27,73 @@
  splitter.addEventListener('keydown',event=>{if(!catalog||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const {min,max}=limits();applyWidth(event.key==='Home'?min:event.key==='End'?max:catalog.getBoundingClientRect().width+(event.key==='ArrowLeft'?-1:1)*(event.shiftKey?10:20),true);schedule();});
  new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});window.addEventListener('resize',schedule);document.addEventListener('desktop-layout-settled',schedule);
  function copy(element){const clone=element.cloneNode(true);[clone,...clone.querySelectorAll('*')].forEach(node=>{['id','data-dialog','data-catalog','data-verse','aria-controls','aria-describedby'].forEach(key=>node.removeAttribute(key));});return clone;}
- const oldScopeLabel=searchScopeLabel;searchScopeLabel=function(scope,shelf){return scope==='catalog'?`Выбрано книг: ${searchPrefs.selectedBooks?.length||0}`:oldScopeLabel(scope,shelf);};
+ const dictionaries=[...new Set(refEntries.map(entry=>entry.category))].map(id=>({id,name:({terms:'Термины',people:'Личности',places:'Места'})[id]||id}));
+ let signature='',treeWindow=null,count=null;
+ function choices(){const items=[];if(searchPrefs.sources.some(s=>s==='books'||s==='word'))books.forEach((name,i)=>items.push({id:String(i),name,type:'book'}));if(searchPrefs.sources.includes('dictionaries'))dictionaries.forEach(item=>items.push({...item,type:'dictionary'}));return items;}
+ function selected(item){return item.type==='book'?searchPrefs.selectedBooks.includes(item.name):searchPrefs.selectedDictionaries.includes(item.id);}
+ function normalize(){searchPrefs.selectedBooks=Array.isArray(searchPrefs.selectedBooks)?searchPrefs.selectedBooks.filter(book=>books.includes(book)):[BOOK];searchPrefs.selectedDictionaries=Array.isArray(searchPrefs.selectedDictionaries)?searchPrefs.selectedDictionaries:dictionaries.map(item=>item.id);}
+ function rollCount(text){
+  const line=count.querySelector('.scope-count-text');if(line.textContent===text)return;
+  count.getAnimations({subtree:true}).forEach(a=>a.cancel());count.querySelectorAll('.scope-count-old').forEach(node=>node.remove());const old=document.createElement('span');old.className='scope-count-old';old.textContent=line.textContent;line.textContent=text;
+  if(old.textContent&&!matchMedia('(prefers-reduced-motion: reduce)').matches){count.append(old);const opts={duration:280,easing:'cubic-bezier(.22,.7,.2,1)'};old.animate([{translate:'0 0'},{translate:'0 -100%'}],opts);line.animate([{translate:'0 100%'},{translate:'0 0'}],opts).finished.then(()=>old.remove()).catch(()=>old.remove());}
+ }
+ function syncSelection(){
+  const items=choices(),chosen=items.filter(selected);catalog.querySelectorAll('[data-scope-choice]').forEach(input=>{const item=items.find(item=>item.type+':'+item.id===input.dataset.scopeChoice);input.checked=!!item&&selected(item);input.previousElementSibling.setAttribute('aria-pressed',String(input.checked));});
+  catalog.querySelectorAll('[data-scope-category]').forEach(input=>{const group=items.filter(item=>item.type===input.dataset.scopeCategory),n=group.filter(selected).length;input.checked=n===group.length;input.indeterminate=n>0&&n<group.length;});
+  rollCount(chosen.length+' / '+items.length);count.setAttribute('aria-label','Выбрано '+chosen.length+' из '+items.length+' источников');
+ }
+ function commit(items,on){for(const item of items){const key=item.type==='book'?'selectedBooks':'selectedDictionaries',value=item.type==='book'?item.name:item.id;searchPrefs[key]=on?[...new Set([...searchPrefs[key],value])]:searchPrefs[key].filter(chosen=>chosen!==value);}saveSearchPrefs();dirtySearch();syncSelection();}
+ function makeCatalog(){
+  const picker=document.createElement('aside');catalog=picker;picker.id='search-scope-catalog';picker.className='catalog search-scope-catalog';picker.setAttribute('aria-label','Каталог источников для поиска');
+  const heading=copy(source.querySelector('.catalog-title')),tabs=copy(source.querySelector('.catalog-tabs')),filter=copy(source.querySelector('.catalog-search'));
+  heading.querySelector('h2').textContent='Каталог книг';count=heading.querySelector(':scope>span');count.id='search-book-count';count.role='status';count.className='scope-count-window';count.hidden=false;count.innerHTML='<span class="scope-count-text"></span>';
+  const close=heading.querySelector('button');close.id='search-catalog-close';close.setAttribute('aria-label','Скрыть каталог источников');close.setAttribute('aria-controls',picker.id);
+  const input=filter.querySelector('input');input.id='search-book-filter';input.value='';
+  const actions=document.createElement('div');actions.className='scope-selection-tools';actions.innerHTML='<button type="button" id="search-books-all">Выбрать все</button><button type="button" id="search-books-reset">Сбросить</button>';
+  treeWindow=document.createElement('div');treeWindow.className='scope-tree-window';treeWindow.innerHTML='<div class="tree"></div>';
+  const note=document.createElement('p');note.className='scope-catalog-note';note.textContent='Поиск выполняется в отмеченных источниках. В макете доступны текст Бхагавад-гиты и примеры словарных статей.';
+  picker.append(heading,tabs,filter,actions,treeWindow,note);const scene=document.querySelector('.workspace-scene-content')||document.querySelector('.workarea');scene.insertBefore(picker,document.querySelector('.reader-shell'));
+  close.onclick=()=>{picker.dataset.closed='true';picker.hidden=true;document.querySelector('#search-catalog-toggle')?.setAttribute('aria-expanded','false');schedule();};
+  actions.querySelector('#search-books-all').onclick=()=>commit(choices(),true);actions.querySelector('#search-books-reset').onclick=()=>commit(choices(),false);
+  picker.addEventListener('change',event=>{const input=event.target,items=choices();if(input.dataset.scopeChoice)commit(items.filter(item=>item.type+':'+item.id===input.dataset.scopeChoice),input.checked);else if(input.dataset.scopeCategory)commit(items.filter(item=>item.type===input.dataset.scopeCategory),input.checked);});
+  picker.addEventListener('click',event=>{const button=event.target.closest('[data-scope-label]');if(button){const input=button.nextElementSibling;input.checked=!input.checked;input.dispatchEvent(new Event('change',{bubbles:true}));}});
+  tabs.querySelectorAll('button').forEach((button,i)=>button.onclick=()=>{tabs.querySelectorAll('button').forEach(item=>item.classList.toggle('selected',item===button));updateTree(true);});
+  input.oninput=filterTree;resizeObserver=new ResizeObserver(schedule);resizeObserver.observe(picker);drawIcons(picker);
+ }
+ function filterTree(){
+  const query=catalog.querySelector('#search-book-filter').value.toLocaleLowerCase('ru').trim();catalog.querySelectorAll('[data-scope-name]').forEach(row=>row.hidden=!row.dataset.scopeName.toLocaleLowerCase('ru').includes(query));
+  catalog.querySelectorAll('.scope-tree-group').forEach(group=>{const found=[...group.querySelectorAll('[data-scope-name]')].some(row=>!row.hidden);group.hidden=!found;if(query&&found){group.querySelector('.scope-tree-children').hidden=false;group.querySelector('.tree-root').setAttribute('aria-expanded','true');}});
+ }
+ function drawTree(){
+  const tree=treeWindow.querySelector('.tree');tree.replaceChildren();let items=choices();const mode=[...catalog.querySelectorAll('.catalog-tabs button')].findIndex(button=>button.classList.contains('selected'));if(mode>0)items=[...items].sort((a,b)=>a.name.localeCompare(b.name,'ru'));
+  for(const type of ['book','dictionary']){
+   const groupItems=items.filter(item=>item.type===type);if(!groupItems.length)continue;
+   const group=document.createElement('section');group.className='scope-tree-group';const root=copy(source.querySelector('.tree-root'));root.textContent='';root.innerHTML=icon('down')+(type==='book'?'Священные писания':'Словари');root.setAttribute('aria-expanded','true');
+   const rootRow=document.createElement('div');rootRow.className='scope-tree-row';rootRow.hidden=mode>0;const category=document.createElement('input');category.type='checkbox';category.dataset.scopeCategory=type;category.setAttribute('aria-label',type==='book'?'Выбрать все книги категории «Священные писания»':'Выбрать все словари');rootRow.append(root,category);
+   const children=document.createElement('div');children.className='scope-tree-children';children.id='search-scope-'+type;root.setAttribute('aria-controls',children.id);root.onclick=()=>{children.hidden=!children.hidden;root.setAttribute('aria-expanded',String(!children.hidden));root.innerHTML=icon(children.hidden?'right':'down')+(type==='book'?'Священные писания':'Словари');drawIcons(root);};
+   groupItems.forEach(item=>{
+    const row=document.createElement('div');row.className='scope-tree-row';row.dataset.scopeName=item.name;
+    const button=item.type==='book'?copy(templates[Number(item.id)]):document.createElement('button');button.classList.add('tree-book');button.classList.remove('more-book');button.type='button';button.id='search-choice-'+type+'-'+item.id;button.dataset.scopeLabel=type+':'+item.id;
+    if(type==='dictionary')button.innerHTML='<i class="scope-leaf-spacer" aria-hidden="true"></i>'+icon('book')+'<b>'+escapeText(item.name)+'</b>';
+    const fold=button.querySelector(':scope>i');if(fold&&type==='book'){const spacer=document.createElement('i');spacer.setAttribute('aria-hidden','true');spacer.className='scope-leaf-spacer';fold.replaceWith(spacer);}
+    const input=document.createElement('input');input.type='checkbox';input.dataset.scopeChoice=type+':'+item.id;input.setAttribute('aria-labelledby',button.id);row.append(button,input);children.append(row);
+   });group.append(rootRow,children);tree.append(group);
+  }
+  drawIcons(tree);filterTree();syncSelection();
+ }
+ function updateTree(animate=false){const tree=treeWindow.querySelector('.tree');if(animate&&window.regionCarousel&&!catalog.hidden)window.regionCarousel(tree,drawTree,1);else drawTree();}
+ const oldScopeLabel=searchScopeLabel;searchScopeLabel=function(scope,shelf){if(scope!=='catalog')return oldScopeLabel(scope,shelf);normalize();return 'Выбрано источников: '+choices().filter(selected).length;};
  const beforeSearch=renderSearch;
  renderSearch=function(){
-  resizeObserver?.disconnect();resizeObserver=null;stopDrag();
-  if(catalog){catalog.closest('.desktop-motion-slot')?.remove();catalog.remove();catalog=null;}splitter.hidden=true;
-  beforeSearch();const select=document.querySelector('#search-scope');if(!select)return;
-  select.add(new Option('Выбранные книги','catalog'));if(searchPrefs.scope==='catalog')select.value='catalog';window.vedaSelects?.enhance?.(document.querySelector('#library-search-form'));
-  const scopeLabel=document.querySelector('.search-scope-label'),bar=document.createElement('div');bar.className='search-scope-bar';bar.hidden=scopeLabel.hidden;
-  const toggle=document.createElement('button');toggle.id='search-catalog-toggle';toggle.type='button';toggle.className='outline-button';toggle.innerHTML=icon('book')+'<span>Выбрать книги</span>';toggle.setAttribute('aria-expanded','false');
+  beforeSearch();normalize();const select=document.querySelector('#search-scope');if(!select)return;
+  const sources=searchPrefs.sources,onlyBooks=sources.every(s=>s==='books'||s==='word'),label=onlyBooks?'книги':sources.length===1&&sources[0]==='dictionaries'?'словари':'источники';
+  const scopeLabel=document.querySelector('.search-scope-label');scopeLabel.hidden=false;scopeLabel.querySelector('span').textContent=onlyBooks?'Книги для поиска':'Источники для поиска';select.querySelector('[value=all]').textContent=onlyBooks?'Все книги':'Все источники';select.add(new Option(onlyBooks?'Выбранные книги':'Выбранные источники','catalog'));if(searchPrefs.scope==='catalog')select.value='catalog';window.vedaSelects?.enhance?.(document.querySelector('#library-search-form'));
+  const bar=document.createElement('div');bar.className='search-scope-bar';const toggle=document.createElement('button');toggle.id='search-catalog-toggle';toggle.type='button';toggle.className='outline-button';toggle.innerHTML=icon('book')+'<span>Выбрать '+label+'</span>';toggle.setAttribute('aria-controls','search-scope-catalog');
   document.querySelector('.library-query-row').after(bar);bar.append(scopeLabel);const shelf=document.querySelector('#shelf-search-label');if(shelf)bar.append(shelf);bar.append(toggle);drawIcons(toggle);
-  toggle.onclick=()=>{captureSearchInput();searchPrefs.scope='catalog';saveSearchPrefs();dirtySearch();renderSearch();document.querySelector('#search-catalog-toggle').focus({preventScroll:true});};
-  if(searchPrefs.scope!=='catalog'||scopeLabel.hidden)return;
-  searchPrefs.selectedBooks=Array.isArray(searchPrefs.selectedBooks)?searchPrefs.selectedBooks.filter(book=>books.includes(book)):[BOOK];
-  const picker=document.createElement('aside');catalog=picker;picker.id='search-scope-catalog';picker.className='catalog search-scope-catalog';picker.setAttribute('aria-label','Каталог книг для поиска');
-  const heading=copy(source.querySelector('.catalog-title')),tabs=copy(source.querySelector('.catalog-tabs')),filter=copy(source.querySelector('.catalog-search'));
-  heading.querySelector('h2').textContent='Каталог книг';const count=heading.querySelector(':scope>span');count.id='search-book-count';count.role='status';count.hidden=false;
-  tabs.querySelectorAll('button').forEach((button,i)=>button.classList.toggle('selected',i===0));
-  const close=heading.querySelector('button');close.id='search-catalog-close';close.setAttribute('aria-label','Закрыть каталог выбора книг');close.setAttribute('aria-controls',picker.id);
-  filter.querySelector('input').id='search-book-filter';filter.querySelector('input').value='';
-  const actions=document.createElement('div');actions.className='scope-selection-tools';actions.innerHTML='<button type="button" id="search-books-all">Выбрать все</button><button type="button" id="search-books-reset">Сбросить</button>';
-  const tree=document.createElement('div');tree.className='tree';const root=copy(source.querySelector('.tree-root'));root.id='search-category-toggle';root.type='button';root.setAttribute('aria-expanded','true');
-  const rootRow=document.createElement('div');rootRow.className='scope-tree-row';const category=document.createElement('input');category.type='checkbox';category.id='search-book-category';category.setAttribute('aria-label','Выбрать все книги категории «Священные писания»');rootRow.append(root,category);
-  const children=document.createElement('div');children.className='scope-tree-children';root.setAttribute('aria-controls','search-category-books');children.id='search-category-books';
-  templates.forEach((template,i)=>{
-   const row=document.createElement('div');row.className='scope-tree-row';row.dataset.searchBookRow=String(i);
-   const button=copy(template);button.id='search-book-label-'+i;button.type='button';button.classList.remove('more-book');button.setAttribute('aria-pressed','false');
-   const fold=button.querySelector(':scope>i');if(fold){const spacer=document.createElement('i');spacer.setAttribute('aria-hidden','true');spacer.className='scope-leaf-spacer';fold.replaceWith(spacer);}
-   const input=document.createElement('input');input.type='checkbox';input.dataset.searchBook=String(i);input.setAttribute('aria-labelledby',button.id);
-   button.onclick=()=>{input.checked=!input.checked;input.dispatchEvent(new Event('change'));};row.append(button,input);children.append(row);
-  });
-  const empty=document.createElement('p');empty.className='scope-tree-empty';empty.textContent='Книги не найдены.';empty.hidden=true;tree.append(rootRow,children,empty);
-  const note=document.createElement('p');note.className='scope-catalog-note';note.textContent='Поиск выполняется в отмеченных книгах. В макете доступен текст Бхагавад-гиты.';
-  picker.append(heading,tabs,filter,actions,tree,note);const scene=document.querySelector('.workspace-scene-content')||document.querySelector('.workarea');scene.insertBefore(picker,document.querySelector('.reader-shell'));
-  toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-controls',picker.id);
-  function setOpen(open){picker.hidden=!open;picker.dataset.closed=String(!open);toggle.setAttribute('aria-expanded',String(open));schedule();}
-  close.onclick=()=>{setOpen(false);toggle.focus({preventScroll:true});};toggle.onclick=()=>setOpen(picker.hidden);
-  function sync(){
-   const chosen=searchPrefs.selectedBooks;picker.querySelectorAll('[data-search-book]').forEach(input=>{input.checked=chosen.includes(books[Number(input.dataset.searchBook)]);input.previousElementSibling.setAttribute('aria-pressed',String(input.checked));});
-   category.checked=chosen.length===books.length;category.indeterminate=chosen.length>0&&chosen.length<books.length;count.textContent=chosen.length+' / '+books.length;count.setAttribute('aria-label','Выбрано '+chosen.length+' из '+books.length+' книг');
-  }
-  function commit(list){searchPrefs.selectedBooks=[...new Set(list)];saveSearchPrefs();dirtySearch();sync();}
-  picker.querySelectorAll('[data-search-book]').forEach(input=>input.onchange=()=>{const book=books[Number(input.dataset.searchBook)];commit(input.checked?[...searchPrefs.selectedBooks,book]:searchPrefs.selectedBooks.filter(item=>item!==book));});
-  category.onchange=()=>commit(category.checked?books:[]);actions.querySelector('#search-books-all').onclick=()=>commit(books);actions.querySelector('#search-books-reset').onclick=()=>commit([]);
-  function setExpanded(expanded){children.hidden=!expanded;root.setAttribute('aria-expanded',String(expanded));root.querySelector('i[data-icon]').dataset.icon=expanded?'down':'right';drawIcons(tree);}
-  root.onclick=()=>setExpanded(children.hidden);
-  tabs.querySelectorAll('button').forEach((button,i)=>button.onclick=()=>{tabs.querySelectorAll('button').forEach(item=>item.classList.toggle('selected',item===button));rootRow.hidden=i!==0;const rows=[...children.children];if(i)rows.sort((a,b)=>books[Number(a.dataset.searchBookRow)].localeCompare(books[Number(b.dataset.searchBookRow)],'ru'));else rows.sort((a,b)=>Number(a.dataset.searchBookRow)-Number(b.dataset.searchBookRow));rows.forEach(row=>children.append(row));setExpanded(true);});
-  filter.querySelector('input').oninput=event=>{const query=event.target.value.toLocaleLowerCase('ru').trim();let found=0;children.querySelectorAll('[data-search-book-row]').forEach(row=>{row.hidden=!books[Number(row.dataset.searchBookRow)].toLocaleLowerCase('ru').includes(query);if(!row.hidden)found++;});empty.hidden=!!found;rootRow.hidden=!found||!tabs.querySelector('button:first-child').classList.contains('selected');if(query&&found)setExpanded(true);};
-  applyWidth(preferred);sync();drawIcons(picker);drawIcons(toggle);resizeObserver=new ResizeObserver(schedule);resizeObserver.observe(picker);schedule();
+  toggle.onclick=()=>{if(searchPrefs.scope!=='catalog'){captureSearchInput();searchPrefs.scope='catalog';saveSearchPrefs();dirtySearch();if(catalog)catalog.dataset.closed='false';renderSearch();document.querySelector('#search-catalog-toggle').focus({preventScroll:true});return;}catalog.dataset.closed=String(!catalog.hidden);catalog.hidden=!catalog.hidden;toggle.setAttribute('aria-expanded',String(!catalog.hidden));schedule();};
+  if(searchPrefs.scope!=='catalog'){if(catalog)catalog.hidden=true;splitter.hidden=true;return;}
+  if(!catalog)makeCatalog();const next=sources.join(',');catalog.hidden=section!=='search'||catalog.dataset.closed==='true';toggle.setAttribute('aria-expanded',String(!catalog.hidden));catalog.querySelector('.catalog-title h2').textContent=onlyBooks?'Каталог книг':sources.length===1&&sources[0]==='dictionaries'?'Словари':'Источники поиска';
+  applyWidth(preferred);updateTree(!!signature&&signature!==next);signature=next;schedule();
  };
  if(section==='search')renderSearch();
 })();

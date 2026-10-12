@@ -2,8 +2,7 @@
 (() => {
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),duration=320,easing='cubic-bezier(.22,.7,.2,1)';
  const definitions=[
-  ['.rail','x',-1],['.catalog','x',-1],['.inspector','x',1],
-  ['#linked-books-panel','x',1],['#reading-bookmarks-panel','x',1],
+  ['.rail','x',-1],['.catalog','x',-1],['.right-tool-host','x',1],
   ['.tab-workspace .app-header','y',-1],['.reading-toolbar','y',-1],
   ['.reader-footer','y',1],['.review-bar','y',1],['.reading-tools','x',1],['.global-actions','x',1],
   ['.native-dialogs','x',-1],['.search-book-picker','x',-1],['#note-editor','y',-1]
@@ -61,7 +60,7 @@
   const {el,slot,axis,sign}=entry,key=axis==='x'?'width':'height',style=getComputedStyle(el),overlay=['absolute','fixed'].includes(style.position);
   const current=slot.getBoundingClientRect()[key];slot.classList.toggle('is-overlay',overlay);
   // Expand the page slot before measuring its full-width child.
-  const page=el.matches('.inspector')&&!el.hidden&&style.display!=='none'&&document.body.classList.contains('tool-page');slot.classList.toggle('is-page',page);const show=visible(el);
+  window.rightPanel?.sync();const page=el.matches('.right-tool-host')&&!el.hidden&&style.display!=='none'&&document.body.classList.contains('tool-page');slot.classList.toggle('is-page',page);const show=visible(el);
   const rect=el.getBoundingClientRect(),margin=axis==='y'?(parseFloat(style.marginTop)||0)+(parseFloat(style.marginBottom)||0):0,size=rect[key]+margin,target=show&&!overlay&&!page?size:0;
   const resized=show&&entry.visible&&axis==='x'&&!overlay&&!page&&Math.abs(size-entry.size)>1;
   const changed=show!==entry.visible||overlay!==entry.overlay||page!==entry.page||resized;

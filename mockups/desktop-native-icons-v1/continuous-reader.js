@@ -27,11 +27,12 @@
   $('.breadcrumbs b').textContent='Текст '+state.verse;$('#footer-location').textContent='БГ 2.'+state.verse;
   document.querySelectorAll('[data-verse]').forEach(b=>{b.classList.toggle('selected',Number(b.dataset.verse)===state.verse);});
   const edition=editions.find(e=>e.id===state.edition)||editions[0];
-  $('#reader-edition-label').textContent=edition.name+' · '+languageNames[state.language];$('#reader-position').title=edition.name+' · '+languageNames[state.language];updateBookmark();
+  $('#reader-edition-label').textContent=edition.name+' · '+languageNames[state.language];updateBookmark();
   $('#linked-books-toggle').setAttribute('aria-pressed',String(state.linkedOpen));
   $('#linked-books-panel').hidden=!state.linkedOpen;document.body.classList.toggle('linked-books-open',state.linkedOpen);
   const pinned=$('#context-pin')?.getAttribute('aria-pressed')==='true';
   if($('#tab-chat-context')&&$('#tab-chat-context').textContent!=='Вся библиотека')$('#tab-chat-context').textContent='Бхагавад-гита · 2.'+(pinned?state.pinnedVerse:state.verse);
+  window.workspaceTabs?.refresh?.();
  }
  function jump(n){if(n<46||n>50)return;state.verse=n;const node=$('#reader-verse-'+n);scroll.scrollTop+=node.getBoundingClientRect().top-scroll.getBoundingClientRect().top-20;sync();}
  function renderLinked(){
@@ -43,7 +44,7 @@
   drawIcons($('#linked-editions'));
   document.querySelectorAll('[data-linked-open],[data-linked-new]').forEach(b=>b.onclick=()=>{const id=b.dataset.linkedOpen||b.dataset.linkedNew,language=$('[data-linked-language="'+id+'"]:checked').value,verse=state.linkedVerse;if(b.dataset.linkedNew)$('#new-tab').click();showSection('read');state={...state,edition:id,language,verse,linkedOpen:false};renderEdition();jump(verse);requestAnimationFrame(()=>jump(verse));});
  }
- function openLinked(n=state.verse){showSection('read');document.body.classList.remove('reading-bookmarks-open');state.linkedVerse=n;state.linkedOpen=true;renderLinked();sync();}
+ function openLinked(n=state.verse){const apply=()=>{showSection('read');document.body.classList.remove('reading-bookmarks-open');state.linkedVerse=n;state.linkedOpen=true;renderLinked();sync();};if(window.rightPanel)window.rightPanel.change(apply,'related');else apply();}
  function renderEdition(){
   const lang=state.language;
   // A genuine language change is visible; sample translations are explicitly labelled.

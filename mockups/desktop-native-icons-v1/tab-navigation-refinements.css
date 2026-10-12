@@ -1,0 +1,48 @@
+/* The tab plate belongs to scrolling content, so the viewport clips it with the tabs. */
+.global-tab-header .workspace-tab-list{position:relative;isolation:isolate}
+.global-tab-header .workspace-tab{flex:0 0 190px}
+.global-tab-header .workspace-tab:hover::before,.global-tab-header .workspace-tab:hover+.workspace-tab::before{opacity:0}
+.global-tab-header .workspace-tabs.is-compressed .workspace-tab.is-current{min-width:118px}
+.global-tab-header .workspace-tabs.is-dense .workspace-tab,.global-tab-header .workspace-tabs.is-dense .workspace-tab.is-current{min-width:80px}
+.global-tab-header .workspace-tabs.is-dense .workspace-tab-select>svg,.global-tab-header .workspace-tabs.is-dense .workspace-tab-select>i{display:none}
+.new-tab-shortcuts .new-tab-symbol{background:transparent;box-shadow:none}
+.linked-language-grid span,.linked-language-grid input:checked+span,.linked-language-grid label:hover span{background:transparent;border-color:transparent}
+.linked-language-grid input:checked+span{color:var(--gold-dark)}
+#personal-shelves .section-label button{width:28px;min-width:28px;height:28px;padding:5px}
+#personal-shelves .section-label button svg{width:18px;height:18px}
+.reading-toolbar{gap:8px}
+.reading-toolbar>.chapter-navigation{background:transparent;border:0;padding:0;min-height:36px;flex:none;gap:2px}
+.reader-actions #bookmark{width:auto;min-width:max-content;flex:none;gap:7px;padding:6px 8px;font-size:14px;white-space:nowrap}
+.right-tool-host{display:flex;flex-direction:column;flex:none;width:var(--right-panel-width,410px);height:100%;min-height:0;overflow:clip;border-left:1px solid var(--stroke);background:var(--panel-soft)}
+.right-tool-host[hidden]{display:none!important}
+.reading-layout .right-tool-host>:is(.inspector,#linked-books-panel,#reading-bookmarks-panel){width:100%;height:100%;flex:1;min-height:0;border-left:0}
+.desktop-motion-slot.motion-x:not(.is-overlay)>.right-tool-host{height:100%;flex-shrink:0}
+.desktop-motion-slot.is-page>.right-tool-host{width:100%;border:0}
+.tool-page .right-tool-host{width:100%;flex:1}
+.search-scope-catalog .catalog-title{position:relative;padding-right:28px}
+.search-scope-catalog .catalog-title>button{position:absolute;right:0;top:50%;transform:translateY(-50%);margin:0}
+.search-scope-catalog .catalog-title h2{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scope-tree-window{position:relative;flex:1;min-height:0;overflow:auto;isolation:isolate}
+.scope-tree-window>.tree{min-height:100%}
+.scope-count-window{display:inline-block;width:54px;position:relative;overflow:clip;white-space:nowrap;height:20px;line-height:20px;flex:none}
+.scope-count-window>span{display:block}
+.scope-count-window>.scope-count-old{position:absolute;inset:0}
+.search-scope-catalog .scope-catalog-note{flex:none;margin-top:12px;padding-bottom:0}
+@media(min-width:701px){
+ body.focus-mode .global-tab-header{grid-template-columns:auto minmax(0,1fr) auto auto;padding-right:8px}
+ body.focus-mode .global-tab-header>.brand{padding-left:8px;padding-right:16px}
+ body.focus-mode .reading-tools{gap:4px}
+ body.focus-mode .reading-tools>button{min-width:36px;width:36px;height:36px;margin:0;padding:6px;border:0;gap:0;display:flex}
+ body.focus-mode .reading-tools>button>:is(span,small){display:none}
+ body.focus-mode .reading-tools>#reading-catalog{width:auto;padding:6px 8px;gap:7px}
+ body.focus-mode .reading-tools>#reading-catalog>span{display:inline}
+ body.focus-mode .reading-tools>#exit-reading{margin:0;padding:6px;min-width:36px;width:36px;border:0}
+ body.focus-mode .reading-tools>#reading-more{display:none}
+ body.focus-mode .reading-tools>.chapter-navigation{display:flex;align-items:center;min-height:36px;padding:0;gap:0;background:transparent;border:0;flex:none}
+ body.focus-mode .reading-tools>.chapter-navigation button{min-width:32px;height:36px;min-height:36px;padding:6px;gap:0;margin:0}
+ body.focus-mode #reader-position>:is(span,strong){display:none}
+ body.focus-mode .paged-reader-controls{gap:0;margin:0}
+ body.focus-mode #spread-position{min-width:42px;font-size:12px}
+}
+@media(min-width:701px) and (max-width:1100px){.reading-toolbar #bookmark span,.reading-toolbar #linked-books-toggle span,.reading-toolbar .reader-actions .label,.reading-toolbar .reader-actions [data-view=ai] span{display:none}.reader-actions .text-button{padding-inline:6px}.reading-toolbar #reader-position span{display:none}}
+@media(max-width:700px){.right-tool-host{position:fixed;left:0;right:0;bottom:0;width:100%;height:65vh;z-index:13}.reading-layout .right-tool-host>:is(.inspector,#linked-books-panel,#reading-bookmarks-panel){position:static;width:100%;max-height:none;border-radius:0}}

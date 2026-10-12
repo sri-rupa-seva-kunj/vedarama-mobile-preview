@@ -19,7 +19,7 @@
  const sourcesOf=run=>run.sources?.length?run.sources:['books'];
  const hasTexts=run=>sourcesOf(run).some(s=>s==='books'||s==='word');
  const scopeHasBook=run=>run.scope==='catalog'?(run.selectedBooks||[]).includes(BOOK):run.scope!=='shelf'||saved.shelves.find(s=>s.id===run.shelf)?.books.includes(BOOK);
- function dictionaryRows(run){return refEntries.filter(e=>run.dictionaryCategory==='all'||!run.dictionaryCategory||e.category===run.dictionaryCategory).map(e=>({source:'dictionaries',id:e.id,title:e.title,text:e.definition+' '+e.body,search:e.title+' '+e.original+' '+e.definition+' '+e.body,entry:e}));}
+ function dictionaryRows(run){return refEntries.filter(e=>(run.scope!=='catalog'||!Array.isArray(run.selectedDictionaries)||run.selectedDictionaries.includes(e.category))&&(run.dictionaryCategory==='all'||!run.dictionaryCategory||e.category===run.dictionaryCategory)).map(e=>({source:'dictionaries',id:e.id,title:e.title,text:e.definition+' '+e.body,search:e.title+' '+e.original+' '+e.definition+' '+e.body,entry:e}));}
  function wordRows(run){return scopeHasBook(run)?glossary.map(e=>({source:'word',id:e.id,title:e.word,text:e.translation,search:run.wordField==='word'?e.word+' '+e.aliases:run.wordField==='translation'?e.translation:e.word+' '+e.aliases+' '+e.translation,entry:e})):[];}
  const originalMatches=matchedSearchRows;
  matchedSearchRows=function(run){

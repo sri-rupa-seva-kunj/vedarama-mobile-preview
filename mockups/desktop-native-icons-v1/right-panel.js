@@ -1,6 +1,11 @@
 // Every contextual tool shares one saved width and the same left-edge resize handle.
 (() => {
  const panels=[document.querySelector('.inspector'),document.querySelector('#linked-books-panel'),document.querySelector('#reading-bookmarks-panel')],layout=document.querySelector('.reading-layout');
+ const host=document.createElement('div');host.className='right-tool-host';host.hidden=true;layout.append(host);panels.forEach(panel=>host.append(panel));
+ function kind(){if(!panels[1].hidden)return 'related';if(!panels[2].hidden&&document.body.classList.contains('reading-bookmarks-open'))return 'bookmarks';return !panels[0].hidden&&getComputedStyle(panels[0]).display!=='none'?view:null;}
+ function sync(){const hidden=!panels.some(panel=>!panel.hidden&&getComputedStyle(panel).display!=='none');if(host.hidden!==hidden)host.hidden=hidden;}
+ function change(apply,next){const previous=kind(),commit=()=>{apply();sync();};if(previous&&previous!==next&&!document.body.classList.contains('tool-page')&&window.panelCarousel)window.panelCarousel(commit,['related','notes','ai','bookmarks'].indexOf(next)>=['related','notes','ai','bookmarks'].indexOf(previous)?1:-1);else commit();}
+ window.rightPanel={host,kind,sync,change};
  const widthKey='vedarama-right-panel-width',defaultWidth=410,minWidth=320;
  let preferred=Number(localStorage.getItem(widthKey))||defaultWidth,drag=null,frame=0;
  const splitter=document.createElement('div');splitter.id='right-panel-resizer';splitter.tabIndex=0;splitter.role='separator';splitter.hidden=true;
@@ -15,21 +20,21 @@
  }
  function current(){return section==='read'&&!document.body.classList.contains('tool-page')?panels.find(panel=>!panel.hidden&&getComputedStyle(panel).display!=='none'&&panel.getBoundingClientRect().width):null;}
  function place(){
-  frame=0;if(innerWidth<=700){splitter.hidden=true;return;}applyWidth(preferred);const panel=current();if(!panel){splitter.hidden=true;return;}
-  const rect=panel.getBoundingClientRect(),slot=panel.closest('.desktop-motion-slot');
+  frame=0;sync();if(innerWidth<=700){splitter.hidden=true;return;}applyWidth(preferred);const panel=current();if(!panel){splitter.hidden=true;return;}
+  const rect=host.getBoundingClientRect(),slot=host.closest('.desktop-motion-slot');
   const incomplete=slot&&Math.abs(slot.getBoundingClientRect().width-rect.width)>1;
   splitter.hidden=!drag&&(incomplete||!!window.workspaceMotionBusy||!!window.panelMotionBusy||!!window.readerLayoutTransition||!!document.querySelector('.desktop-motion-slot.is-moving'));
   splitter.setAttribute('aria-controls',panel.id);Object.assign(splitter.style,{left:(rect.left-4)+'px',top:rect.top+'px',height:rect.height+'px'});
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(place);}
  function stop(){if(!drag)return;drag=null;document.body.classList.remove('resizing-catalog','resizing-right-panel');schedule();}
- splitter.addEventListener('pointerdown',event=>{const panel=current();if(event.button!==0||!panel)return;event.preventDefault();splitter.focus({preventScroll:true});drag={id:event.pointerId,x:event.clientX,width:panel.getBoundingClientRect().width};splitter.setPointerCapture(event.pointerId);document.body.classList.add('resizing-catalog','resizing-right-panel');});
+ splitter.addEventListener('pointerdown',event=>{const panel=current();if(event.button!==0||!panel)return;event.preventDefault();splitter.focus({preventScroll:true});drag={id:event.pointerId,x:event.clientX,width:host.getBoundingClientRect().width};splitter.setPointerCapture(event.pointerId);document.body.classList.add('resizing-catalog','resizing-right-panel');});
  document.addEventListener('pointermove',event=>{if(!drag||drag.id!==event.pointerId)return;applyWidth(drag.width+drag.x-event.clientX,true);window.desktopMotion?.flush();place();});
  ['pointerup','pointercancel','lostpointercapture'].forEach(name=>splitter.addEventListener(name,stop));document.addEventListener('pointerup',stop);
  splitter.addEventListener('dblclick',()=>{applyWidth(defaultWidth,true);window.desktopMotion?.flush();place();});
  splitter.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const {min,max}=limits();applyWidth(event.key==='Home'?min:event.key==='End'?max:Number(splitter.getAttribute('aria-valuenow'))+(event.key==='ArrowLeft'?1:-1)*(event.shiftKey?10:20),true);window.desktopMotion?.flush();place();});
  const observer=new ResizeObserver(schedule);panels.forEach(panel=>observer.observe(panel));observer.observe(layout);
  // Ignore the handle's own hidden attribute so idle pages do not keep repainting.
- new MutationObserver(records=>{if(records.some(record=>record.target===document.body||panels.includes(record.target)))schedule();}).observe(document.body,{attributes:true,attributeFilter:['class','hidden'],subtree:true});
+ new MutationObserver(records=>{if(records.some(record=>record.target===document.body||panels.includes(record.target))){sync();schedule();}}).observe(document.body,{attributes:true,attributeFilter:['class','hidden'],subtree:true});
  document.addEventListener('desktop-layout-settled',schedule);window.addEventListener('resize',schedule);applyWidth(preferred);schedule();
 })();

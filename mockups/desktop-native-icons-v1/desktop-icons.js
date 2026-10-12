@@ -42,7 +42,7 @@
   const boost={ru:.18,ruSelected:.18,en:.18,enSelected:.18,sa:.1,saSelected:.1,reference:.18,referenceSelected:.18,favorites:.18,favoritesSelected:.18,textSettings:.12,book:.12,settings:.1};
   if(boost[key])code=code.replace(/fill="currentColor"/g,'fill="currentColor" stroke="currentColor" stroke-width="'+boost[key]+'" stroke-linejoin="round" vector-effect="non-scaling-stroke"');
   const prefix='desktop-'+(++sequence)+'-';code=code.replace(/id="([^"]+)"/g,(_,id)=>'id="'+prefix+id+'"').replace(/url\(#([^)]+)\)/g,(_,id)=>'url(#'+prefix+id+')');return code.replace('<svg ','<svg class="desktop-app-icon" data-desktop-icon="'+key+'" aria-hidden="true" focusable="false" ');}
- const map={book:'book',search:'search',spark:'ai',bookmark:'favorites',note:'note',settings:'settings',help:'help',globe:'globe',plus:'plus',close:'close',back:'back',forward:'forward',down:'down'};
+ const map={book:'book',search:'search',spark:'ai',bookmark:'favorites',note:'note',settings:'settings',help:'help',globe:'globe',plus:'plus','tab-blank':'tab-blank',close:'close',back:'back',forward:'forward',down:'down'};
  function setIcon(el,key){if(!el||el.closest('.desktop-motion-ghost,.desktop-motion-mask'))return;if(el.querySelector(':scope>svg')?.dataset.desktopIcon!==key)el.innerHTML=svg(key);}
  function put(selector,key){setIcon(document.querySelector(selector),key);}
  function compactAi(){

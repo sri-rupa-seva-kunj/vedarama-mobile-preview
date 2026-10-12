@@ -82,8 +82,9 @@
  new MutationObserver(records=>{if(records.some(r=>r.target===document.body))scheduleMode();const changes=records.filter(r=>page.contains(r.target));if(active&&changes.some(r=>r.type==='childList'||r.attributeName==='hidden'||(r.target===page&&getComputedStyle(page).fontSize!==font))){font=getComputedStyle(page).fontSize;if(changes.some(r=>r.type==='childList'&&r.target===page))pendingVerse=window.readerGetState().verse;schedule();}}).observe(document.body,{attributes:true,attributeFilter:['class','hidden','style'],childList:true,subtree:true});
  document.addEventListener('desktop-layout-settled',scheduleMode);window.addEventListener('resize',schedule);document.addEventListener('pointerup',schedule);
  window.finishReaderPageTurn=()=>{queuedIndex=null;window.readerPageTurn.cancel();if(active)syncVerse();};
+ window.prepareReaderFocusExit=function(){if(active&&document.body.classList.contains('focus-mode')){window.finishReaderPageTurn();exitTransition=window.beginReaderLayoutTransition?.(scroll,true)||null;}};
  for(const button of [$('#focus'),$('#exit-reading')]){const before=button.onclick;button.onclick=function(event){
-  if(active&&document.body.classList.contains('focus-mode')){window.finishReaderPageTurn();exitTransition=window.beginReaderLayoutTransition?.(scroll,true)||null;}
+  if(active&&document.body.classList.contains('focus-mode'))window.prepareReaderFocusExit();
   else if(exitTransition){exitTransition=null;window.finishReaderLayoutTransition?.();}
   before.call(this,event);
  };}
