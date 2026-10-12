@@ -33,8 +33,12 @@
   resizeObserver?.disconnect();resizeObserver=null;stopDrag();
   if(catalog){catalog.closest('.desktop-motion-slot')?.remove();catalog.remove();catalog=null;}splitter.hidden=true;
   beforeSearch();const select=document.querySelector('#search-scope');if(!select)return;
-  select.add(new Option('Выбрать книги…','catalog'));if(searchPrefs.scope==='catalog')select.value='catalog';window.vedaSelects?.enhance?.(document.querySelector('#library-search-form'));
-  if(searchPrefs.scope!=='catalog'||document.querySelector('.search-scope-label').hidden)return;
+  select.add(new Option('Выбранные книги','catalog'));if(searchPrefs.scope==='catalog')select.value='catalog';window.vedaSelects?.enhance?.(document.querySelector('#library-search-form'));
+  const scopeLabel=document.querySelector('.search-scope-label'),bar=document.createElement('div');bar.className='search-scope-bar';bar.hidden=scopeLabel.hidden;
+  const toggle=document.createElement('button');toggle.id='search-catalog-toggle';toggle.type='button';toggle.className='outline-button';toggle.innerHTML=icon('book')+'<span>Выбрать книги</span>';toggle.setAttribute('aria-expanded','false');
+  document.querySelector('.library-query-row').after(bar);bar.append(scopeLabel);const shelf=document.querySelector('#shelf-search-label');if(shelf)bar.append(shelf);bar.append(toggle);drawIcons(toggle);
+  toggle.onclick=()=>{captureSearchInput();searchPrefs.scope='catalog';saveSearchPrefs();dirtySearch();renderSearch();document.querySelector('#search-catalog-toggle').focus({preventScroll:true});};
+  if(searchPrefs.scope!=='catalog'||scopeLabel.hidden)return;
   searchPrefs.selectedBooks=Array.isArray(searchPrefs.selectedBooks)?searchPrefs.selectedBooks.filter(book=>books.includes(book)):[BOOK];
   const picker=document.createElement('aside');catalog=picker;picker.id='search-scope-catalog';picker.className='catalog search-scope-catalog';picker.setAttribute('aria-label','Каталог книг для поиска');
   const heading=copy(source.querySelector('.catalog-title')),tabs=copy(source.querySelector('.catalog-tabs')),filter=copy(source.querySelector('.catalog-search'));
@@ -56,8 +60,7 @@
   const empty=document.createElement('p');empty.className='scope-tree-empty';empty.textContent='Книги не найдены.';empty.hidden=true;tree.append(rootRow,children,empty);
   const note=document.createElement('p');note.className='scope-catalog-note';note.textContent='Поиск выполняется в отмеченных книгах. В макете доступен текст Бхагавад-гиты.';
   picker.append(heading,tabs,filter,actions,tree,note);const scene=document.querySelector('.workspace-scene-content')||document.querySelector('.workarea');scene.insertBefore(picker,document.querySelector('.reader-shell'));
-  const toggle=document.createElement('button');toggle.id='search-catalog-toggle';toggle.type='button';toggle.className='outline-button';toggle.innerHTML=icon('book')+'Выбрать книги';toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-controls',picker.id);
-  const pageHeading=document.querySelector('#workspace-panel .search-page-heading');let headingActions=pageHeading.querySelector('.search-heading-actions');if(!headingActions){headingActions=document.createElement('div');headingActions.className='search-heading-actions';headingActions.append(document.querySelector('#search-settings'));pageHeading.append(headingActions);}headingActions.prepend(toggle);
+  toggle.setAttribute('aria-expanded','true');toggle.setAttribute('aria-controls',picker.id);
   function setOpen(open){picker.hidden=!open;picker.dataset.closed=String(!open);toggle.setAttribute('aria-expanded',String(open));schedule();}
   close.onclick=()=>{setOpen(false);toggle.focus({preventScroll:true});};toggle.onclick=()=>setOpen(picker.hidden);
   function sync(){
