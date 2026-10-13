@@ -28,7 +28,9 @@
  new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:['class']});window.addEventListener('resize',schedule);document.addEventListener('desktop-layout-settled',schedule);
  function copy(element){const clone=element.cloneNode(true);[clone,...clone.querySelectorAll('*')].forEach(node=>{['id','hidden','data-dialog','data-catalog','data-verse','aria-controls','aria-describedby'].forEach(key=>node.removeAttribute(key));});return clone;}
  const dictionaries=[...new Set(refEntries.map(entry=>entry.category))].map(id=>({id,name:({terms:'Термины',people:'Личности',places:'Места'})[id]||id}));
- let signature='',treeWindow=null,count=null;
+ let signature='',treeWindow=null,count=null,languageMotion=null;
+ function finishLanguageMotion(){languageMotion?.finish();}
+ window.searchCatalogMotion={finish:finishLanguageMotion,get active(){return !!languageMotion;}};
  function choices(){const items=[];for(const language of searchPrefs.languages){if(searchPrefs.sources.some(s=>s==='books'||s==='word'))window.catalogEntries.filter(entry=>entry.languages.includes(language)).forEach(entry=>items.push({id:language==='ru'?String(entry.index):language+'-'+entry.index,key:language+':'+entry.index,index:entry.index,name:entry.canonical,label:entry.names[language],language,type:'book'}));if(searchPrefs.sources.includes('dictionaries'))dictionaries.forEach(item=>items.push({...item,id:language==='ru'?item.id:language+'-'+item.id,key:language+':'+item.id,canonical:item.id,label:item.name,language,type:'dictionary'}));}return items;}
  function selected(item){return (item.type==='book'?searchPrefs.selectedCatalogBooks:searchPrefs.selectedCatalogDictionaries).includes(item.key);}
  function normalize(){searchPrefs.languages=Array.isArray(searchPrefs.languages)?languageOrder.filter(language=>searchPrefs.languages.includes(language)):[window.libraryLanguage||'ru'];if(!searchPrefs.languages.length)searchPrefs.languages=['ru'];searchPrefs.selectedBooks=Array.isArray(searchPrefs.selectedBooks)?searchPrefs.selectedBooks.filter(book=>books.includes(book)):[BOOK];searchPrefs.selectedDictionaries=Array.isArray(searchPrefs.selectedDictionaries)?searchPrefs.selectedDictionaries:dictionaries.map(item=>item.id);
@@ -65,15 +67,17 @@
   input.oninput=filterTree;resizeObserver=new ResizeObserver(schedule);resizeObserver.observe(picker);drawIcons(picker);
  }
  function filterTree(){
+  finishLanguageMotion();
   const query=catalog.querySelector('#search-book-filter').value.toLocaleLowerCase('ru').trim();catalog.querySelectorAll('[data-scope-name]').forEach(row=>row.hidden=!row.dataset.scopeName.toLocaleLowerCase('ru').includes(query));
   catalog.querySelectorAll('.scope-tree-group').forEach(group=>{const found=[...group.querySelectorAll('[data-scope-name]')].some(row=>!row.hidden);group.hidden=!found;if(query&&found){group.querySelector('.scope-tree-children').hidden=false;group.querySelector('.tree-root').setAttribute('aria-expanded','true');}});
  }
- function drawTree(){
+ function drawTree(retained=new Map()){
   const tree=treeWindow.querySelector('.tree');tree.replaceChildren();let items=choices();const mode=[...catalog.querySelectorAll('.catalog-tabs button')].findIndex(button=>button.classList.contains('selected'));if(mode>0)items=[...items].sort((a,b)=>a.label.localeCompare(b.label,'ru'));
   for(const language of searchPrefs.languages)for(const type of ['book','dictionary']){
    const groupItems=items.filter(item=>item.type===type&&item.language===language);if(!groupItems.length)continue;
-   const group=document.createElement('section');group.className='scope-tree-group';const root=copy(source.querySelector('.tree-root'));root.textContent='';root.innerHTML=icon('down')+(type==='book'?'Священные писания':'Словари');root.setAttribute('aria-expanded','true');
-   if(searchPrefs.languages.length>1){const caption=document.createElement('div');caption.className='scope-language-caption';caption.innerHTML=window.desktopIconSvg(language)+'<span>'+window.catalogLanguageNames[language]+'</span>';group.append(caption);}
+   const key=language+':'+type;if(retained.has(key)){tree.append(retained.get(key).node);continue;}
+   const group=document.createElement('section');group.className='scope-tree-group';group.dataset.scopeGroup=key;const root=copy(source.querySelector('.tree-root'));root.textContent='';root.innerHTML=icon('down')+(type==='book'?'Священные писания':'Словари');root.setAttribute('aria-expanded','true');
+   const caption=document.createElement('div');caption.className='scope-language-caption';caption.innerHTML=window.desktopIconSvg(language)+'<span>'+window.catalogLanguageNames[language]+'</span>';group.append(caption);
    const rootRow=document.createElement('div');rootRow.className='scope-tree-row';rootRow.hidden=mode>0;const category=document.createElement('input');category.type='checkbox';category.dataset.scopeCategory=type;category.dataset.scopeLanguage=language;category.setAttribute('aria-label',(type==='book'?'Выбрать все книги категории «Священные писания»':'Выбрать все словари')+' · '+window.catalogLanguageNames[language]);rootRow.append(root,category);
    const children=document.createElement('div');children.className='scope-tree-children';children.id='search-scope-'+type+'-'+language;root.setAttribute('aria-controls',children.id);root.onclick=()=>{children.hidden=!children.hidden;root.setAttribute('aria-expanded',String(!children.hidden));root.innerHTML=icon(children.hidden?'right':'down')+(type==='book'?'Священные писания':'Словари');drawIcons(root);};
    groupItems.forEach(item=>{
@@ -87,18 +91,36 @@
   }
   drawIcons(tree);filterTree();syncSelection();
  }
- function updateTree(animate=false){const tree=treeWindow.querySelector('.tree');if(animate&&window.regionCarousel&&!catalog.hidden)window.regionCarousel(tree,drawTree,1);else drawTree();}
+ function updateTree(animate=false){finishLanguageMotion();const tree=treeWindow.querySelector('.tree');if(animate&&window.regionCarousel&&!catalog.hidden)window.regionCarousel(tree,drawTree,1);else drawTree();}
+ function updateLanguageGroups(){
+  finishLanguageMotion();window.finishRegionCarousels?.();const tree=treeWindow.querySelector('.tree');
+  const before=new Map([...tree.children].map(node=>[node.dataset.scopeGroup,{node,height:node.getBoundingClientRect().height}]));drawTree(before);
+  if(catalog.hidden||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const rows=[...tree.children],after=new Map(rows.map(node=>[node.dataset.scopeGroup,{node,height:node.getBoundingClientRect().height}]));
+  const removed=[...before.keys()].filter(key=>!after.has(key)),added=[...after.keys()].filter(key=>!before.has(key));if(!removed.length&&!added.length)return;
+  const keys=languageOrder.flatMap(language=>['book','dictionary'].map(type=>language+':'+type)).filter(key=>before.has(key)||after.has(key));
+  const runs=[],exitTime=removed.some(key=>before.get(key).height>0)?180:0,easing='cubic-bezier(.22,.7,.2,1)';let done=false,enterIndex=0;
+  const finish=()=>{if(done)return;done=true;runs.forEach(run=>run.cancel());tree.replaceChildren(...rows);if(languageMotion?.tree===tree)languageMotion=null;};
+  languageMotion={tree,finish};tree.replaceChildren();
+  const animate=(node,frames,duration,delay=0)=>runs.push(node.animate(frames,{duration,delay,easing,fill:'both'}));
+  for(const key of keys){const old=before.get(key),next=after.get(key),from=old?.height||0,to=next?.height||0,slot=document.createElement('div');slot.className='scope-language-slot';slot.style.height=from+'px';tree.append(slot);
+   if(next)slot.append(next.node);else{const ghost=old.node.cloneNode(true);[ghost,...ghost.querySelectorAll('[id]')].forEach(node=>node.removeAttribute('id'));ghost.inert=true;ghost.setAttribute('aria-hidden','true');slot.append(ghost);if(from)animate(ghost,[{translate:'0 0',opacity:1},{translate:'-32px 0',opacity:0}],180);}
+   if(!old&&next&&to)animate(next.node,[{translate:'32px 0',opacity:0},{translate:'0 0',opacity:1}],240,exitTime+80+enterIndex++*28);
+   if(Math.abs(from-to)>.5)animate(slot,[{height:from+'px'},{height:to+'px'}],200,exitTime);
+  }
+  if(runs.length)Promise.allSettled(runs.map(run=>run.finished)).then(finish);else finish();
+ }
  const oldScopeLabel=searchScopeLabel;searchScopeLabel=function(scope,shelf){if(scope!=='catalog')return oldScopeLabel(scope,shelf);normalize();return 'Выбрано источников: '+choices().filter(selected).length;};
  const beforeSearch=renderSearch;
  renderSearch=function(){
-  beforeSearch();normalize();const select=document.querySelector('#search-scope');if(!select)return;
+  finishLanguageMotion();beforeSearch();normalize();const select=document.querySelector('#search-scope');if(!select)return;
   const sources=searchPrefs.sources,onlyBooks=sources.every(s=>s==='books'||s==='word'),label=onlyBooks?'книги':sources.length===1&&sources[0]==='dictionaries'?'словари':'источники';
   const scopeLabel=document.querySelector('.search-scope-label');scopeLabel.hidden=false;scopeLabel.querySelector('span').textContent=onlyBooks?'Книги для поиска':'Источники для поиска';select.querySelector('[value=all]').textContent=onlyBooks?'Все книги':'Все источники';select.add(new Option(onlyBooks?'Выбранные книги':'Выбранные источники','catalog'));if(searchPrefs.scope==='catalog')select.value='catalog';window.vedaSelects?.enhance?.(document.querySelector('#library-search-form'));
   const bar=document.createElement('div');bar.className='search-scope-bar';const toggle=document.createElement('button');toggle.id='search-catalog-toggle';toggle.type='button';toggle.className='outline-button';toggle.innerHTML=icon('book')+'<span>Выбрать '+label+'</span>';toggle.setAttribute('aria-controls','search-scope-catalog');
-  document.querySelector('.library-query-row').after(bar);bar.append(scopeLabel);const shelf=document.querySelector('#shelf-search-label');if(shelf)bar.append(shelf);bar.append(toggle);drawIcons(toggle);
+  (document.querySelector('.unified-search-selection')||document.querySelector('.library-query-row')).after(bar);bar.append(scopeLabel);const shelf=document.querySelector('#shelf-search-label');if(shelf)bar.append(shelf);bar.append(toggle);drawIcons(toggle);
   const languages=document.createElement('fieldset');languages.className='scope-language-picker';languages.innerHTML='<legend>Выбор языка каталога для поиска</legend><div class="scope-language-buttons">'+languageOrder.map(language=>'<button type="button" data-scope-language="'+language+'" aria-label="'+window.catalogLanguageNames[language]+'" title="'+window.catalogLanguageNames[language]+'">'+window.desktopIconSvg(language)+'</button>').join('')+'</div>';bar.before(languages);
   const syncLanguages=()=>languages.querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(searchPrefs.languages.includes(button.dataset.scopeLanguage))));syncLanguages();drawIcons(languages);
-  languages.querySelectorAll('button').forEach(button=>button.onclick=()=>{captureSearchInput();const language=button.dataset.scopeLanguage,next=searchPrefs.languages.includes(language)?searchPrefs.languages.filter(value=>value!==language):[...searchPrefs.languages,language];if(!next.length||languageOrder.filter(value=>next.includes(value)).join(',')===searchPrefs.languages.join(','))return;searchPrefs.languages=next;normalize();saveSearchPrefs();dirtySearch();syncLanguages();if(catalog){updateTree(true);signature=searchPrefs.sources.join(',')+'|'+searchPrefs.languages.join(',');}});
+  languages.querySelectorAll('button').forEach(button=>button.onclick=()=>{captureSearchInput();const language=button.dataset.scopeLanguage,next=searchPrefs.languages.includes(language)?searchPrefs.languages.filter(value=>value!==language):[...searchPrefs.languages,language];if(!next.length||languageOrder.filter(value=>next.includes(value)).join(',')===searchPrefs.languages.join(','))return;searchPrefs.languages=next;normalize();saveSearchPrefs();dirtySearch();syncLanguages();if(catalog){updateLanguageGroups();signature=searchPrefs.sources.join(',')+'|'+searchPrefs.languages.join(',');}});
   toggle.onclick=()=>{if(searchPrefs.scope!=='catalog'){captureSearchInput();searchPrefs.scope='catalog';saveSearchPrefs();dirtySearch();if(catalog)catalog.dataset.closed='false';renderSearch();document.querySelector('#search-catalog-toggle').focus({preventScroll:true});return;}catalog.dataset.closed=String(!catalog.hidden);catalog.hidden=!catalog.hidden;toggle.setAttribute('aria-expanded',String(!catalog.hidden));schedule();};
   if(searchPrefs.scope!=='catalog'){if(catalog)catalog.hidden=true;splitter.hidden=true;return;}
   if(!catalog)makeCatalog();const next=sources.join(',')+'|'+searchPrefs.languages.join(',');catalog.hidden=section!=='search'||catalog.dataset.closed==='true';toggle.setAttribute('aria-expanded',String(!catalog.hidden));catalog.querySelector('.catalog-title h2').textContent=onlyBooks?'Каталог книг':sources.length===1&&sources[0]==='dictionaries'?'Словари':'Источники поиска';

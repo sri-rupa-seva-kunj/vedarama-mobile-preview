@@ -31,6 +31,8 @@
  function svg(key){let code=desktopIconData[key];if(actionPaths[key])code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="'+actionPaths[key]+'" stroke="currentColor" stroke-width="1.2" stroke-linejoin="miter" stroke-linecap="square" vector-effect="non-scaling-stroke"/></svg>';
   if(key==='verse-list')code='<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><circle cx="5" cy="8" r="1.4"/><circle cx="12" cy="8" r="1.4"/><circle cx="19" cy="8" r="1.4"/><circle cx="5" cy="16" r="1.4"/><circle cx="12" cy="16" r="1.4"/><circle cx="19" cy="16" r="1.4"/></g></svg>';
   if(!code)return '';
+  // The Sanskrit asset is tightly cropped; match the padding of the RU/EN folders.
+  if(key==='sa'||key==='saSelected')code=code.replace('width="24" height="22" viewBox="0 0 24 22"','width="32" height="32" viewBox="-4 -5 32 32"');
   // The document and pencil share the create-note silhouette, optically centred.
   if(key==='note')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-1.5 .25)"><path d="'+actionPaths['note-new']+'" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></g></svg>';
   if(key==='readingOff')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 4.5h19v15h-19Z M2.5 8h19 M7.5 8v11.5 M10.5 11.5h8 M10.5 15h6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></svg>';

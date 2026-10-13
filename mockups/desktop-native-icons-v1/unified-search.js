@@ -1,11 +1,12 @@
-// One search workspace; sources and search methods are independent choices.
+// Select one source; exact and AI search methods remain independent.
 (() => {
  const sourceNames={books:'Книги',dictionaries:'Словари',word:'Пословник'};
  Object.assign(defaultSearchPrefs,{sources:['books'],dictionaryCategory:'all',wordField:'both'});
  function normalize(){
-  searchPrefs.sources=Array.isArray(searchPrefs.sources)?searchPrefs.sources.filter(s=>sourceNames[s]):['books'];
-  if(!searchPrefs.sources.length)searchPrefs.sources=['books'];
+  const source=Array.isArray(searchPrefs.sources)?searchPrefs.sources.find(s=>sourceNames[s]):null,previous=Array.isArray(searchPrefs.sources)?searchPrefs.sources.join(','):null;
+  searchPrefs.sources=[source||'books'];
   searchPrefs.dictionaryCategory||='all';searchPrefs.wordField||='both';
+  if(previous!==searchPrefs.sources.join(','))saveSearchPrefs();
  }
  normalize();
  const glossary=[
@@ -34,7 +35,7 @@
  renderSearch=function(){
   normalize();originalRender();
   const form=$('#library-search-form');
-  $('.library-query-row').insertAdjacentHTML('afterend',`<fieldset class="unified-search-sources"><legend>Источники поиска</legend><div>${Object.entries(sourceNames).map(([id,name])=>`<label><input type="checkbox" data-search-source-kind="${id}" ${searchPrefs.sources.includes(id)?'checked':''}>${name}</label>`).join('')}</div><p>Выберите один или несколько источников.</p></fieldset>`);
+  $('.library-query-row').insertAdjacentHTML('afterend',`<fieldset class="unified-search-sources"><legend>Источник поиска</legend><div>${Object.entries(sourceNames).map(([id,name])=>`<label><input type="radio" name="search-source" data-search-source-kind="${id}" ${searchPrefs.sources.includes(id)?'checked':''} required>${name}</label>`).join('')}</div><p>Выберите один источник поиска.</p></fieldset>`);
   form.insertAdjacentHTML('beforeend',settingsMarkup());
   if($('#dictionary-category'))$('#dictionary-category').value=searchPrefs.dictionaryCategory;
   if($('#word-search-field'))$('#word-search-field').value=searchPrefs.wordField;
@@ -46,9 +47,7 @@
   $('#library-query').placeholder=searchPrefs.sources.length===1&&searchPrefs.sources[0]==='word'?'Санскритское слово или его перевод…':searchPrefs.sources.length===1&&searchPrefs.sources[0]==='dictionaries'?'Термин, имя, место или вопрос…':'Слово, фраза или вопрос…';
   $('.search-demo-hint').textContent='Пример библиотеки: БГ 2.47, словарные статьи и пословный перевод. ИИ-поиск демонстрационный.';
   document.querySelectorAll('[data-search-source-kind]').forEach(b=>b.onchange=()=>{
-   captureSearchInput();const selected=[...document.querySelectorAll('[data-search-source-kind]:checked')].map(x=>x.dataset.searchSourceKind);
-   if(!selected.length){b.checked=true;toast('Выберите хотя бы один источник.');return;}
-   searchPrefs.sources=selected;saveSearchPrefs();dirtySearch();renderSearch();$('[data-search-source-kind="'+b.dataset.searchSourceKind+'"]').focus({preventScroll:true});
+   if(!b.checked)return;captureSearchInput();searchPrefs.sources=[b.dataset.searchSourceKind];saveSearchPrefs();dirtySearch();renderSearch();$('[data-search-source-kind="'+b.dataset.searchSourceKind+'"]').focus({preventScroll:true});
   });
   for(const [id,key]of [['dictionary-category','dictionaryCategory'],['word-search-field','wordField']])if($('#'+id))$('#'+id).onchange=e=>{captureSearchInput();searchPrefs[key]=e.target.value;saveSearchPrefs();dirtySearch();};
   // Keep primary choices together and all source-specific filters in one compact row.

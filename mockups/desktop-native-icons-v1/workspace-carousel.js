@@ -15,7 +15,7 @@
  const order=[...document.querySelectorAll('.rail-scroll .rail-item')].map(b=>b.dataset.libraryLanguage?'read':b.dataset.nav||({converter:'converter',shelves:'shelves',bookmarks:'bookmarks'}[b.dataset.dialog])||b.dataset.view||(b.id==='search-section-button'?'search':b.id==='references-button'?'references':null)).filter(Boolean);
  function finish(){if(!transition)return;const current=transition;transition=null;current.runs.forEach(run=>run.cancel());current.stage.remove();content.style.removeProperty('transform');window.workspaceMotionBusy=false;scene.classList.remove('is-carousel-moving');lastRoute=route();current.after?.();document.dispatchEvent(new Event('desktop-layout-settled'));invalidate();}
  function change(axis,sign,apply,after,onlyIfRoute=false){
-  finish();window.activityMotion?.finish();window.finishReaderLayoutTransition?.();window.finishReaderPageTurn?.();window.finishPanelCarousel?.();window.finishRegionCarousels?.();
+   finish();window.activityMotion?.finish();window.searchCatalogMotion?.finish();window.finishReaderLayoutTransition?.();window.finishReaderPageTurn?.();window.finishPanelCarousel?.();window.finishRegionCarousels?.();
   if(contentChanges.takeRecords().length)invalidate();
   const cached=prepared;prepared=null;prepareJob?.();prepareJob=null;window.desktopMotion.settle();window.desktopMotion.flush();
   const previous=lastRoute,rect=scene.getBoundingClientRect(),old=cached||window.desktopMotion.snapshot(content);if(cached)window.desktopMotion.refreshSnapshot(content,old);
