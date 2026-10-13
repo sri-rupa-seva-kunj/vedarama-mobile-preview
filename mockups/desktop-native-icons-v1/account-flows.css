@@ -1,6 +1,12 @@
 body.focus-mode .reading-tools>#exit-reading{width:auto;min-width:36px;gap:8px;padding:6px 10px;background:var(--accent-wash);color:var(--gold-dark)}
 body.focus-mode .reading-tools>#exit-reading>span{display:inline!important;white-space:nowrap;font-size:13px}
 body.focus-mode .reading-tools>#exit-reading>i{flex:none}
+#dialog{position:fixed;inset:0;margin:0;width:100%;max-width:none;height:100dvh;max-height:none;padding:32px 20px;overflow:auto;overscroll-behavior:contain;background:transparent;border:0;border-radius:0;box-shadow:none}
+#dialog[open]{display:flex;flex-direction:column}
+#dialog .dialog-window{width:580px;max-width:100%;flex:0 0 auto;margin:auto;padding:28px;background:var(--white);color:var(--ink);border:1px solid var(--stroke);border-radius:6px;box-shadow:var(--shadow)}
+#dialog .dialog-heading{position:static;flex:none}
+#dialog #dialog-body{max-height:none;overflow:visible;flex:none;min-height:0}
+@media(max-width:700px){#dialog{padding:16px 12px}#dialog .dialog-window{padding:22px 20px}}
 .reader-settings{max-width:100%}
 .reader-settings>section{padding:0 0 22px;margin:0 0 22px;border-bottom:1px solid var(--stroke)}
 .reader-settings h3{font:700 16px 'PT Sans',sans-serif;margin:0 0 12px}
@@ -14,11 +20,15 @@ body.focus-mode .reading-tools>#exit-reading>i{flex:none}
 .reader-settings .settings-preview{margin:14px 0 0;padding:14px;background:var(--panel-soft);border:1px solid var(--stroke)}
 .reader-settings .settings-preview>span{display:block;font:11px 'PT Sans',sans-serif;color:var(--secondary);margin-bottom:9px}
 .reader-settings .settings-preview p{font-family:'Gaura PT Serif',serif;line-height:1.6;margin:0;font-size:inherit}
-.settings-theme-buttons{display:flex;gap:12px}
-#dialog-body .settings-theme-buttons label{display:flex;gap:9px;align-items:center;justify-content:flex-start;flex:1;border:1px solid var(--stroke);padding:10px;margin:0;cursor:pointer}
-.settings-theme-buttons label:has(input:checked){background:var(--accent-wash);border-color:var(--gold-dark)}
-.settings-theme-buttons input{accent-color:var(--gold-dark);margin:0}
-.settings-theme-buttons svg{width:22px;height:22px}
+.ui-size-preview{margin-top:14px;padding:14px;background:var(--panel-soft);border:1px solid var(--stroke)}
+.ui-size-preview>span{display:block;font:11px 'PT Sans',sans-serif;color:var(--secondary);margin-bottom:12px;letter-spacing:.06em}
+.ui-size-preview-content{font-family:'PT Sans',sans-serif;line-height:1.4}
+.ui-size-preview-content>strong{display:block;margin-bottom:.7em}
+.ui-size-preview-content svg.desktop-app-icon{width:1.25em;height:1.25em}
+.ui-preview-field{display:flex;align-items:center;gap:.6em;padding:.6em .8em;background:var(--white);border:1px solid var(--stroke);color:var(--secondary)}
+.ui-preview-row{display:flex;align-items:center;justify-content:space-between;gap:.7em;margin-top:.8em;flex-wrap:wrap}
+.ui-preview-row>span{display:flex;align-items:center;gap:.5em}
+.ui-preview-button{padding:.5em .8em;border:1px solid var(--stroke);background:var(--white);white-space:nowrap}
 #dialog-body .settings-blocks label{display:flex;justify-content:space-between;align-items:center;border:0;padding:8px 0;margin:0;font-size:14px}
 .settings-blocks input{accent-color:var(--gold-dark);width:17px;height:17px}
 #interface-language{min-height:42px;max-width:240px;width:100%;border:1px solid var(--stroke);background:var(--white);color:var(--ink);padding:8px;font:14px 'PT Sans',sans-serif}

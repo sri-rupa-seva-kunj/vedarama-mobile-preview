@@ -24,6 +24,8 @@
   'bookmark-add':'M6 3h12v18l-6-4-6 4Z M9 9h6 M12 6v6',
   'select-all':'M8 3h13v13 M3 8h13v13H3Z M6 14l2.5 2.5 4.5-5',
   'save-place':'M3.5 3.5h13l4 4v13h-17Z M7 3.5v6h9v-6 M7 20.5v-7h10v7',
+  'catalog-list':'M3 4h4v4H3Z M11 6h10 M3 10h4v4H3Z M11 12h10 M3 16h4v4H3Z M11 18h10',
+  'edition-stack':'M3 7h11v14H3Z M6 7v14 M7 3h11v14 M11 0.8h10v12',
   reset:'M5 9a8 8 0 1 1-1 7 M5 3v6h6',
   'tab-blank':'M3 4h18v16H3Z M3 8h18 M6 6h3',
   'attach-text':'M5 3h11v5 M5 3v18h8 M8 7h4 M8 11h3 M18 9v9a3 3 0 0 1-6 0v-5a2 2 0 0 1 4 0v5a1 1 0 0 1-2 0v-4',
@@ -46,6 +48,8 @@
   if(boost[key])code=code.replace(/fill="currentColor"/g,'fill="currentColor" stroke="currentColor" stroke-width="'+boost[key]+'" stroke-linejoin="round" vector-effect="non-scaling-stroke"');
   const prefix='desktop-'+(++sequence)+'-';code=code.replace(/id="([^"]+)"/g,(_,id)=>'id="'+prefix+id+'"').replace(/url\(#([^)]+)\)/g,(_,id)=>'url(#'+prefix+id+')');return code.replace('<svg ','<svg class="desktop-app-icon" data-desktop-icon="'+key+'" aria-hidden="true" focusable="false" ');}
  const map={book:'book',search:'search',spark:'ai',bookmark:'favorites',note:'note',settings:'settings',help:'help',globe:'globe',plus:'plus','tab-blank':'tab-blank',close:'close',back:'back',forward:'forward',down:'down'};
+ const catalogControls='#toggle-tree,#reading-catalog,#compact-catalog-toggle,#search-catalog-toggle';
+ const editionControls='#linked-books-toggle,#reading-related,[data-linked-verse],[data-reading-action=related]';
  window.desktopIconSvg=svg;
  function setIcon(el,key){if(!el||el.closest('.desktop-motion-ghost,.desktop-motion-mask'))return;if(el.querySelector(':scope>svg')?.dataset.desktopIcon!==key)el.innerHTML=svg(key);}
  function put(selector,key){setIcon(document.querySelector(selector),key);}
@@ -56,7 +60,7 @@
  }
  function action(selector,key){document.querySelectorAll(selector).forEach(button=>{if(button.closest('.desktop-motion-ghost,.desktop-motion-mask'))return;const mark=button.querySelector('i,svg');if(mark?.tagName.toLowerCase()==='i')setIcon(mark,key);else if(mark){if(mark.dataset.desktopIcon!==key)mark.outerHTML=svg(key);}else button.insertAdjacentHTML('afterbegin',svg(key));});}
  function decorate(){
-  document.querySelectorAll('i[data-icon]').forEach(el=>{const key=map[el.dataset.icon];if(key)setIcon(el,key);});
+  document.querySelectorAll('i[data-icon]').forEach(el=>{let key=map[el.dataset.icon];if(key==='book'){if(el.closest(catalogControls))key='catalog-list';else if(el.closest(editionControls))key='edition-stack';}if(key)setIcon(el,key);});
   document.querySelectorAll('.tree i[data-icon=down]').forEach(el=>setIcon(el,'minus'));
   document.querySelectorAll('.tree i[data-icon=right]').forEach(el=>setIcon(el,'plus'));
   // Preserve the current expanded/collapsed state of the two working tree branches.
@@ -85,13 +89,15 @@
   if(view==='notes')action('#tool-mode','note-stack');
   if(section==='saved')action('#saved-primary',savedTab==='notes'?'note-new':savedTab==='shelves'?'shelf-add':'bookmark-add');
   action('#search-books-all','select-all');action('#search-books-reset','reset');
+  action(catalogControls,'catalog-list');
+  action(editionControls,'edition-stack');
   action('#reading-add-bookmark','save-place');
   action('[data-linked-new]','open-tab');
   action('[data-linked-open]','tab-blank');
   document.querySelectorAll('[data-linked-language]').forEach(input=>{
    const label=input.nextElementSibling,name=({ru:'Русский',en:'English',sa:'Санскрит'})[input.value];
    input.setAttribute('aria-label',name);label.title=name;setIcon(label,input.value);
-   if(input.value==='ru'||input.value==='en')label.querySelector('svg').setAttribute('viewBox','4 5 24 22');
+   label.querySelector('svg').setAttribute('viewBox',input.value==='sa'?'0 0 24 22':'4 5 24 22');
   });
   action('.workspace-tab-select:has(svg[data-desktop-icon=plus])','tab-blank');
   action('#native-add-verse','attach-text');action('#ask-ai','send');

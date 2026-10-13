@@ -101,10 +101,12 @@
 (() => {
  const runs=new Set(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
  window.regionCarousel=function(source,apply,sign=1){
-  window.finishRegionCarousels();const r=(source.closest('.scope-tree-window')||source).getBoundingClientRect();const owner=source.closest('#book-catalog');if(owner)r.height=Math.max(0,Math.min(r.height,owner.getBoundingClientRect().bottom-r.top));
+  window.finishRegionCarousels();const sourceRect=source.getBoundingClientRect(),viewport=source.closest('.scope-tree-window'),owner=source.closest('#book-catalog');
+  let r=(viewport||source).getBoundingClientRect();
+  if(owner){const bounds=owner.getBoundingClientRect(),left=Math.max(r.left,bounds.left+owner.clientLeft),top=Math.max(r.top,bounds.top+owner.clientTop),right=Math.min(r.right,bounds.left+owner.clientLeft+owner.clientWidth),bottom=Math.min(r.bottom,bounds.top+owner.clientTop+owner.clientHeight);r={left,top,width:Math.max(0,right-left),height:Math.max(0,bottom-top)};}
   if(reduced.matches||!r.width||!r.height){apply();return;}
  const clone=window.desktopMotion.snapshot(source),mask=document.createElement('div');mask.className='desktop-motion-mask scope-carousel-mask';mask.inert=true;mask.setAttribute('aria-hidden','true');
-  Object.assign(mask.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',zIndex:'4'});Object.assign(clone.style,{position:'absolute',left:'0',top:'0',width:r.width+'px',height:r.height+'px',margin:'0'});mask.append(clone);document.body.append(mask);window.desktopMotion.restoreScroll(clone);
+  Object.assign(mask.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',zIndex:'4'});Object.assign(clone.style,{position:'absolute',left:(owner?sourceRect.left-r.left:0)+'px',top:(owner?sourceRect.top-r.top:0)+'px',width:sourceRect.width+'px',height:sourceRect.height+'px',margin:'0'});mask.append(clone);document.body.append(mask);window.desktopMotion.restoreScroll(clone);
   apply();const opts={duration:340,easing:'cubic-bezier(.22,.7,.2,1)',fill:'both'},animations=[clone.animate([{translate:'0 0'},{translate:-sign*r.width+'px 0'}],opts),source.animate([{translate:sign*r.width+'px 0'},{translate:'0 0'}],opts)];
   const cleanup=()=>{animations.forEach(a=>a.cancel());mask.remove();runs.delete(cleanup);};runs.add(cleanup);Promise.all(animations.map(a=>a.finished)).then(cleanup).catch(()=>{});
  };

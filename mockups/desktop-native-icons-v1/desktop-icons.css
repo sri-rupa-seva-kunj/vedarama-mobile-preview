@@ -1,7 +1,6 @@
 /* Keep desktop SVG geometry and its own path-level strokes intact. */
 svg.desktop-app-icon{width:20px;height:20px;fill:none!important;stroke:none!important;stroke-width:1!important;stroke-linecap:butt!important;stroke-linejoin:miter!important;flex-shrink:0;display:block}
 .rail .rail-item svg.desktop-app-icon{width:32px;height:32px}
-.rail .rail-item svg.desktop-app-icon[data-desktop-icon=sa],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=saSelected]{width:24px;height:22px}
 .rail .rail-item svg.desktop-app-icon[data-desktop-icon=search]{width:25px;height:25px}
 .rail .rail-item svg.desktop-app-icon[data-desktop-icon=note],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=help]{width:24px;height:24px}
 .rail .rail-item svg:not(.desktop-app-icon){stroke-width:1.2}
@@ -21,8 +20,7 @@ svg.desktop-app-icon{width:20px;height:20px;fill:none!important;stroke:none!impo
 
 /* Optical sizing: compare visible contours, not the differently padded SVG boxes. */
 .rail .rail-item svg.desktop-app-icon{width:30px;height:30px}
-.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ru],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ruSelected],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=en],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=enSelected]{width:29px;height:29px}
-.rail .rail-item svg.desktop-app-icon[data-desktop-icon=sa],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=saSelected]{width:22px;height:20.2px}
+.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ru],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=ruSelected],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=en],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=enSelected],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=sa],.rail .rail-item svg.desktop-app-icon[data-desktop-icon=saSelected]{width:29px;height:29px}
 #search-section-button svg.desktop-app-icon{width:24px;height:24px}
 #search-section-button svg.desktop-app-icon[data-desktop-icon=wbw],#search-section-button svg.desktop-app-icon[data-desktop-icon=wbwSelected]{width:30px;height:30px}
 .rail .rail-item svg.desktop-app-icon[data-desktop-icon=ai]{width:32px;height:32px}
