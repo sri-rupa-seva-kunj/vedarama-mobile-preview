@@ -50,13 +50,38 @@ body .reading-tools>#reading-ai svg.desktop-app-icon,.reader-actions [data-view=
 #selection-actions>button{width:100%;display:flex;align-items:center;justify-content:flex-start;gap:9px;padding:10px;border:0;background:transparent;font:13px 'PT Sans',sans-serif;min-height:40px}
 #selection-actions>button:hover{background:var(--panel-soft)}
 #selection-actions svg{width:23px;height:23px;flex:none}
-.help-faq details{border-bottom:1px solid var(--stroke);padding:12px 0}
-.help-faq summary{cursor:pointer;font-weight:600;line-height:1.45}
-.help-faq details p{font-size:14px;line-height:1.65;color:var(--secondary);margin:10px 0 0}
-.tutorial-link{display:flex;align-items:center;gap:10px;padding:12px;justify-content:space-between;margin-bottom:22px}
-.tutorial-link svg{width:22px;height:22px}
-.help-contact{margin-top:24px;padding-top:14px}
-.help-contact p{font-size:13px;color:var(--secondary)}
+.help-page .tutorial-card{display:flex;align-items:center;gap:18px;padding:20px;border:1px solid var(--stroke);border-radius:5px;background:var(--panel-soft);color:var(--ink);text-decoration:none;margin-bottom:28px;transition:border-color 160ms ease,background-color 160ms ease}
+.help-page .tutorial-card:hover{border-color:var(--gold-dark);background:var(--accent-wash)}
+.help-page .tutorial-card:focus-visible{outline:2px solid var(--gold-dark);outline-offset:3px}
+.tutorial-thumb{width:80px;height:92px;flex:none;display:grid;place-items:center;border-radius:4px;background:var(--accent-wash);color:var(--gold-dark)}
+.tutorial-thumb>span{width:48px;height:48px;display:grid;place-items:center;border:1px solid var(--gold-dark);border-radius:50%}
+.tutorial-thumb svg{width:23px;height:23px;margin-left:-2px;fill:currentColor;stroke:none}
+.tutorial-thumb svg path{fill:currentColor;stroke:none}
+.tutorial-copy{display:flex;flex-direction:column;gap:7px;min-width:0}
+.tutorial-eyebrow{font:12px/1.4 'PT Sans',sans-serif;color:var(--secondary)}
+.tutorial-copy strong{font:700 18px/1.3 'PT Sans',sans-serif}
+.tutorial-description{font:14px/1.5 'PT Sans',sans-serif;color:var(--secondary)}
+.tutorial-action{display:flex;align-items:center;gap:8px;color:var(--gold-dark);font:700 14px/1.4 'PT Sans',sans-serif;margin-top:3px}
+.help-page h3{font:700 18px/1.3 'PT Sans',sans-serif;margin:0 0 6px}
+#dialog-body .help-section-description{font:14px/1.5 'PT Sans',sans-serif;color:var(--secondary);margin:0 0 16px}
+.help-faq{border:1px solid var(--stroke);border-radius:4px;overflow:clip}
+.help-faq-item+.help-faq-item{border-top:1px solid var(--stroke)}
+.help-faq-item h4{margin:0}
+.help-page .help-question{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:52px;padding:14px 16px;border:0;border-radius:0;text-align:left;background:transparent;color:var(--ink);font:400 15px/1.45 'PT Sans',sans-serif}
+.help-question>span{flex:1;min-width:0}
+.help-question svg.desktop-app-icon{width:16px;height:16px;color:var(--secondary);transition:transform 240ms cubic-bezier(.22,.7,.2,1)}
+.help-faq-item.is-expanded .help-question svg{transform:rotate(180deg);color:var(--gold-dark)}
+.help-page .help-question:hover{background:var(--panel-soft)}
+.help-page .help-question:focus-visible{outline:2px solid var(--gold-dark);outline-offset:-2px}
+.help-answer{overflow:clip}
+.help-answer-copy{padding:0 16px 16px}
+#dialog-body .help-answer-copy p{font:14px/1.65 'PT Sans',sans-serif;color:var(--secondary);margin:0}
+.help-contact{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:24px;padding:16px;background:var(--panel-soft);border:1px solid var(--stroke);border-radius:4px}
+#dialog-body .help-contact p{font:13px/1.5 'PT Sans',sans-serif;color:var(--secondary);margin:6px 0 0}
+.help-contact button{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.help-contact svg{width:16px;height:16px}
+@media(max-width:700px){.help-page .tutorial-card{padding:16px;gap:14px}.tutorial-thumb{width:62px;height:84px}.help-page .help-question{padding:13px 14px}.help-contact{padding:14px}}
+@media(prefers-reduced-motion:reduce){.help-page .tutorial-card,.help-question svg.desktop-app-icon{transition:none}}
 .account-login-card{width:min(100%,440px);margin-top:22px;border:1px solid var(--stroke);padding:24px;background:var(--white)}
 .account-demo-notice{font-size:13px;line-height:1.5;color:var(--secondary);margin:0 0 22px}
 .account-login-card input:not([type=checkbox]){width:100%;min-height:44px;padding:10px;border:1px solid var(--stroke);color:var(--ink);background:var(--surface);font:16px 'PT Sans',sans-serif}
@@ -71,7 +96,8 @@ body .reading-tools>#reading-ai svg.desktop-app-icon,.reader-actions [data-view=
 #login-error{font-size:13px;line-height:1.5;border-left:2px solid var(--gold-dark);padding:8px 12px;background:var(--accent-wash)}
 .login-registration{display:flex;justify-content:space-between;gap:12px;font-size:14px;margin-top:24px;padding-top:20px;border-top:1px solid var(--stroke)}
 .login-registration a{color:var(--gold-dark)}
-.profile-account-actions{padding:8px 0}
+.profile-account-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;flex:none;padding:0}
+.profile-account-actions>button{min-height:42px}
 :is(#account-logout,#logout-confirm){--logout-color:#A64D46;--logout-wash:#A64D460D;--logout-border:#A64D4666;--logout-hover:#A64D461C;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:9px 14px;color:var(--logout-color);background:var(--logout-wash);border:1px solid var(--logout-border);border-radius:3px}
 html[data-theme=dark] :is(#account-logout,#logout-confirm){--logout-color:#E5A39B;--logout-wash:#E5A39B12;--logout-border:#E5A39B5C;--logout-hover:#E5A39B20}
 #account-logout:hover{background:var(--logout-hover);border-color:var(--logout-color)}

@@ -4,6 +4,10 @@
  let backdropDown=false;
  modal.addEventListener('pointerdown',event=>{backdropDown=event.target===modal&&event.clientX<modal.getBoundingClientRect().left+modal.clientWidth;});
  modal.addEventListener('click',event=>{if(backdropDown&&event.target===modal&&event.clientX<modal.getBoundingClientRect().left+modal.clientWidth)modal.close();backdropDown=false;});
+ const helpRuns=new Set(),reducedHelpMotion=matchMedia('(prefers-reduced-motion: reduce)');
+ modal.addEventListener('close',()=>helpRuns.forEach(run=>run.cancel()));
+ const finishHelpMotion=()=>helpRuns.forEach(run=>{try{run.finish();}catch{run.cancel();}});
+ window.addEventListener('resize',finishHelpMotion);reducedHelpMotion.addEventListener('change',()=>{if(reducedHelpMotion.matches)finishHelpMotion();});
  const priorDialog=openDialog;
  function settings(){
   const blocks=[['original','Оригинал и транслитерация'],['gloss','Пословный перевод'],['translation','Перевод'],['comment','Комментарий']];
@@ -33,8 +37,20 @@
    ['Как искать в определённых книгах?','В поиске выберите источник, языки каталога и нужные книги. Отметки в каталоге определяют область поиска.']
   ];
   if(hasAiAccess())questions.push(['Как настроить модель для ИИ?','Откройте «Мои модели», выберите провайдера и заполните данные подключения. В макете проверка и ответы демонстрационные.']);
-  simpleDialog('Помощь','<div class="help-page"><a class="outline-button tutorial-link" href="https://rupaseva.com/en/vedarama#tutorial" target="_blank" rel="noopener">'+icon('forward')+'<span>Обучающий ролик</span><span aria-hidden="true">↗</span></a><h3>Частые вопросы</h3><div class="help-faq">'+questions.map(item=>'<details><summary>'+item[0]+'</summary><p>'+item[1]+'</p></details>').join('')+'</div><div class="help-contact"><p>Не нашли ответ?</p><button id="contact-support" class="outline-button">Написать в поддержку</button></div></div>');
-  $('#contact-support').onclick=()=>priorDialog('support');drawIcons($('#dialog-body'));
+  finishHelpMotion();
+  simpleDialog('Помощь','<div class="help-page"><a class="tutorial-card tutorial-link" href="https://rupaseva.com/en/vedarama#tutorial" target="_blank" rel="noopener"><span class="tutorial-thumb" aria-hidden="true"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 5v14l11-7Z"/></svg></span></span><span class="tutorial-copy"><span class="tutorial-eyebrow">Знакомство с приложением</span><strong>Обучающий ролик</strong><span class="tutorial-description">Посмотрите видеоинструкцию по работе с Ведарамой.</span><span class="tutorial-action">Смотреть видео <span aria-hidden="true">↗</span></span></span></a><section class="help-faq-section"><h3>Частые вопросы</h3><p class="help-section-description">Чтение, поиск и сохранение важных мест.</p><div class="help-faq">'+questions.map((item,index)=>'<article class="help-faq-item"><h4><button type="button" class="help-question" id="help-question-'+index+'" aria-expanded="false" aria-controls="help-answer-'+index+'"><span>'+item[0]+'</span>'+desktopIconSvg('down')+'</button></h4><div class="help-answer" id="help-answer-'+index+'" aria-labelledby="help-question-'+index+'" hidden><div class="help-answer-copy"><p>'+item[1]+'</p></div></div></article>').join('')+'</div></section><div class="help-contact"><div><h3>Не нашли ответ?</h3><p>Задайте вопрос о работе приложения.</p></div><button id="contact-support" class="outline-button"><span>Написать в поддержку</span>'+icon('forward')+'</button></div></div>');
+  document.querySelectorAll('.help-faq-item').forEach(item=>{
+   const trigger=item.querySelector('.help-question'),answer=item.querySelector('.help-answer');let expanded=false,activeRun=null;
+   trigger.onclick=()=>{
+    const height=answer.hidden?0:answer.getBoundingClientRect().height,opacity=answer.hidden?0:Number(getComputedStyle(answer).opacity);
+    activeRun?.cancel();expanded=!expanded;trigger.setAttribute('aria-expanded',String(expanded));item.classList.toggle('is-expanded',expanded);answer.hidden=false;answer.inert=!expanded;answer.style.height=height+'px';answer.style.opacity=String(opacity);
+    const complete=()=>{answer.hidden=!expanded;answer.style.removeProperty('height');answer.style.removeProperty('opacity');document.dispatchEvent(new Event('desktop-layout-settled'));};
+    if(reducedHelpMotion.matches){activeRun=null;complete();return;}
+    const run=answer.animate([{height:height+'px',opacity},{height:(expanded?answer.scrollHeight:0)+'px',opacity:expanded?1:0}],{duration:240,easing:'cubic-bezier(.22,.7,.2,1)',fill:'both'});activeRun=run;helpRuns.add(run);
+    run.finished.then(()=>{if(activeRun===run){activeRun=null;complete();run.cancel();}helpRuns.delete(run);}).catch(()=>helpRuns.delete(run));
+   };
+  });
+  $('#contact-support').onclick=()=>{finishHelpMotion();priorDialog('support');};drawIcons($('#dialog-body'));
  }
  openDialog=function(key){
   if(key==='settings'){settings();return;}
@@ -62,7 +78,7 @@
   if(range&&!$('.book-page').contains(range.commonAncestorContainer))return '';
   const verseOf=node=>(node?.nodeType===1?node:node?.parentElement)?.closest('[data-reader-verse]')?.dataset.readerVerse;
   const first=Number(verseOf(range?.startContainer)||readerGetState().verse),last=Number(verseOf(range?.endContainer)||first),language=readerGetState().language;
-  const url=new URL('https://sri-rupa-seva-kunj.github.io/vedarama-mobile-preview/mockups/desktop-native-icons-v1/index.html');url.searchParams.set('v','1.57');url.searchParams.set('verse',first);url.searchParams.set('reader',language);url.searchParams.set('account',demoAccount.mode);
+  const url=new URL('https://sri-rupa-seva-kunj.github.io/vedarama-mobile-preview/mockups/desktop-native-icons-v1/index.html');url.searchParams.set('v','1.58');url.searchParams.set('verse',first);url.searchParams.set('reader',language);url.searchParams.set('account',demoAccount.mode);
   return quote+'\n\nБхагавад-гита · глава 2 · текст '+first+(last!==first?'–'+last:'')+' · '+catalogLanguageNames[language]+'\nДемонстрационный фрагмент\n'+url.href;
  };
  copyButton.onclick=async()=>{
