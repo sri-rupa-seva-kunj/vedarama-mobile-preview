@@ -6,10 +6,10 @@ body.focus-mode .reading-tools>#exit-reading>i{flex:none}
 .reader-settings h3{font:700 16px 'PT Sans',sans-serif;margin:0 0 12px}
 #dialog-body .reader-settings .range-setting{display:flex;gap:16px;align-items:center;padding:0;border:0;margin:0}
 .range-setting input{flex:1;min-width:0;accent-color:var(--gold-dark)}
-.reader-settings input[type=range]{appearance:none;padding:0;border:0;background:transparent;height:22px}
-.reader-settings input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--stroke);border-radius:2px}
-.reader-settings input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;margin-top:-5.5px;background:var(--gold-dark);border:1px solid var(--gold);border-radius:50%}
-.reader-settings input[type=range]:focus-visible{outline:1px solid var(--gold-dark);outline-offset:4px}
+#dialog-body .reader-settings input[type=range]{appearance:none;padding:0;border:0;background:transparent;height:22px}
+#dialog-body .reader-settings input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--stroke);border-radius:2px}
+#dialog-body .reader-settings input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;margin-top:-5.5px;background:var(--gold-dark);border:1px solid var(--gold);border-radius:50%}
+#dialog-body .reader-settings input[type=range]:focus-visible{outline:1px solid var(--gold-dark);outline-offset:4px}
 .range-setting output{min-width:40px;text-align:right;font-size:13px;color:var(--secondary)}
 .reader-settings .settings-preview{margin:14px 0 0;padding:14px;background:var(--panel-soft);border:1px solid var(--stroke)}
 .reader-settings .settings-preview>span{display:block;font:11px 'PT Sans',sans-serif;color:var(--secondary);margin-bottom:9px}
