@@ -1,6 +1,7 @@
 #reading-pages{gap:7px;white-space:nowrap;font-size:12px}
 #reading-pages[aria-pressed=true]{background:var(--panel-soft);color:var(--gold-dark)}
-#reading-pages svg{width:26px;height:26px;flex-shrink:0}
+#reading-pages svg{width:24px;height:24px;flex-shrink:0}
+#reading-pages svg path{stroke-width:1.2;vector-effect:non-scaling-stroke}
 body.focus-mode .reading-tools>#reading-pages{padding:5px}
 .paged-reader-window{width:100%}
 body.paged-reading .book-scroll{position:relative;overflow:hidden!important;scrollbar-gutter:auto;padding:28px 64px;touch-action:pan-y;overscroll-behavior:none}

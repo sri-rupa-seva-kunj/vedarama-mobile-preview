@@ -7,7 +7,7 @@ icons.expand = 'M8 3H3v5 M16 3h5v5 M3 16v5h5 M21 16v5h-5';
 icons.more = 'M5 12h.01 M12 12h.01 M19 12h.01';
 const notesRail = $('.rail [data-view="notes"]');
 notesRail.after($('#references-button'));
-$('#references-button').insertAdjacentHTML('afterend', '<button class="rail-item" data-nav="ai" aria-label="ИИ-помощник"><i data-icon="spark"></i></button>');
+$('#references-button').insertAdjacentHTML('afterend', '<button class="rail-item" data-nav="ai" aria-label="Чат"><i data-icon="spark"></i></button>');
 $('.rail-item').dataset.nav = 'read';
 $('.inspector-tabs').innerHTML = '<h2 id="tool-title">Заметки</h2><button id="tool-mode" class="outline-button"></button><button id="tool-close" class="icon-button" aria-label="Вернуться к книге"><i data-icon="close"></i></button>';
 $('#notes-panel .panel-context').insertAdjacentHTML('afterend', '<label class="search-box notes-search"><i data-icon="search"></i><input id="notes-search" placeholder="Найти в заметках" aria-label="Поиск по заметкам"></label>');
@@ -37,7 +37,7 @@ function updateToolMode() {
   document.body.classList.toggle('tool-page', open && toolMode === 'page');
   document.body.classList.toggle('tool-panel', open && toolMode === 'panel');
   document.body.classList.remove('mobile-inspector');
-  $('#tool-title').textContent = view === 'ai' ? 'ИИ-помощник' : toolMode === 'page' ? 'Мои заметки' : 'Заметки к тексту';
+  $('#tool-title').textContent = view === 'ai' ? 'Чат' : toolMode === 'page' ? 'Мои заметки' : 'Заметки к тексту';
   $('#tool-mode').innerHTML = view === 'notes' ? icon('shelf') + '<span>Все заметки</span>' : icon(toolMode === 'page' ? 'panel' : 'expand') + '<span>' + (toolMode === 'page' ? (innerWidth <= 700 ? 'С книгой' : 'Рядом с книгой') : 'На всю страницу') + '</span>';
   $('#tool-mode').setAttribute('aria-label', view === 'notes' ? 'Открыть заметки в моей библиотеке' : toolMode === 'page' ? 'Показать в контексте книги' : 'Открыть отдельной страницей');
   drawIcons($('.inspector-tabs'));
@@ -132,7 +132,7 @@ document.querySelectorAll('.rail-item').forEach(b => {
   b.removeAttribute('title');
 });
 
-$('.mobile-nav').innerHTML = [['catalog','folder','Каталог'],['read','book','Читать'],['notes','note','Заметки'],['ai','spark','ИИ'],['more','more','Ещё']].map(([id,ico,label]) => `<button data-mobile="${id}">${icon(ico)}<span>${label}</span></button>`).join('');
+$('.mobile-nav').innerHTML = [['catalog','folder','Каталог'],['read','book','Читать'],['notes','note','Заметки'],['ai','spark','Чат'],['more','more','Ещё']].map(([id,ico,label]) => `<button data-mobile="${id}">${icon(ico)}<span>${label}</span></button>`).join('');
 function openMore() {
   simpleDialog('Разделы Ведарамы', '<div class="mobile-menu">' + [['references','book','Справочники','Термины, личности и места'],['shelves','shelf','Мои полки','Подборки книг'],['bookmarks','bookmark','Закладки','Сохранённые места'],['converter','globe','Транслитерация','Системы записи санскрита'],['settings','settings','Вид и тема','Размер текста и оформление']].map(([id,ico,title,caption]) => `<button data-menu="${id}">${icon(ico)}<span><strong>${title}</strong><small>${caption}</small></span>${icon('right')}</button>`).join('') + '</div><div class="menu-links"><button id="mobile-about">О макете</button></div>');
   $('#dialog').dataset.kind = 'menu';

@@ -1,6 +1,16 @@
 body.focus-mode .reading-tools>#exit-reading{width:auto;min-width:36px;gap:8px;padding:6px 10px;background:var(--accent-wash);color:var(--gold-dark)}
 body.focus-mode .reading-tools>#exit-reading>span{display:inline!important;white-space:nowrap;font-size:13px}
 body.focus-mode .reading-tools>#exit-reading>i{flex:none}
+/* Balance actual contours rather than giving differently padded SVGs one size. */
+body .reading-tools>#reading-bookmarks svg.desktop-app-icon,.reader-actions #bookmark svg.desktop-app-icon{width:32px;height:32px}
+body .reading-tools>#reading-appearance svg.desktop-app-icon,.reader-actions .aa svg.desktop-app-icon{width:22px;height:22px}
+body .reading-tools>#reading-related svg.desktop-app-icon,.reader-actions #linked-books-toggle svg.desktop-app-icon{width:22px;height:22px}
+body .reading-tools>#reading-notes svg.desktop-app-icon,.reader-actions [data-view=notes] svg.desktop-app-icon{width:24px;height:24px}
+body .reading-tools>#reading-ai svg.desktop-app-icon,.reader-actions [data-view=ai] svg.desktop-app-icon{width:24px;height:24px}
+.reading-tools svg.desktop-app-icon[data-desktop-icon=readingOff] path{stroke-width:1.2;vector-effect:non-scaling-stroke}
+:is(.reading-tools,.reader-actions,.global-actions) svg.desktop-app-icon[data-desktop-icon=textSettings] path[stroke]:not([fill=currentColor]),.global-actions svg.desktop-app-icon[data-desktop-icon=settings] path{stroke-width:1.2;vector-effect:non-scaling-stroke}
+.global-actions>.reading-global-settings{color:var(--secondary)}
+.global-actions>.reading-global-settings:hover{color:var(--ink)}
 #dialog{position:fixed;inset:0;margin:0;width:100%;max-width:none;height:100dvh;max-height:none;padding:32px 20px;overflow:auto;overscroll-behavior:contain;background:transparent;border:0;border-radius:0;box-shadow:none}
 #dialog[open]{display:flex;flex-direction:column}
 #dialog .dialog-window{width:580px;max-width:100%;flex:0 0 auto;margin:auto;padding:28px;background:var(--white);color:var(--ink);border:1px solid var(--stroke);border-radius:6px;box-shadow:var(--shadow)}

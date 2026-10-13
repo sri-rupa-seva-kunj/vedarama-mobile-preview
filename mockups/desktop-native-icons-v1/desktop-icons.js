@@ -24,7 +24,7 @@
   'bookmark-add':'M6 3h12v18l-6-4-6 4Z M9 9h6 M12 6v6',
   'select-all':'M8 3h13v13 M3 8h13v13H3Z M6 14l2.5 2.5 4.5-5',
   'save-place':'M3.5 3.5h13l4 4v13h-17Z M7 3.5v6h9v-6 M7 20.5v-7h10v7',
-  'catalog-list':'M3 4h4v4H3Z M11 6h10 M3 10h4v4H3Z M11 12h10 M3 16h4v4H3Z M11 18h10',
+  'catalog-list':'M3 3h4v4H3Z M11 5h10 M3 10h4v4H3Z M11 12h10 M3 17h4v4H3Z M11 19h10',
   'edition-stack':'M3 7h11v14H3Z M6 7v14 M7 3h11v14 M11 0.8h10v12',
   reset:'M5 9a8 8 0 1 1-1 7 M5 3v6h6',
   'tab-blank':'M3 4h18v16H3Z M3 8h18 M6 6h3',
@@ -39,7 +39,7 @@
   // The document and pencil share the create-note silhouette, optically centred.
   if(key==='note')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-1.5 .25)"><path d="'+actionPaths['note-new']+'" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></g></svg>';
   if(key==='reading'||key==='readingOff')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8V3h5 M16 3h5v5 M21 16v5h-5 M8 21H3v-5 M8 9h8 M8 12h8 M8 15h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="square" stroke-linejoin="miter"/></svg>';
-  if(key==='ai')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"><path vector-effect="non-scaling-stroke" d="M3 3h18v14h-8l-6 4v-4H3Z"/><path vector-effect="non-scaling-stroke" d="M6.5 8h8 M9.5 12h8"/></g></svg>';
+  if(key==='ai')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="currentColor" stroke-width="1.2" stroke-linecap="square" stroke-linejoin="miter" vector-effect="non-scaling-stroke" d="M3 3h18v14h-8l-6 4v-4H3Z"/><path data-ai-letters="true" fill="currentColor" fill-rule="evenodd" stroke="none" transform="translate(.45 -.5)" d="M7 14h1.05l.75-2.05h2.8l.75 2.05h1.05L10.95 7.25h-1.5ZM9.15 11l1.05-2.85L11.25 11Z M15.1 7.25h.95V14h-.95Z"/></svg>';
   if(key==='back'||key==='forward')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="'+(key==='back'?'m15 5-7 7 7 7':'m9 5 7 7-7 7')+'" stroke="currentColor" stroke-width="1.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg>';
   if(key==='down')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m5 8 7 7 7-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg>';
   if(key==='globe')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8.5"/><ellipse cx="12" cy="12" rx="3.8" ry="8.5"/><path d="M3.5 12h17"/></g></svg>';
@@ -53,11 +53,6 @@
  window.desktopIconSvg=svg;
  function setIcon(el,key){if(!el||el.closest('.desktop-motion-ghost,.desktop-motion-mask'))return;if(el.querySelector(':scope>svg')?.dataset.desktopIcon!==key)el.innerHTML=svg(key);}
  function put(selector,key){setIcon(document.querySelector(selector),key);}
- function compactAi(){
-  document.querySelectorAll('.continuous-verse-heading svg[data-desktop-icon=ai],.chapter-navigation svg[data-desktop-icon=ai],.context-actions svg[data-desktop-icon=ai]').forEach(el=>{
-   if(el.dataset.compactAi==='true')return;el.dataset.compactAi='true';el.querySelector('g').innerHTML='<path vector-effect="non-scaling-stroke" d="M3 3h18v14h-8l-6 4v-4H3Z"/>';
-  });
- }
  function action(selector,key){document.querySelectorAll(selector).forEach(button=>{if(button.closest('.desktop-motion-ghost,.desktop-motion-mask'))return;const mark=button.querySelector('i,svg');if(mark?.tagName.toLowerCase()==='i')setIcon(mark,key);else if(mark){if(mark.dataset.desktopIcon!==key)mark.outerHTML=svg(key);}else button.insertAdjacentHTML('afterbegin',svg(key));});}
  function decorate(){
   document.querySelectorAll('i[data-icon]').forEach(el=>{let key=map[el.dataset.icon];if(key==='book'){if(el.closest(catalogControls))key='catalog-list';else if(el.closest(editionControls))key='edition-stack';}if(key)setIcon(el,key);});
@@ -78,7 +73,7 @@
   document.querySelectorAll('[data-dialog=settings] .aa').forEach(el=>setIcon(el,'textSettings'));
   document.querySelectorAll('[data-start-section=references] .new-tab-symbol').forEach(el=>setIcon(el,'reference'));
   document.querySelectorAll('.native-copy').forEach(el=>{if(!el.querySelector('[data-desktop-icon]'))el.insertAdjacentHTML('afterbegin',svg('copy'));});
-  compactAi();
+  document.querySelectorAll('.reader-actions [data-view=ai]>span,.mobile-nav [data-mobile=ai]>span').forEach(label=>{if(['ИИ','AI'].includes(label.textContent.trim()))label.textContent='Чат';});
   action('[data-delete],[data-library-delete],[data-reading-bookmark-remove],[data-remove-bookmark]','trash');
   action('[data-edit],[data-library-edit]','edit');
   action('#add-note,#annotate-selection','note-new');
@@ -118,5 +113,5 @@
  function showHint(button){hideHint();hinted=button;hint.textContent=button.dataset.tip||button.getAttribute('aria-label');const r=button.getBoundingClientRect();hint.style.left=(rail.getBoundingClientRect().right+8)+'px';hint.style.top=Math.max(8,Math.min(innerHeight-40,r.top+(r.height-32)/2))+'px';hint.classList.add('visible');button.setAttribute('aria-describedby',hint.id);}
  rail.querySelectorAll('button').forEach(b=>{b.removeAttribute('title');b.addEventListener('pointerenter',()=>showHint(b));b.addEventListener('pointerleave',hideHint);b.addEventListener('focus',()=>{b.scrollIntoView({block:'nearest',inline:'nearest'});if(b.matches(':focus-visible'))showHint(b);});b.addEventListener('blur',hideHint);b.addEventListener('click',hideHint);});
  railScroll.addEventListener('scroll',hideHint,{passive:true});window.addEventListener('resize',hideHint);document.addEventListener('keydown',e=>{if(e.key==='Escape')hideHint();});
- decorate();compactAi();
+ decorate();
 })();

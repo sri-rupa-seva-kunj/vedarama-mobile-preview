@@ -7,7 +7,7 @@
  let wanted=localStorage.getItem(preferenceKey)==='2',active=false,index=0,count=1,step=0,frame=0,modeFrame=0,slide=null,drag=null,pendingVerse=null,selectedVerse=null,oldStyles=null,restorePending=false,font=getComputedStyle(page).fontSize,layoutRequested=false,queuedIndex=null,layoutAfterTurn=false,exitTransition=null,routePosition=null;
  function busy(){return window.headerMotionBusy||!!document.querySelector('.desktop-motion-slot.is-moving')||document.body.classList.contains('resizing-catalog');}
  const toggle=document.createElement('button');toggle.id='reading-pages';toggle.title='Чтение на двух страницах: справа, затем слева';toggle.setAttribute('aria-label','Чтение на двух страницах');toggle.setAttribute('aria-pressed','false');
- toggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 4h20v16H2Z M12 4v16 M5 8h3 M16 8h3 M5 12h3 M16 12h3"/></svg><span>Две страницы</span>';tools.insertBefore(toggle,$('#exit-reading'));
+ toggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 3h20v18H2Z M12 3v18 M5 8h3 M16 8h3 M5 12h3 M16 12h3"/></svg><span>Две страницы</span>';tools.insertBefore(toggle,$('#exit-reading'));
  const position=document.createElement('span');position.id='spread-position';position.className='sr-only';position.setAttribute('role','status');position.setAttribute('aria-live','polite');scroll.append(position);
  const edgeNext=document.createElement('button'),edgePrevious=document.createElement('button');
  edgeNext.id='spread-edge-next';edgePrevious.id='spread-edge-prev';
