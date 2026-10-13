@@ -72,6 +72,13 @@ body .reading-tools>#reading-ai svg.desktop-app-icon,.reader-actions [data-view=
 .login-registration{display:flex;justify-content:space-between;gap:12px;font-size:14px;margin-top:24px;padding-top:20px;border-top:1px solid var(--stroke)}
 .login-registration a{color:var(--gold-dark)}
 .profile-account-actions{padding:8px 0}
+:is(#account-logout,#logout-confirm){--logout-color:#A64D46;--logout-wash:#A64D460D;--logout-border:#A64D4666;--logout-hover:#A64D461C;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:9px 14px;color:var(--logout-color);background:var(--logout-wash);border:1px solid var(--logout-border);border-radius:3px}
+html[data-theme=dark] :is(#account-logout,#logout-confirm){--logout-color:#E5A39B;--logout-wash:#E5A39B12;--logout-border:#E5A39B5C;--logout-hover:#E5A39B20}
+#account-logout:hover{background:var(--logout-hover);border-color:var(--logout-color)}
+#logout-confirm{background:var(--logout-color);border-color:var(--logout-color);color:var(--white)}
+#logout-confirm:hover{filter:brightness(.95)}
+:is(#account-logout,#logout-confirm):focus-visible{outline:2px solid var(--logout-color);outline-offset:2px}
+.account-logout-button svg.desktop-app-icon{width:18px;height:18px;flex:none}
 .demo-account-options{display:flex;flex-direction:column;gap:20px}
 .demo-account-options fieldset{border:0;margin:0;padding:0}
 #dialog-body .demo-account-options label{display:flex;align-items:center;gap:9px}

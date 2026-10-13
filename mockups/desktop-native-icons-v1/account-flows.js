@@ -51,9 +51,9 @@
   const access=$('.profile-access');
   access.querySelectorAll('div').forEach(row=>{if(row.querySelector('dt')?.textContent==='ИИ-помощник'){if(!hasAiAccess())row.remove();else row.querySelector('dd').textContent=demoAccount.modelConnected?'Доступен · пример':'Доступен · модель не подключена';}});
   const models=$('#profile-models');if(!hasAiAccess())models.remove();
-  const actions=document.createElement('div');actions.className='profile-account-actions';actions.innerHTML='<button id="account-logout" class="outline-button">Выйти из аккаунта</button>';$('.profile-side').append(actions);
+  const actions=document.createElement('div');actions.className='profile-account-actions';actions.innerHTML='<button id="account-logout" class="outline-button account-logout-button">'+desktopIconSvg('logout')+'<span>Выйти из аккаунта</span></button>';$('.profile-side').append(actions);
   $('#account-logout').onclick=()=>{
-   simpleDialog('Выйти из аккаунта?','<p>Для следующего входа потребуется почта и пароль.</p><div class="editor-actions"><button id="logout-cancel">Отмена</button><button id="logout-confirm" class="gold-button">Выйти из аккаунта</button></div>');
+   simpleDialog('Выйти из аккаунта?','<p>Для следующего входа потребуется почта и пароль.</p><div class="editor-actions"><button id="logout-cancel">Отмена</button><button id="logout-confirm" class="account-logout-button">'+desktopIconSvg('logout')+'<span>Выйти из аккаунта</span></button></div>');
    $('#logout-cancel').onclick=()=>$('#dialog').close();$('#logout-confirm').onclick=()=>{$('#dialog').close();try{sessionStorage.removeItem('vedarama-preview-session-email');}catch{}demoAccount.setMode('guest');renderProfile();};
   };syncPolicy();
  };

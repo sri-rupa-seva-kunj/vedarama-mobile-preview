@@ -190,5 +190,11 @@
     "source": "windows-desktop-work/qml/controls/WBWSearchButtonSelected.svg",
     "asset": "assets/desktop/wbwSelected.svg",
     "sha256": "8e9611863d47492eec6a57c90857dd95cb5e2b307f6966341ab6aa7ba842a0ec"
+  },
+  {
+    "key": "logout",
+    "source": "windows-desktop-2.1.27-work/qml/Header/Logout.svg",
+    "asset": "assets/desktop/logout.svg",
+    "sha256": "4752a85da93e136fc70896544cc93f08e4f580e9f25d927492bf9ba3e146d572"
   }
 ]
