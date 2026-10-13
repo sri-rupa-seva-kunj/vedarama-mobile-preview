@@ -122,7 +122,15 @@
   syncNavigation=function(){oldSyncNavigation();if(!restoring&&current()){current().state.section=section;current().state.view=view;current().state.toolMode=toolMode;}updateContext();};
   const oldToolModeClick=$('#tool-mode').onclick;
   $('#tool-mode').onclick=()=>{if(toolMode==='page'&&current())current().state.hasBook=true;oldToolModeClick();updateContext();updateCurrentTitle();};
+  function restrictState(state){
+    if(window.hasAiAccess?.()!==false)return;
+    if(state.section==='ai'||state.section==='models')state.section=state.hasBook?'read':'new';
+    if(state.view==='ai'){state.view='read';state.toolMode='panel';}
+    state.chat={...state.chat,question:'',turns:[],native:null};
+    state.search={...state.search,mode:'exact',resultTab:'exact',prefs:{...state.search.prefs,ai:false,exact:true,defaultMode:'exact'},run:state.search.run?{...state.search.run,mode:'exact'}:null};
+  }
   function restore(state,holdFocus=null){
+    restrictState(state);
     restoring=true;const generation=++restoreGeneration;
     if($('#dialog').open)$('#dialog').close();$('.toast').hidden=true;$('#selection-actions').hidden=true;
     for(const c of ['tree-hidden','focus-mode','focus-catalog-open','mobile-tree','reference-detail-open','reading-bookmarks-open'])if(c!=='focus-mode'||holdFocus===null)document.body.classList.remove(c);
@@ -214,7 +222,8 @@
   renderTabs();updateContext();persistTabs();
   window.workspaceTabs={
     overview(){checkpoint();return {activeId:currentId,tabs:tabs.map(t=>{const s=t.state;return {id:t.id,title:titleOf(t),detail:detailOf(t),section:s.section,icon:iconOf(t),preview:s.section==='ai'?(s.chat.question||s.chat.turns.at(-1)?.text||'Новый разговор по библиотеке'):s.section==='search'?(s.search.query||'Поиск по книгам'):s.section==='notes'?(s.note.text||'Заметки к тексту'):s.section==='references'?(refEntries.find(r=>r.id===s.reference.active)?.title||'Термины, личности и места'):s.section==='read'?(s.readingPreview||'Бхагавад-гита · 2.'+(s.reading?.verse||47)):s.section==='converter'?(s.converter.text||'Преобразование санскрита'):s.section==='new'?'Книги, поиск и новый разговор':'Ваше рабочее пространство',context:s.section==='read'?(s.view==='ai'?'Открыт ИИ рядом с книгой':s.view==='notes'?'Открыты заметки':s.classes.includes('focus-mode')?'Режим чтения':'Позиция чтения сохранена'):s.section==='ai'&&s.chat.question?'Черновик сообщения':s.section==='search'?(s.search.mode==='both'?'Точный и ИИ-поиск':s.search.mode==='ai'?'ИИ-поиск':'Точный поиск'):''};})};},
-    activate:switchTab,create:newTab,close:closeTab,refresh:updateCurrentTitle
+    activate:switchTab,create:newTab,close:closeTab,refresh:updateCurrentTitle,
+    restrictAi(){window.pageCarousel?.finish();checkpoint();tabs.forEach(t=>restrictState(t.state));if(current())restore(current().state);renderTabs();persistTabs();}
   };
   descriptions.brief[0]='Ведарама · макет 05';
   descriptions.brief[1]='<p>Каждая вкладка — отдельное рабочее место: книги, справочники, ИИ и остальные разделы открываются внутри неё. Кнопка «+» начинает новую вкладку с чистым поиском и диалогом.</p><p>При переключении и после перезагрузки восстанавливаются раздел, положение чтения, результаты поиска, диалог и черновики. Полки, сохранённые заметки, подключения и тема общие для приложения.</p>'+descriptions.brief[1];

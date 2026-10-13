@@ -22,7 +22,8 @@
   'open-tab':'M8 3h13v13h-4 M8 3v4 M3 8h13v13H3Z M3 12h13 M5.5 10h3',
   'shelf-add':'M3 4v17h18V4 M3 13h18 M7 5v8 M11 5v8 M15 6l3 7 M7 17h10',
   'bookmark-add':'M6 3h12v18l-6-4-6 4Z M9 9h6 M12 6v6',
-  'select-all':'M3 4h7v7H3Z m1.5 3 2 2 4-4 M14 5h7 M14 9h7 M3 15h7v7H3Z m1.5 3 2 2 4-4 M14 16h7 M14 20h7',
+  'select-all':'M8 3h13v13 M3 8h13v13H3Z M6 14l2.5 2.5 4.5-5',
+  'save-place':'M3.5 3.5h13l4 4v13h-17Z M7 3.5v6h9v-6 M7 20.5v-7h10v7',
   reset:'M5 9a8 8 0 1 1-1 7 M5 3v6h6',
   'tab-blank':'M3 4h18v16H3Z M3 8h18 M6 6h3',
   'attach-text':'M5 3h11v5 M5 3v18h8 M8 7h4 M8 11h3 M18 9v9a3 3 0 0 1-6 0v-5a2 2 0 0 1 4 0v5a1 1 0 0 1-2 0v-4',
@@ -35,7 +36,7 @@
   if(key==='sa'||key==='saSelected')code=code.replace('width="24" height="22" viewBox="0 0 24 22"','width="32" height="32" viewBox="-4 -5 32 32"');
   // The document and pencil share the create-note silhouette, optically centred.
   if(key==='note')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-1.5 .25)"><path d="'+actionPaths['note-new']+'" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></g></svg>';
-  if(key==='readingOff')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 4.5h19v15h-19Z M2.5 8h19 M7.5 8v11.5 M10.5 11.5h8 M10.5 15h6" stroke="currentColor" stroke-width="1.2" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></svg>';
+  if(key==='reading'||key==='readingOff')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8V3h5 M16 3h5v5 M21 16v5h-5 M8 21H3v-5 M8 9h8 M8 12h8 M8 15h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="square" stroke-linejoin="miter"/></svg>';
   if(key==='ai')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="1.2" stroke-linecap="butt" stroke-linejoin="miter"><path vector-effect="non-scaling-stroke" d="M3 3h18v14h-8l-6 4v-4H3Z"/><path vector-effect="non-scaling-stroke" d="M6.5 8h8 M9.5 12h8"/></g></svg>';
   if(key==='back'||key==='forward')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="'+(key==='back'?'m15 5-7 7 7 7':'m9 5 7 7-7 7')+'" stroke="currentColor" stroke-width="1.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg>';
   if(key==='down')code='<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m5 8 7 7 7-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="butt" stroke-linejoin="miter"/></svg>';
@@ -84,6 +85,7 @@
   if(view==='notes')action('#tool-mode','note-stack');
   if(section==='saved')action('#saved-primary',savedTab==='notes'?'note-new':savedTab==='shelves'?'shelf-add':'bookmark-add');
   action('#search-books-all','select-all');action('#search-books-reset','reset');
+  action('#reading-add-bookmark','save-place');
   action('[data-linked-new]','open-tab');
   action('[data-linked-open]','tab-blank');
   document.querySelectorAll('[data-linked-language]').forEach(input=>{
