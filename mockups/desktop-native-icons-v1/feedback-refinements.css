@@ -27,14 +27,18 @@
 .search-scope-bar label>.veda-select{width:100%}
 .search-scope-bar .outline-button{min-height:42px;padding:8px 14px;white-space:nowrap}
 .search-scope-bar .outline-button svg{width:22px;height:22px}
-/* Both themes share the gold hue; light accents are darker for legibility. */
-html[data-theme=light]{--white:#fffefa;--panel-soft:#f5f3ed;--surface:#efede6;--stroke:#dcd7c9;--ink:#262b2e;--secondary:#666b70;--gold:#efc869;--gold-dark:#8c6913;--gold-light:#efc869;--accent-wash:#fcf5e3;--native-catalog:#f3f2ed;--native-heading:#f5f3ed;--card-hover:#fcf9ef;--paper-shadow:0 3px 14px #3d301009;--action-fill:#efc869;--action-hover:#f4d58e;--action-active:#e8b743;--action-text:#1f2023}
+/* The selected light graphite palette retains muted gold in the brand. */
+html[data-theme=light]{--white:#FBFCFB;--panel-soft:#EFF2F3;--surface:#E4E8EB;--stroke:#CCD3D7;--ink:#2D353C;--native-text:#2D353C;--secondary:#616D76;--gold:#B9A46C;--gold-dark:#53616B;--gold-light:#B9A46C;--accent-wash:#E8EDF0;--native-catalog:#EFF2F3;--native-heading:#EFF2F3;--card-hover:#E8EDF0;--paper-shadow:0 3px 14px #2d353c09;--action-fill:#53616B;--action-hover:#45535D;--action-active:#3B4A55;--action-text:#FFFFFF}
 html[data-theme=dark]{--white:#1f2023;--panel-soft:#27282b;--surface:#3a3c40;--stroke:#515358;--ink:#fefefe;--secondary:#a9aaad;--gold:#efc869;--gold-dark:#efc869;--gold-light:#efc869;--accent-wash:#515358;--native-catalog:#3a3c40;--native-heading:#101011;--native-text:#ededee;--card-hover:#27282b;--action-fill:#efc869;--action-hover:#f8e571;--action-active:#eebb3e;--action-text:#1f2023}
 html[data-theme=dark] .global-tab-header{background:var(--native-heading)}
 html[data-theme=dark] .catalog{background:var(--native-catalog)}
 html[data-theme=dark] .gold-button{color:var(--action-text)}
+html[data-theme=light] .gold-button{background:var(--action-fill);color:var(--action-text)}
 html[data-theme=light] .gold-button:hover{background:var(--action-hover)}
 html[data-theme=light] .gold-button:active{background:var(--action-active)}
+.theme-mini-light{--mini-bg:#FBFCFB;--mini-panel:#EFF2F3;--mini-line:#CCD3D7;--mini-border:#CCD3D7}
+.theme-mini-light .theme-mini-top i:first-child{background:#B9A46C}
+.theme-mini-light .theme-mini-tree i:nth-child(2),.theme-mini-light .theme-mini-text i:first-child{background:#53616B}
 @container(max-width:360px){.linked-edition{grid-template-columns:1fr}.linked-actions{justify-content:flex-start;flex-wrap:wrap}}
 @media(max-width:1250px){#reading-related span{display:none}#reading-related{min-width:36px;padding:8px}}
 @media(max-width:900px){.reader-actions #linked-books-toggle span{display:none}.reader-actions #linked-books-toggle{padding:6px}}

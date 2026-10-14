@@ -7,9 +7,11 @@
  };
  const css=(name,p)=>`html[data-theme=light]${name?`[data-palette=${name}]`:''}{--white:${p.paper};--panel-soft:${p.panel};--surface:${p.surface};--stroke:${p.stroke};--ink:${p.ink};--native-text:${p.ink};--secondary:${p.secondary};--gold:${p.gold};--gold-light:${p.gold};--gold-dark:${p.accent};--accent-wash:${p.wash};--native-catalog:${p.panel};--native-heading:${p.panel};--card-hover:${p.wash};--action-fill:${p.button};--action-hover:${p.hover};--action-active:${p.active};--action-text:${p.buttonText}}
  html[data-theme=light][data-palette=${name}] .gold-button{background:var(--action-fill);color:var(--action-text)}
+ html[data-theme=light][data-palette=${name}] .gold-button:hover{background:var(--action-hover)}
+ html[data-theme=light][data-palette=${name}] .gold-button:active{background:var(--action-active)}
  html[data-theme=light][data-palette=${name}] .brand img{filter:none}`;
  window.lightPaletteOptions={palettes,css};
  const name=new URLSearchParams(location.search).get('palette');if(!palettes[name]||!document.querySelector('.app-header'))return;
  const style=document.createElement('style');style.textContent=css(name,palettes[name]);document.head.append(style);document.documentElement.dataset.palette=name;
- const link=document.createElement('a');link.href='palette-review.html?v=1.59';link.textContent='Палитра: '+palettes[name].name;link.style.cssText='font:12px PT Sans,sans-serif;color:var(--ink);margin-left:12px';document.querySelector('.preview-controls')?.append(link);
+ const link=document.createElement('a');link.href='palette-review.html?v=1.60';link.textContent='Палитра: '+palettes[name].name;link.style.cssText='font:12px PT Sans,sans-serif;color:var(--ink);margin-left:12px';document.querySelector('.preview-controls')?.append(link);
 })();
