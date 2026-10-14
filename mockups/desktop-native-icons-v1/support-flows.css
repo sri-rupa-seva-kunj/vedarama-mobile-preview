@@ -25,6 +25,8 @@
 .support-request-form>textarea{min-height:140px;resize:vertical}
 #dialog-body .support-demo-note{font:12px/1.6 'PT Sans',sans-serif;color:var(--secondary);margin:18px 0 0}
 .support-request-form .editor-actions{margin-top:24px}
+#support-back-help{margin:0 0 16px;padding:6px 0;color:var(--gold-dark);font-size:14px;min-height:36px}
+#support-back-help svg{width:18px;height:18px}
 .support-request-form .gold-button svg,.support-reply-form .gold-button svg{width:20px;height:20px}
 .support-request-form .gold-button,.support-reply-form .gold-button{color:var(--action-text)}
 .support-activity-card .support-subject{font-weight:700;color:var(--ink)}

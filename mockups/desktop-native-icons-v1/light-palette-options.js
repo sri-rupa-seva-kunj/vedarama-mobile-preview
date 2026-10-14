@@ -13,5 +13,5 @@
  window.lightPaletteOptions={palettes,css};
  const name=new URLSearchParams(location.search).get('palette');if(!palettes[name]||!document.querySelector('.app-header'))return;
  const style=document.createElement('style');style.textContent=css(name,palettes[name]);document.head.append(style);document.documentElement.dataset.palette=name;
- const link=document.createElement('a');link.href='palette-review.html?v=1.60';link.textContent='Палитра: '+palettes[name].name;link.style.cssText='font:12px PT Sans,sans-serif;color:var(--ink);margin-left:12px';document.querySelector('.preview-controls')?.append(link);
+ const link=document.createElement('a');link.href='palette-review.html?v=1.61';link.textContent='Палитра: '+palettes[name].name;link.style.cssText='font:12px PT Sans,sans-serif;color:var(--ink);margin-left:12px';document.querySelector('.preview-controls')?.append(link);
 })();
