@@ -6,7 +6,7 @@
  icons.spark='M4 4h16v12H10l-6 4V4Z';
  drawIcons=function(root=document){originalDraw(root);root.querySelectorAll('i[data-icon]').forEach(el=>{const key=map[el.dataset.icon];if(key&&faithfulIcons[key]){el.innerHTML=faithfulIcons[key];el.querySelector('svg')?.classList.add('native-mark');}});root.querySelectorAll('.tree i[data-icon=down]').forEach(el=>el.innerHTML=faithfulIcons.minus);root.querySelectorAll('.tree i[data-icon=right]').forEach(el=>el.innerHTML=faithfulIcons.plus);root.querySelectorAll('.tree i[data-icon=book]').forEach(el=>el.innerHTML=faithfulIcons['nav-book']);};
  const themed=applyTheme;
- applyTheme=function(theme){themed(theme);$('.brand img').src='assets/vedarama-new-'+document.documentElement.dataset.theme+'.svg?v=1.51';};
+ applyTheme=function(theme){themed(theme);$('.brand img').src='assets/vedarama-new-'+document.documentElement.dataset.theme+'.svg?v=1.62';};
  $('.brand img').alt='Ведарама';applyTheme(saved.theme||'light');
  $('.review-bar>span').innerHTML='<b>Ведарама</b> · Десктоп · Существующая дизайн-система';
  $('.mobile-preview-link').href='gallery.html';$('.mobile-preview-link').textContent='Все состояния ↗';
