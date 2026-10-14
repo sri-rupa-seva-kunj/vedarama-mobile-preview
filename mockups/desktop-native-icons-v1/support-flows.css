@@ -1,0 +1,48 @@
+.help-page .tutorial-card{gap:20px;padding:18px 22px;min-height:174px}
+.tutorial-illustration{display:flex;align-items:center;justify-content:center;width:174px;height:142px;flex:none}
+.tutorial-illustration img{display:block;width:100%;height:100%;object-fit:contain}
+.tutorial-copy{gap:9px}
+.tutorial-action{display:inline-flex;align-self:flex-start;border-bottom:1px solid currentColor;padding-bottom:3px}
+.help-answer-copy{padding:18px 20px 22px}
+.help-page .help-contact{gap:16px;padding:20px;background:var(--panel-soft)}
+.help-contact-symbol{width:46px;height:46px;border:1px solid var(--stroke);background:var(--white);border-radius:50%;display:grid;place-items:center;flex:none;color:var(--gold-dark)}
+.help-contact-symbol svg{width:26px;height:26px}
+.help-contact>div{flex:1;min-width:150px}
+.help-contact button{min-height:44px;font-size:13px}
+.help-contact button svg{width:22px;height:22px}
+.activity-page,.activity-list.is-list-moving,.activity-motion-row{overflow:visible}
+#workspace-panel:has(.activity-page){overflow-x:hidden}
+.activity-toolbar{flex-wrap:wrap;gap:12px}
+#support-new-request{font-size:13px;gap:8px;min-height:42px}
+#support-new-request svg{width:22px;height:22px}
+.support-activity-card .activity-symbol{color:var(--gold-dark)}
+.support-intro{display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;padding:18px;background:var(--panel-soft);border:1px solid var(--stroke)}
+.support-intro>svg{width:32px;height:32px;flex:none;color:var(--gold-dark)}
+#dialog-body .support-intro h3{font:700 19px/1.3 'PT Sans',sans-serif;margin:0 0 8px}
+#dialog-body .support-intro p{font:14px/1.6 'PT Sans',sans-serif;color:var(--secondary);margin:0}
+.support-request-form>label{display:block;font:700 14px/1.4 'PT Sans',sans-serif;margin:20px 0 8px}
+.support-request-form>input,.support-request-form>textarea{display:block;width:100%;padding:12px;font:15px/1.5 'PT Sans',sans-serif;background:var(--white);color:var(--ink)}
+.support-request-form>textarea{min-height:140px;resize:vertical}
+#dialog-body .support-demo-note{font:12px/1.6 'PT Sans',sans-serif;color:var(--secondary);margin:18px 0 0}
+.support-request-form .editor-actions{margin-top:24px}
+.support-request-form .gold-button svg,.support-reply-form .gold-button svg{width:20px;height:20px}
+.support-request-form .gold-button,.support-reply-form .gold-button{color:var(--action-text)}
+.support-activity-card .support-subject{font-weight:700;color:var(--ink)}
+.support-thread-heading{display:flex;align-items:center;gap:16px;padding-bottom:22px;border-bottom:1px solid var(--stroke)}
+.support-avatar{width:48px;height:48px;display:grid;place-items:center;flex:none;background:var(--accent-wash);color:var(--gold-dark)}
+.support-avatar svg{width:30px;height:30px}
+#dialog-body .support-thread-heading h3{font:700 19px/1.4 'PT Sans',sans-serif;margin:0 0 8px;overflow-wrap:anywhere}
+.support-thread-heading small{display:inline-block;margin-left:10px;color:var(--secondary);font-size:12px}
+.support-status{display:inline-block;font:12px/1.4 'PT Sans',sans-serif;padding:4px 8px;border:1px solid var(--stroke);color:var(--secondary)}
+.support-status.answered{background:var(--accent-wash);color:var(--ink)}
+.support-messages{display:flex;flex-direction:column;gap:18px;margin:24px 0}
+.support-message{max-width:92%;padding:16px 18px;border:1px solid var(--stroke);background:var(--panel-soft)}
+.support-message.user{align-self:flex-end;background:var(--accent-wash)}
+.support-message.support{align-self:flex-start}
+.support-message-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:12px/1.5 'PT Sans',sans-serif;color:var(--secondary);margin-bottom:10px}
+.support-message-meta strong{font-weight:700;color:var(--ink)}
+#dialog-body .support-message-body{font:15px/1.65 'PT Sans',sans-serif;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.support-reply-form{display:flex;gap:12px;align-items:flex-end;padding-top:20px;border-top:1px solid var(--stroke)}
+.support-reply-form textarea{flex:1;min-width:0;min-height:90px;padding:12px;resize:vertical;background:var(--white);color:var(--ink);font:15px/1.5 'PT Sans',sans-serif}
+.support-reply-form button{flex:none;font-size:14px;min-height:44px}
+@media(max-width:620px){.help-page .tutorial-card{gap:12px;padding:16px;align-items:flex-start}.tutorial-illustration{width:114px;height:120px}.tutorial-copy strong{font-size:17px}.help-page .help-contact{padding:16px}.help-contact>button{width:100%;justify-content:center}.help-answer-copy{padding:18px 16px 22px}.support-reply-form{flex-wrap:wrap}.support-reply-form textarea{flex-basis:100%}.support-reply-form button{margin-left:auto}}

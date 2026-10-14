@@ -166,7 +166,7 @@
     $('#toggle-tree').setAttribute('aria-label',s.classes.includes('tree-hidden')?'Показать дерево книг':'Скрыть дерево книг');
     refreshModelPicker();updateContext();fitChatInput();syncNavigation();window.readerRestore?.(s.reading);
     const scroll=()=>{if(generation!==restoreGeneration)return;$('.book-scroll').scrollTop=s.scroll.book;$('#workspace-panel').scrollTop=s.scroll.workspace;$('#ai-scroll').scrollTop=s.scroll.chat;$('#notes-panel').scrollTop=s.scroll.notes;$('.catalog').scrollTop=s.scroll.catalog;};
-    scroll();requestAnimationFrame(scroll);restoring=false;
+    scroll();requestAnimationFrame(scroll);restoring=false;if(s.backToSearch)window.searchWorkflow?.restoreReaderNavigation();
   }
   function switchTab(id){
     if(id===currentId||!tabs.some(t=>t.id===id))return;

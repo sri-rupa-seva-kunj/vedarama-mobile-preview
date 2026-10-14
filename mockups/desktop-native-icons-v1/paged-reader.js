@@ -7,7 +7,7 @@
  let wanted=localStorage.getItem(preferenceKey)==='2',active=false,index=0,count=1,step=0,frame=0,modeFrame=0,slide=null,drag=null,pendingVerse=null,selectedVerse=null,oldStyles=null,restorePending=false,font=getComputedStyle(page).fontSize,layoutRequested=false,queuedIndex=null,layoutAfterTurn=false,exitTransition=null,routePosition=null;
  function busy(){return window.headerMotionBusy||!!document.querySelector('.desktop-motion-slot.is-moving')||document.body.classList.contains('resizing-catalog');}
  const toggle=document.createElement('button');toggle.id='reading-pages';toggle.title='Чтение на двух страницах: справа, затем слева';toggle.setAttribute('aria-label','Чтение на двух страницах');toggle.setAttribute('aria-pressed','false');
- toggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 3h20v18H2Z M12 3v18 M5 8h3 M16 8h3 M5 12h3 M16 12h3"/></svg><span>Две страницы</span>';tools.insertBefore(toggle,$('#exit-reading'));
+ toggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M3.5 3h17v17H3.5Z M12 3v17 M6.5 8h2 M15.5 8h2 M6.5 12h2 M15.5 12h2"/></svg><span>Две страницы</span>';tools.insertBefore(toggle,$('#exit-reading'));
  const position=document.createElement('span');position.id='spread-position';position.className='sr-only';position.setAttribute('role','status');position.setAttribute('aria-live','polite');scroll.append(position);
  const edgeNext=document.createElement('button'),edgePrevious=document.createElement('button');
  edgeNext.id='spread-edge-next';edgePrevious.id='spread-edge-prev';
@@ -95,6 +95,7 @@
   before.call(this,event);
  };}
  window.pagedReader={next:()=>go(index+1),previous:()=>go(index-1),goToVerse:goVerse,
+  goToElement(element){if(!active||!element)return;const r=fragments(element)[0];if(!r)return;const right=page.getBoundingClientRect().right;pendingVerse=null;selectedVerse=null;go(Math.floor((Math.max(0,right-r.right)+1)/step),false,false);},
   rememberRoute(){if(active&&section==='read'&&document.body.classList.contains('focus-mode')){const state=window.readerGetState();routePosition={verse:state.verse,edition:state.edition,language:state.language,selectedVerse,anchor:anchor()};}},
   restoreRoute(){if(wanted&&section==='read'&&document.body.classList.contains('focus-mode')){if(!active)syncMode(true);else layout(true);}},
   setEnabled(value){layoutRequested=true;wanted=!!value;localStorage.setItem(preferenceKey,wanted?'2':'1');syncMode();},overview:()=>({active,index,count,step,order:'right-left'})};syncMode();

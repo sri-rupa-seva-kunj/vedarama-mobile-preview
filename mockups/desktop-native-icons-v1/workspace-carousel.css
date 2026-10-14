@@ -13,8 +13,8 @@
 .motion-book-divider{pointer-events:none}
 @media(min-width:701px){.tool-panel .inspector,.tool-panel .inspector:has(#ai-panel:not([hidden])){width:var(--right-panel-width,410px)}}
 @media(min-width:701px) and (max-width:1250px){.tool-panel .inspector,.tool-panel .inspector:has(#ai-panel:not([hidden])){width:var(--right-panel-width,350px)}}
-.activity-list.is-list-moving{gap:0;overflow:clip}
-.activity-motion-row{position:relative;flex:none;overflow:clip;min-height:0}
+.activity-list.is-list-moving{gap:0;overflow:visible}
+.activity-motion-row{position:relative;flex:none;overflow:visible;min-height:0}
 .activity-motion-row>.activity-motion-card{position:absolute;left:0;top:0;width:100%;margin:0;will-change:translate}
 .workspace-tabs{position:relative;isolation:isolate}
 .workspace-tab-plate{position:absolute;left:0;bottom:0;background:var(--panel-soft);pointer-events:none;z-index:-1}
