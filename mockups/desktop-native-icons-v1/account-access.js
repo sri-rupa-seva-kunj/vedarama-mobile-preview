@@ -5,7 +5,7 @@
  let mode=allowed.includes(params.get('account'))?params.get('account'):allowed.includes(stored?.mode)?stored.mode:'full';
  let lastMode=mode==='guest'?(stored?.lastMode==='library'?'library':'full'):mode;
  let connected=params.get('model')==='none'?false:stored?.connected!==false,outcome='success';
- function sync(){document.documentElement.classList.toggle('no-ai-access',mode!=='full');document.documentElement.classList.toggle('no-connected-model',mode==='full'&&!connected);}
+ function sync(){document.documentElement.classList.toggle('requires-authentication',mode==='guest');document.documentElement.classList.toggle('no-ai-access',mode!=='full');document.documentElement.classList.toggle('no-connected-model',mode==='full'&&!connected);}
  function save(){try{sessionStorage.setItem('vedarama-preview-account',JSON.stringify({mode,lastMode,connected}));}catch{}}
  function route(){try{const url=new URL(location.href);url.searchParams.set('account',mode);if(connected)url.searchParams.delete('model');else url.searchParams.set('model','none');history.replaceState(null,'',url);}catch{}}
  window.hasAiAccess=()=>mode==='full';
