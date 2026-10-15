@@ -14,7 +14,7 @@
  }
  renderProfile=function(){if(!demoAccount.signedIn)mountLogin();else baseProfile();};
  function localize(){
-  const language=window.uiLanguage||'ru';screen.querySelector('.auth-logo').src='assets/vedarama-new-'+(document.documentElement.dataset.theme||'light')+'.svg?v=1.65';
+  const language=window.uiLanguage||'ru';screen.querySelector('.auth-logo').src='assets/vedarama-new-'+(document.documentElement.dataset.theme||'light')+'.svg?v=1.66';
   screen.querySelectorAll('[data-auth-language]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.authLanguage===language)));
   screen.querySelectorAll('.auth-documents a').forEach(link=>link.hash=language==='en'?'english':'russian');window.uiLocalize?.();
  }
