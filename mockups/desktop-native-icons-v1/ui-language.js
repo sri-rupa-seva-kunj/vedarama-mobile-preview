@@ -1,6 +1,7 @@
 // Interface language is separate from the language of the book and catalogue.
 (() => {
  const messages={
+  'Экраны приложения':'Application screens','Книга и Чат':'Book and Chat',
   'Показать пароль':'Show password','Скрыть пароль':'Hide password',
   'Вход в систему':'Sign in','E-mail адрес':'Email address','Забыли пароль?':'Forgot password?','Регистрация':'Register','Состояния аккаунта':'Account states','Нужен вход':'Sign-in required','Только экран авторизации':'Sign-in screen only','С доступом к ИИ':'With AI access','Библиотека и Чат':'Library and Chat','Без доступа к ИИ':'Without AI access','Библиотека без упоминаний ИИ':'Library with no AI references','Модель не подключена':'No model connected','Чат с настройкой подключения':'Chat with connection setup','Для проверки входа используйте вымышленные данные. Настоящий вход не выполняется.':'Use fictional details to test sign-in. This preview does not sign into a real account.',
   'К помощи':'Back to Help',
