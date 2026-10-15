@@ -1,13 +1,13 @@
 // Reading navigation is shared by the toolbar and its counterpart in reading mode.
 (() => {
  const toolbar=document.querySelector('.reading-toolbar'),related=document.querySelector('#linked-books-toggle');
- document.querySelector('.breadcrumbs').hidden=true;const actions=toolbar.querySelector('.reader-actions');actions.insertBefore(related,actions.querySelector('[data-view=notes]'));
+ document.querySelector('.breadcrumbs').hidden=true;const actions=toolbar.querySelector('.reader-actions');actions.insertBefore(related,actions.querySelector('#bookmark'));
  const focusRelated=related.cloneNode(true);focusRelated.id='reading-related';focusRelated.title='Текст в других книгах';
  focusRelated.setAttribute('aria-label','Текст в других книгах');focusRelated.setAttribute('aria-controls','linked-books-panel');
  document.querySelector('.reading-tools').insertBefore(focusRelated,document.querySelector('#reading-pages'));
  focusRelated.onclick=()=>related.click();
  const readingActions=document.querySelector('.reading-tools');
- ['reading-bookmarks','reading-appearance','reading-related','reading-notes','reading-ai','reading-pages','exit-reading','reading-more'].forEach(id=>{const button=document.getElementById(id);if(button)readingActions.append(button);});
+ ['reading-related','reading-bookmarks','reading-appearance','reading-notes','reading-ai','reading-pages','exit-reading','reading-more'].forEach(id=>{const button=document.getElementById(id);if(button)readingActions.append(button);});
  const favorite=document.querySelector('#bookmark');favorite.insertAdjacentHTML('beforeend','<span>В избранное</span>');
  const nav=document.querySelector('.chapter-navigation'),tools=document.querySelector('.reading-tools');
  const catalogPosition=document.createElement('div');catalogPosition.className='reading-catalog-position';document.querySelector('.workspace-tabs').before(catalogPosition);catalogPosition.append(document.querySelector('#reading-catalog'));

@@ -39,6 +39,8 @@ html[data-theme=light] :is(.global-tab-header,.tab-workspace .app-header,.readin
 html[data-theme=light] :is(.tab-workspace .app-header,.reading-toolbar){background:var(--chrome-toolbar);border-color:var(--chrome-stroke)}
 html[data-theme=light] .global-tab-header .workspace-tab-plate{background:var(--chrome-toolbar)}
 html[data-theme=light] .global-tab-header .workspace-tab+.workspace-tab::before{background:var(--chrome-stroke)}
+/* Sidebar selection and hover follow the same gray hierarchy as the header. */
+html[data-theme=light] .rail{--accent-wash:var(--native-heading);--surface:var(--chrome-toolbar)}
 .reading-toolbar .reader-actions>[data-dialog=settings],.reading-tools>#reading-appearance{display:none!important}
 html[data-theme=dark] .catalog{background:var(--native-catalog)}
 html[data-theme=dark] .gold-button{color:var(--action-text)}

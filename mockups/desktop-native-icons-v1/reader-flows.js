@@ -78,7 +78,7 @@
   if(range&&!$('.book-page').contains(range.commonAncestorContainer))return '';
   const verseOf=node=>(node?.nodeType===1?node:node?.parentElement)?.closest('[data-reader-verse]')?.dataset.readerVerse;
   const first=Number(verseOf(range?.startContainer)||readerGetState().verse),last=Number(verseOf(range?.endContainer)||first),language=readerGetState().language;
-  const url=new URL('https://sri-rupa-seva-kunj.github.io/vedarama-mobile-preview/mockups/desktop-native-icons-v1/index.html');url.searchParams.set('v','1.67');url.searchParams.set('verse',first);url.searchParams.set('reader',language);url.searchParams.set('account',demoAccount.mode);
+  const url=new URL('https://sri-rupa-seva-kunj.github.io/vedarama-mobile-preview/mockups/desktop-native-icons-v1/index.html');url.searchParams.set('v','1.68');url.searchParams.set('verse',first);url.searchParams.set('reader',language);url.searchParams.set('account',demoAccount.mode);
   return quote+'\n\nБхагавад-гита · глава 2 · текст '+first+(last!==first?'–'+last:'')+' · '+catalogLanguageNames[language]+'\nДемонстрационный фрагмент\n'+url.href;
  };
  copyButton.onclick=async()=>{
