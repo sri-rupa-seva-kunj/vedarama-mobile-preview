@@ -31,13 +31,13 @@
 html[data-theme=light]{--white:#FBFCFB;--panel-soft:#EFF2F3;--surface:#E4E8EB;--stroke:#CCD3D7;--ink:#2D353C;--native-text:#2D353C;--secondary:#616D76;--gold:#C6AF7D;--gold-dark:#53616B;--gold-light:#C6AF7D;--accent-wash:#E8EDF0;--native-catalog:#EFF2F3;--native-heading:#EFF2F3;--card-hover:#E8EDF0;--paper-shadow:0 3px 14px #2d353c09;--action-fill:#53616B;--action-hover:#45535D;--action-active:#3B4A55;--action-text:#FFFFFF}
 html[data-theme=dark]{--white:#1f2023;--panel-soft:#27282b;--surface:#3a3c40;--stroke:#515358;--ink:#fefefe;--secondary:#a9aaad;--gold:#efc869;--gold-dark:#efc869;--gold-light:#efc869;--accent-wash:#515358;--native-catalog:#3a3c40;--native-heading:#101011;--native-text:#ededee;--card-hover:#27282b;--action-fill:#efc869;--action-hover:#f8e571;--action-active:#eebb3e;--action-text:#1f2023}
 html[data-theme=dark] .global-tab-header{background:var(--native-heading)}
-/* Distinguish light reading chrome and the active tab from the paper. */
+/* The active tab continues the toolbar; the remaining tab strip stays darker. */
 html[data-theme=light]{--native-heading:#D4DCE1;--chrome-toolbar:#E2E7EB;--chrome-stroke:#BFC9D0}
 html[data-theme=light] .global-tab-header{background:var(--native-heading);border-bottom-color:var(--chrome-stroke)}
 html[data-theme=light] .global-tab-header::after{background:var(--chrome-toolbar)}
 html[data-theme=light] :is(.global-tab-header,.tab-workspace .app-header,.reading-toolbar){--secondary:#53616B}
 html[data-theme=light] :is(.tab-workspace .app-header,.reading-toolbar){background:var(--chrome-toolbar);border-color:var(--chrome-stroke)}
-html[data-theme=light] .global-tab-header .workspace-tab-plate{background:var(--white)}
+html[data-theme=light] .global-tab-header .workspace-tab-plate{background:var(--chrome-toolbar)}
 html[data-theme=light] .global-tab-header .workspace-tab+.workspace-tab::before{background:var(--chrome-stroke)}
 .reading-toolbar .reader-actions>[data-dialog=settings],.reading-tools>#reading-appearance{display:none!important}
 html[data-theme=dark] .catalog{background:var(--native-catalog)}
